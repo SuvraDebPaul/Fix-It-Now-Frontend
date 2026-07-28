@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,8 +17,29 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import Link from "next/link";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { RegisterFormValues, registerSchema } from "../_validations/register";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 export function RegisterForm() {
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: { role: "customer" },
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const onSubmit: SubmitHandler<RegisterFormValues> = (data) =>
+    console.log(data);
+
   return (
     <div>
       <Card className="py-8 px-4 bg-transparent text-muted/90">
@@ -25,7 +47,7 @@ export function RegisterForm() {
           <p className="font-mono uppercase text-primary font-bold tracking-widest">
             Join FixItNow
           </p>
-          <CardTitle className="font-display text-3xl uppercase tracking-wider ">
+          <CardTitle className="font-display text-3xl uppercase tracking-wider">
             Create an account
           </CardTitle>
           <CardDescription>
@@ -33,24 +55,51 @@ export function RegisterForm() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup>
-              {/* Customer & Technican Selection */}
-              <RadioGroup defaultValue="customer" className="w-fit flex gap-8">
-                <div className="flex items-center gap-3">
-                  <RadioGroupItem value="customer" id="customer" />
-                  <Label htmlFor="customer">Customer</Label>
-                </div>
-                <div className="flex items-center gap-3">
-                  <RadioGroupItem value="technician" id="technician" />
-                  <Label htmlFor="technician">Technician</Label>
-                </div>
-              </RadioGroup>
+              {/* Customer & Technician Role */}
+              <Controller
+                name="role"
+                control={control}
+                render={({ field }) => (
+                  <RadioGroup
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    className="w-fit flex gap-8"
+                  >
+                    <div className="flex items-center gap-3">
+                      <RadioGroupItem value="customer" id="customer" />
+                      <Label htmlFor="customer">Customer</Label>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <RadioGroupItem value="technician" id="technician" />
+                      <Label htmlFor="technician">Technician</Label>
+                    </div>
+                  </RadioGroup>
+                )}
+              />
+              {errors.role && (
+                <FieldDescription className="text-destructive">
+                  {errors.role.message}
+                </FieldDescription>
+              )}
 
               {/* Name */}
               <Field>
                 <FieldLabel htmlFor="name">Full Name</FieldLabel>
-                <Input id="name" type="text" placeholder="John Doe" required />
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="John Doe"
+                  {...register("fullName", {
+                    required: "Full name is required",
+                  })}
+                />
+                {errors.fullName && (
+                  <FieldDescription className="text-destructive">
+                    {errors.fullName.message}
+                  </FieldDescription>
+                )}
               </Field>
 
               {/* Email */}
@@ -60,22 +109,53 @@ export function RegisterForm() {
                   id="email"
                   type="email"
                   placeholder="m@example.com"
-                  required
+                  {...register("email", { required: "Email is required" })}
                 />
+                {errors.email && (
+                  <FieldDescription className="text-destructive">
+                    {errors.email.message}
+                  </FieldDescription>
+                )}
               </Field>
 
               {/* Password */}
               <Field>
                 <FieldLabel htmlFor="password">Password</FieldLabel>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="**********"
-                  required
-                />
-                <FieldDescription>
-                  Must be at least 8 characters long.
-                </FieldDescription>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="**********"
+                    {...register("password")}
+                  />
+                  <Button
+                    variant={"link"}
+                    size={"icon-lg"}
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-background"
+                    tabIndex={-1}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+
+                {errors.password ? (
+                  <FieldDescription className="text-destructive">
+                    {errors.password.message}
+                  </FieldDescription>
+                ) : (
+                  <FieldDescription>
+                    Must be at least 8 characters long.
+                  </FieldDescription>
+                )}
               </Field>
 
               {/* Confirm Password */}
@@ -83,12 +163,38 @@ export function RegisterForm() {
                 <FieldLabel htmlFor="confirm-password">
                   Confirm Password
                 </FieldLabel>
-                <Input
-                  id="confirm-password"
-                  type="password"
-                  placeholder="**********"
-                  required
-                />
+                <div className="relative">
+                  <Input
+                    id="confirm-password"
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="**********"
+                    {...register("confirmPassword")}
+                  />
+
+                  <Button
+                    variant={"link"}
+                    size={"icon-lg"}
+                    type="button"
+                    onClick={() => setShowConfirmPassword((prev) => !prev)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-background"
+                    tabIndex={-1}
+                    aria-label={
+                      showConfirmPassword ? "Hide password" : "Show password"
+                    }
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+
+                {errors.confirmPassword && (
+                  <FieldDescription className="text-destructive">
+                    {errors.confirmPassword.message}
+                  </FieldDescription>
+                )}
               </Field>
 
               {/* Submit */}
