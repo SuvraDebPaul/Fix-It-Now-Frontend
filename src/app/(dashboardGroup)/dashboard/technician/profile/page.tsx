@@ -1,11 +1,13 @@
+import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { UserAvatar } from "@/components/shared/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { getInitials } from "@/lib/utils";
 
 export default function TechnicianProfilePage() {
   return (
@@ -16,20 +18,19 @@ export default function TechnicianProfilePage() {
         pageLabel="Profile"
       />
       <div className="flex flex-1 flex-col gap-6 p-4 lg:p-6">
-        <div>
-          <h1 className="text-2xl font-semibold">Profile</h1>
-          <p className="text-sm text-muted-foreground">
-            How customers see you when browsing technicians.
-          </p>
-        </div>
+        <DashboardPageHeader
+          title="Profile"
+          description="How customers see you when browsing technicians."
+        />
 
         <Card className="max-w-2xl">
           <CardHeader className="flex-row items-center gap-4">
-            <Avatar className="h-16 w-16">
-              <AvatarFallback className="bg-primary/20 text-lg text-primary">
-                AB
-              </AvatarFallback>
-            </Avatar>
+            <UserAvatar
+              name="Andron Black"
+              fallback={getInitials("Andron Black")}
+              className="h-16 w-16"
+              fallbackClassName="bg-primary/20 text-lg text-primary"
+            />
             <div>
               <CardTitle>Andron Black</CardTitle>
               <p className="text-sm text-muted-foreground">

@@ -1,5 +1,6 @@
 import { ClipboardList } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
+import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
 import { StatusBadge } from "@/components/dashboard/status-badge";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { formatDateTime } from "@/lib/format";
 import { technicianBookings } from "../data";
 
 function BookingActions({ status }: { status: string }) {
@@ -57,12 +59,10 @@ export default function TechnicianBookingsPage() {
         pageLabel="Bookings"
       />
       <div className="flex flex-1 flex-col gap-4 p-4 lg:p-6">
-        <div>
-          <h1 className="text-2xl font-semibold">Bookings</h1>
-          <p className="text-sm text-muted-foreground">
-            Jobs assigned to you, from request to completion.
-          </p>
-        </div>
+        <DashboardPageHeader
+          title="Bookings"
+          description="Jobs assigned to you, from request to completion."
+        />
 
         <div className="rounded-lg border">
           <Table>
@@ -89,10 +89,7 @@ export default function TechnicianBookingsPage() {
                   </TableCell>
                   <TableCell>{booking.customer}</TableCell>
                   <TableCell>
-                    {new Date(booking.scheduleTime).toLocaleString(undefined, {
-                      dateStyle: "medium",
-                      timeStyle: "short",
-                    })}
+                    {formatDateTime(booking.scheduleTime)}
                   </TableCell>
                   <TableCell className="max-w-48 truncate text-muted-foreground">
                     {booking.address}

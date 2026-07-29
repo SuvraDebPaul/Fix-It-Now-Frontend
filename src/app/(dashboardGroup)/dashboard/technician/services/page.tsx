@@ -1,7 +1,8 @@
 import { Wrench } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
+import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
-import { Badge } from "@/components/ui/badge";
+import { ActiveBadge } from "@/components/shared/active-badge";
 import {
   Table,
   TableBody,
@@ -22,15 +23,11 @@ export default function TechnicianServicesPage() {
         pageLabel="My Services"
       />
       <div className="flex flex-1 flex-col gap-4 p-4 lg:p-6">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-semibold">My Services</h1>
-            <p className="text-sm text-muted-foreground">
-              Services you offer, visible to customers browsing FixItNow.
-            </p>
-          </div>
-          <AddServiceDialog />
-        </div>
+        <DashboardPageHeader
+          title="My Services"
+          description="Services you offer, visible to customers browsing FixItNow."
+          action={<AddServiceDialog />}
+        />
 
         <div className="rounded-lg border">
           <Table>
@@ -54,16 +51,7 @@ export default function TechnicianServicesPage() {
                     {service.description}
                   </TableCell>
                   <TableCell>
-                    <Badge
-                      variant="outline"
-                      className={
-                        service.isActive
-                          ? "border-transparent bg-green-100 text-green-700"
-                          : "border-transparent bg-gray-200 text-gray-700"
-                      }
-                    >
-                      {service.isActive ? "Active" : "Inactive"}
-                    </Badge>
+                    <ActiveBadge isActive={service.isActive} />
                   </TableCell>
                   <TableCell className="text-right">
                     ${service.price}

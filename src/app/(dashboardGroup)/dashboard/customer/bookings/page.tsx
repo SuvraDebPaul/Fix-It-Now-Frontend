@@ -1,5 +1,6 @@
 import { ClipboardList } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
+import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
 import { StatusBadge } from "@/components/dashboard/status-badge";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { formatDateTime } from "@/lib/format";
 import { customerBookings } from "../data";
 import { CancelBookingDialog } from "./cancel-booking-dialog";
 
@@ -50,12 +52,10 @@ export default function CustomerBookingsPage() {
         pageLabel="My Bookings"
       />
       <div className="flex flex-1 flex-col gap-4 p-4 lg:p-6">
-        <div>
-          <h1 className="text-2xl font-semibold">My Bookings</h1>
-          <p className="text-sm text-muted-foreground">
-            Every job you&apos;ve requested, from request to completion.
-          </p>
-        </div>
+        <DashboardPageHeader
+          title="My Bookings"
+          description="Every job you've requested, from request to completion."
+        />
 
         <div className="rounded-lg border">
           <Table>
@@ -82,10 +82,7 @@ export default function CustomerBookingsPage() {
                   </TableCell>
                   <TableCell>{booking.technician}</TableCell>
                   <TableCell>
-                    {new Date(booking.scheduleTime).toLocaleString(undefined, {
-                      dateStyle: "medium",
-                      timeStyle: "short",
-                    })}
+                    {formatDateTime(booking.scheduleTime)}
                   </TableCell>
                   <TableCell className="max-w-48 truncate text-muted-foreground">
                     {booking.address}

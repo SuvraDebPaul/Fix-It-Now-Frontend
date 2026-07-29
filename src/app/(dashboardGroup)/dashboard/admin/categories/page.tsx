@@ -1,7 +1,8 @@
 import { LayoutGrid } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
+import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
-import { Badge } from "@/components/ui/badge";
+import { ActiveBadge } from "@/components/shared/active-badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
@@ -25,12 +26,10 @@ export default function AdminCategoriesPage() {
         pageLabel="Categories"
       />
       <div className="flex flex-1 flex-col gap-6 p-4 lg:p-6">
-        <div>
-          <h1 className="text-2xl font-semibold">Categories</h1>
-          <p className="text-sm text-muted-foreground">
-            Service categories customers can browse by.
-          </p>
-        </div>
+        <DashboardPageHeader
+          title="Categories"
+          description="Service categories customers can browse by."
+        />
 
         <Card className="max-w-2xl">
           <CardHeader>
@@ -87,16 +86,7 @@ export default function AdminCategoriesPage() {
                     {category.description}
                   </TableCell>
                   <TableCell>
-                    <Badge
-                      variant="outline"
-                      className={
-                        category.isActive
-                          ? "border-transparent bg-green-100 text-green-700"
-                          : "border-transparent bg-gray-200 text-gray-700"
-                      }
-                    >
-                      {category.isActive ? "Active" : "Inactive"}
-                    </Badge>
+                    <ActiveBadge isActive={category.isActive} />
                   </TableCell>
                 </TableRow>
               ))}

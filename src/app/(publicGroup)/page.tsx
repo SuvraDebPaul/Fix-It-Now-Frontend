@@ -4,7 +4,9 @@ import { ShieldCheck, ThumbsUp, Clock, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { SectionHeading } from "@/components/shared/section-heading";
+import { TestimonialCard } from "@/components/shared/testimonial-card";
+import { WorkCollage } from "@/components/shared/work-collage";
 import {
   Accordion,
   AccordionContent,
@@ -173,53 +175,13 @@ export default function Home() {
       {/* PROCESS / WHAT WE DO */}
       <section className="px-6 py-24">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-14 lg:grid-cols-2">
-          <div className="relative">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="relative col-span-2 h-40 overflow-hidden rounded-lg">
-                <Image
-                  src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=700&q=80&auto=format&fit=crop"
-                  alt="Technician assessing a job"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="relative h-36 overflow-hidden rounded-lg">
-                <Image
-                  src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400&q=80&auto=format&fit=crop"
-                  alt="Technician installing a fixture"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="relative h-36 overflow-hidden rounded-lg">
-                <Image
-                  src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400&q=80&auto=format&fit=crop"
-                  alt="Technician at work"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            </div>
-            <div className="absolute -bottom-6 -right-4 flex gap-4 rounded-lg bg-ink px-6 py-4 text-white shadow-lg sm:right-6">
-              <div>
-                <div className="font-display text-2xl text-primary">560+</div>
-                <div className="text-xs text-white/60">Projects Done</div>
-              </div>
-              <div className="w-px bg-white/15" />
-              <div>
-                <div className="font-display text-2xl text-primary">180+</div>
-                <div className="text-xs text-white/60">Technicians</div>
-              </div>
-            </div>
-          </div>
+          <WorkCollage />
 
           <div className="pt-4">
-            <span className="font-mono text-xs uppercase tracking-[2px] text-primary">
-              About Us
-            </span>
-            <h2 className="mt-2.5 font-display text-4xl">
-              Tell About Our Process &amp; What We Do
-            </h2>
+            <SectionHeading
+              eyebrow="About Us"
+              title="Tell About Our Process & What We Do"
+            />
             <p className="mt-4 text-muted-foreground">
               Every job on FixItNow follows the same reliable path — from the
               moment you book to the moment the work is signed off, so you
@@ -262,12 +224,11 @@ export default function Home() {
       {/* COMPREHENSIVE SERVICES */}
       <section className="bg-primary px-6 py-20 text-primary-foreground">
         <div className="mx-auto max-w-7xl">
-          <span className="font-mono text-xs uppercase tracking-[2px]">
-            Our Services
-          </span>
-          <h2 className="mt-2.5 font-display text-4xl">
-            A Comprehensive Set Of Services
-          </h2>
+          <SectionHeading
+            eyebrow="Our Services"
+            title="A Comprehensive Set Of Services"
+            eyebrowClassName="text-primary-foreground"
+          />
 
           <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {services.map((service) => (
@@ -313,12 +274,11 @@ export default function Home() {
       <section className="px-6 py-24">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 lg:grid-cols-2">
           <div>
-            <span className="font-mono text-xs uppercase tracking-[2px] text-primary">
-              Get A Free Quote
-            </span>
-            <h2 className="mt-2.5 mb-8 font-display text-4xl">
-              Request A Quote
-            </h2>
+            <SectionHeading
+              eyebrow="Get A Free Quote"
+              title="Request A Quote"
+              titleClassName="mb-8"
+            />
             <form className="space-y-4">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Input placeholder="Your Name" />
@@ -357,12 +317,11 @@ export default function Home() {
       {/* WE FIX THINGS */}
       <section className="bg-ink px-6 py-24 text-white">
         <div className="mx-auto max-w-7xl">
-          <span className="font-mono text-xs uppercase tracking-[2px] text-primary">
-            What We Do
-          </span>
-          <h2 className="mt-2.5 max-w-xl font-display text-4xl">
-            We Fix Things Around Your House So You Don&apos;t Have To.
-          </h2>
+          <SectionHeading
+            eyebrow="What We Do"
+            title="We Fix Things Around Your House So You Don't Have To."
+            titleClassName="max-w-xl"
+          />
 
           <div className="mt-10 grid grid-cols-2 gap-5 sm:grid-cols-4">
             {fixThingsStats.map((stat) => (
@@ -452,12 +411,11 @@ export default function Home() {
             />
           </div>
           <div>
-            <span className="font-mono text-xs uppercase tracking-[2px] text-primary">
-              Got Questions
-            </span>
-            <h2 className="mt-2.5 mb-6 font-display text-4xl">
-              Frequently Asked Questions
-            </h2>
+            <SectionHeading
+              eyebrow="Got Questions"
+              title="Frequently Asked Questions"
+              titleClassName="mb-6"
+            />
             <Accordion type="single" collapsible>
               {faqs.map((faq, i) => (
                 <AccordionItem key={faq.question} value={`item-${i}`}>
@@ -494,12 +452,11 @@ export default function Home() {
       {/* MEET THE TECHNICIANS */}
       <section className="px-6 py-24">
         <div className="mx-auto max-w-7xl text-center">
-          <span className="font-mono text-xs uppercase tracking-[2px] text-primary">
-            Team Members
-          </span>
-          <h2 className="mt-2.5 mb-10 font-display text-4xl">
-            Our Professional Technicians
-          </h2>
+          <SectionHeading
+            eyebrow="Team Members"
+            title="Our Professional Technicians"
+            titleClassName="mb-10"
+          />
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
             {homeTeam.map((member) => (
               <Link
@@ -531,12 +488,11 @@ export default function Home() {
       {/* BLOG */}
       <section className="border-t border-border px-6 py-24">
         <div className="mx-auto max-w-7xl text-center">
-          <span className="font-mono text-xs uppercase tracking-[2px] text-primary">
-            Blogs & Articles
-          </span>
-          <div className="mt-2.5 mb-10 flex flex-wrap items-end justify-center gap-4">
-            <h2 className="font-display text-4xl">Read Our Latest Blogs</h2>
-          </div>
+          <SectionHeading
+            eyebrow="Blogs & Articles"
+            title="Read Our Latest Blogs"
+            titleClassName="mb-10"
+          />
           <div className="grid grid-cols-1 gap-6 text-left sm:grid-cols-2">
             {homeBlogPosts.map((post) => (
               <Link
@@ -573,36 +529,21 @@ export default function Home() {
       {/* TESTIMONIALS */}
       <section className="bg-primary px-6 py-20 text-primary-foreground">
         <div className="mx-auto max-w-7xl">
-          <span className="font-mono text-xs uppercase tracking-[2px]">
-            Testimonials
-          </span>
-          <h2 className="mt-2.5 mb-8 font-display text-4xl">What They Say</h2>
+          <SectionHeading
+            eyebrow="Testimonials"
+            title="What They Say"
+            eyebrowClassName="text-primary-foreground"
+            titleClassName="mb-8"
+          />
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             {testimonials.map((testimonial) => (
-              <div
+              <TestimonialCard
                 key={testimonial.name}
-                className="rounded-lg bg-white p-6 text-foreground shadow-sm"
-              >
-                <p className="text-sm text-muted-foreground">
-                  &ldquo;{testimonial.quote}&rdquo;
-                </p>
-                <div className="mt-5 flex items-center gap-3">
-                  <Avatar>
-                    <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-                    <AvatarFallback>
-                      {testimonial.name.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <div className="text-sm font-semibold">
-                      {testimonial.name}
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      {testimonial.role}
-                    </div>
-                  </div>
-                </div>
-              </div>
+                name={testimonial.name}
+                quote={testimonial.quote}
+                avatar={testimonial.avatar}
+                role={testimonial.role}
+              />
             ))}
           </div>
         </div>

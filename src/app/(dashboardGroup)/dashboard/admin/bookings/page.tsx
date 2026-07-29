@@ -1,5 +1,6 @@
 import { ClipboardList } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
+import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
 import { StatusBadge } from "@/components/dashboard/status-badge";
 import {
@@ -10,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { formatDateTime } from "@/lib/format";
 import { adminBookings } from "../data";
 
 export default function AdminBookingsPage() {
@@ -21,12 +23,10 @@ export default function AdminBookingsPage() {
         pageLabel="Bookings"
       />
       <div className="flex flex-1 flex-col gap-4 p-4 lg:p-6">
-        <div>
-          <h1 className="text-2xl font-semibold">Bookings</h1>
-          <p className="text-sm text-muted-foreground">
-            Every booking across the platform.
-          </p>
-        </div>
+        <DashboardPageHeader
+          title="Bookings"
+          description="Every booking across the platform."
+        />
 
         <div className="rounded-lg border">
           <Table>
@@ -53,10 +53,7 @@ export default function AdminBookingsPage() {
                   <TableCell>{booking.customer}</TableCell>
                   <TableCell>{booking.technician}</TableCell>
                   <TableCell>
-                    {new Date(booking.scheduleTime).toLocaleString(undefined, {
-                      dateStyle: "medium",
-                      timeStyle: "short",
-                    })}
+                    {formatDateTime(booking.scheduleTime)}
                   </TableCell>
                   <TableCell>
                     <StatusBadge status={booking.status} />

@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Search, Star } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserAvatar } from "@/components/shared/user-avatar";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
@@ -236,15 +236,11 @@ export function ServicesExplorer({
               </p>
 
               <div className="mt-4 flex items-center gap-2">
-                <Avatar className="h-7 w-7">
-                  <AvatarImage
-                    src={service.technician.avatar}
-                    alt={service.technician.name}
-                  />
-                  <AvatarFallback>
-                    {service.technician.name.charAt(0)}
-                  </AvatarFallback>
-                </Avatar>
+                <UserAvatar
+                  name={service.technician.name}
+                  image={service.technician.avatar}
+                  className="h-7 w-7"
+                />
                 <span className="text-sm font-medium">
                   {service.technician.name}
                 </span>

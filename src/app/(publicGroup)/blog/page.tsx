@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { SectionHeading } from "@/components/shared/section-heading";
+import { TestimonialCard } from "@/components/shared/testimonial-card";
 import { PageHero } from "@/components/shared/page-hero";
 import { blogPosts } from "./data";
 
@@ -20,7 +21,8 @@ const testimonials = [
   },
   {
     name: "Alexander Dennis",
-    quote: "Ticket tracking made the whole job feel accountable, start to finish.",
+    quote:
+      "Ticket tracking made the whole job feel accountable, start to finish.",
     avatar:
       "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=100&q=80&auto=format&fit=crop",
     dark: true,
@@ -43,12 +45,11 @@ export default function BlogPage() {
 
       <section className="px-6 py-24">
         <div className="mx-auto max-w-7xl text-center">
-          <span className="font-mono text-xs uppercase tracking-[2px] text-primary">
-            Blogs &amp; Articles
-          </span>
-          <h2 className="mt-2.5 mb-12 font-display text-4xl">
-            Read Our Latest Blogs
-          </h2>
+          <SectionHeading
+            eyebrow="Blogs & Articles"
+            title="Read Our Latest Blogs"
+            titleClassName="mb-12"
+          />
 
           <div className="grid grid-cols-1 gap-6 text-left sm:grid-cols-2">
             {blogPosts.map((post, i) => {
@@ -107,39 +108,21 @@ export default function BlogPage() {
       {/* TESTIMONIALS */}
       <section className="bg-primary px-6 py-20 text-primary-foreground">
         <div className="mx-auto max-w-7xl">
-          <span className="font-mono text-xs uppercase tracking-[2px]">
-            Testimonials
-          </span>
-          <h2 className="mt-2.5 mb-8 font-display text-4xl">
-            What Our Clients Say About Us
-          </h2>
+          <SectionHeading
+            eyebrow="Testimonials"
+            title="What Our Clients Say About Us"
+            eyebrowClassName="text-primary-foreground"
+            titleClassName="mb-8"
+          />
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {testimonials.map((testimonial) => (
-              <div
+              <TestimonialCard
                 key={testimonial.name}
-                className={`rounded-lg p-6 shadow-sm ${
-                  testimonial.dark
-                    ? "bg-ink text-white"
-                    : "bg-white text-foreground"
-                }`}
-              >
-                <p
-                  className={`text-sm ${testimonial.dark ? "text-white/70" : "text-muted-foreground"}`}
-                >
-                  &ldquo;{testimonial.quote}&rdquo;
-                </p>
-                <div className="mt-5 flex items-center gap-3">
-                  <Avatar>
-                    <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-                    <AvatarFallback>
-                      {testimonial.name.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="text-sm font-semibold">
-                    {testimonial.name}
-                  </div>
-                </div>
-              </div>
+                name={testimonial.name}
+                quote={testimonial.quote}
+                avatar={testimonial.avatar}
+                dark={testimonial.dark}
+              />
             ))}
           </div>
         </div>

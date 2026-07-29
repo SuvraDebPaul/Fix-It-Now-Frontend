@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserAvatar } from "@/components/shared/user-avatar";
 import {
   Accordion,
   AccordionContent,
@@ -124,15 +124,11 @@ export default async function ServiceDetailsPage({
 
             {/* TECHNICIAN CARD */}
             <div className="mt-8 flex flex-wrap items-center gap-4 rounded-lg border border-border p-5">
-              <Avatar className="h-14 w-14">
-                <AvatarImage
-                  src={service.technician.avatar}
-                  alt={service.technician.name}
-                />
-                <AvatarFallback>
-                  {service.technician.name.charAt(0)}
-                </AvatarFallback>
-              </Avatar>
+              <UserAvatar
+                name={service.technician.name}
+                image={service.technician.avatar}
+                className="h-14 w-14"
+              />
               <div className="flex-1">
                 <Link
                   href={`/technicians/${technicianIdFromName(service.technician.name)}`}

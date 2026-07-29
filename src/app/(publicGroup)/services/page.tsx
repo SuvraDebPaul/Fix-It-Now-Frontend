@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PageHero } from "@/components/shared/page-hero";
+import { SectionHeading } from "@/components/shared/section-heading";
+import { TestimonialCard } from "@/components/shared/testimonial-card";
 import { services, serviceCategories } from "./data";
 import { ServicesExplorer } from "./services-explorer";
 
@@ -43,12 +44,11 @@ export default function ServicesPage() {
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-wrap items-end justify-between gap-6 border-b border-border pb-8">
             <div>
-              <span className="font-mono text-xs uppercase tracking-[2px] text-primary">
-                Our Services
-              </span>
-              <h2 className="mt-2.5 max-w-lg font-display text-4xl">
-                We&apos;re A Different Kind Of Handyman Service
-              </h2>
+              <SectionHeading
+                eyebrow="Our Services"
+                title="We're A Different Kind Of Handyman Service"
+                titleClassName="max-w-lg"
+              />
               <p className="mt-2 max-w-lg text-sm text-muted-foreground">
                 Every listing below is offered directly by a verified
                 technician — pick the one that fits, and book them
@@ -77,33 +77,20 @@ export default function ServicesPage() {
       {/* TESTIMONIALS */}
       <section className="bg-primary px-6 py-20 text-primary-foreground">
         <div className="mx-auto max-w-7xl">
-          <span className="font-mono text-xs uppercase tracking-[2px]">
-            Testimonials
-          </span>
-          <h2 className="mt-2.5 mb-8 font-display text-4xl">
-            What Our Clients Say About Us
-          </h2>
+          <SectionHeading
+            eyebrow="Testimonials"
+            title="What Our Clients Say About Us"
+            eyebrowClassName="text-primary-foreground"
+            titleClassName="mb-8"
+          />
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             {testimonials.map((testimonial) => (
-              <div
+              <TestimonialCard
                 key={testimonial.name}
-                className="rounded-lg bg-white p-6 text-foreground shadow-sm"
-              >
-                <p className="text-sm text-muted-foreground">
-                  &ldquo;{testimonial.quote}&rdquo;
-                </p>
-                <div className="mt-5 flex items-center gap-3">
-                  <Avatar>
-                    <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-                    <AvatarFallback>
-                      {testimonial.name.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="text-sm font-semibold">
-                    {testimonial.name}
-                  </div>
-                </div>
-              </div>
+                name={testimonial.name}
+                quote={testimonial.quote}
+                avatar={testimonial.avatar}
+              />
             ))}
           </div>
         </div>

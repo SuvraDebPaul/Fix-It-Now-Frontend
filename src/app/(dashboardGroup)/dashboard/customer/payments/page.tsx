@@ -1,5 +1,6 @@
 import { CreditCard } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
+import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
 import { StatusBadge } from "@/components/dashboard/status-badge";
 import {
@@ -10,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { formatDateTime } from "@/lib/format";
 import { customerPayments } from "../data";
 
 export default function CustomerPaymentsPage() {
@@ -21,12 +23,10 @@ export default function CustomerPaymentsPage() {
         pageLabel="Payments"
       />
       <div className="flex flex-1 flex-col gap-4 p-4 lg:p-6">
-        <div>
-          <h1 className="text-2xl font-semibold">Payments</h1>
-          <p className="text-sm text-muted-foreground">
-            Payment history for your bookings.
-          </p>
-        </div>
+        <DashboardPageHeader
+          title="Payments"
+          description="Payment history for your bookings."
+        />
 
         <div className="rounded-lg border">
           <Table>
@@ -53,12 +53,7 @@ export default function CustomerPaymentsPage() {
                     {payment.provider.toLowerCase()}
                   </TableCell>
                   <TableCell>
-                    {payment.paidAt
-                      ? new Date(payment.paidAt).toLocaleString(undefined, {
-                          dateStyle: "medium",
-                          timeStyle: "short",
-                        })
-                      : "—"}
+                    {payment.paidAt ? formatDateTime(payment.paidAt) : "—"}
                   </TableCell>
                   <TableCell>
                     <StatusBadge status={payment.status} />

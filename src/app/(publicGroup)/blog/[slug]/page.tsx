@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { PageHero } from "@/components/shared/page-hero";
+import { SectionHeading } from "@/components/shared/section-heading";
 import { blogPosts } from "../data";
 
 const whatYouWillDo = [
@@ -146,12 +147,11 @@ export default async function BlogDetailsPage({
 
             {/* LEAVE A REPLY */}
             <div className="mt-14">
-              <span className="font-mono text-xs uppercase tracking-[2px] text-primary">
-                Feedback Form
-              </span>
-              <h2 className="mt-2 mb-6 font-display text-2xl">
-                Leave A Reply
-              </h2>
+              <SectionHeading
+                eyebrow="Feedback Form"
+                title="Leave A Reply"
+                titleClassName="mt-2 mb-6 text-2xl"
+              />
               <form className="space-y-4">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <Input placeholder="First Name" />

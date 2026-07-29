@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageHero } from "@/components/shared/page-hero";
+import { SectionHeading } from "@/components/shared/section-heading";
 import { technicians } from "./data";
 
 export default function TechniciansPage() {
@@ -18,12 +19,10 @@ export default function TechniciansPage() {
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-wrap items-end justify-between gap-6 border-b border-border pb-8">
             <div>
-              <span className="font-mono text-xs uppercase tracking-[2px] text-primary">
-                Team Members
-              </span>
-              <h2 className="mt-2.5 font-display text-4xl">
-                Our Professional Technicians
-              </h2>
+              <SectionHeading
+                eyebrow="Team Members"
+                title="Our Professional Technicians"
+              />
             </div>
             <p className="max-w-sm text-sm text-muted-foreground">
               Every technician on FixItNow is identity-verified before their
@@ -87,12 +86,11 @@ export default function TechniciansPage() {
       {/* JOIN CTA */}
       <section className="px-6 py-24 text-center">
         <div className="mx-auto max-w-2xl">
-          <span className="font-mono text-xs uppercase tracking-[2px] text-primary">
-            Join The Team
-          </span>
-          <h2 className="mt-2.5 font-display text-3xl">
-            Are You A Skilled Technician?
-          </h2>
+          <SectionHeading
+            eyebrow="Join The Team"
+            title="Are You A Skilled Technician?"
+            titleClassName="text-3xl"
+          />
           <p className="mt-4 text-muted-foreground">
             Set your own availability and let bookings, payments, and job
             tracking come to you.

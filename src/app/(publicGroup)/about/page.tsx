@@ -9,6 +9,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageHero } from "@/components/shared/page-hero";
+import { SectionHeading } from "@/components/shared/section-heading";
+import { WorkCollage } from "@/components/shared/work-collage";
 
 const processChecklist = [
   "Initial Consultation",
@@ -67,58 +69,18 @@ export default function AboutPage() {
       {/* PROCESS / WHAT WE DO */}
       <section className="px-6 py-24">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-14 lg:grid-cols-2">
-          <div className="relative">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="relative col-span-2 h-40 overflow-hidden rounded-lg">
-                <Image
-                  src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=700&q=80&auto=format&fit=crop"
-                  alt="Technician assessing a job"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="relative h-36 overflow-hidden rounded-lg">
-                <Image
-                  src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400&q=80&auto=format&fit=crop"
-                  alt="Technician installing a fixture"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="relative h-36 overflow-hidden rounded-lg">
-                <Image
-                  src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400&q=80&auto=format&fit=crop"
-                  alt="Technician at work"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            </div>
-            <div className="absolute -bottom-6 -right-4 flex gap-4 rounded-lg bg-ink px-6 py-4 text-white shadow-lg sm:right-6">
-              <div>
-                <div className="font-display text-2xl text-primary">560+</div>
-                <div className="text-xs text-white/60">Projects Done</div>
-              </div>
-              <div className="w-px bg-white/15" />
-              <div>
-                <div className="font-display text-2xl text-primary">180+</div>
-                <div className="text-xs text-white/60">Technicians</div>
-              </div>
-            </div>
-          </div>
+          <WorkCollage />
 
           <div className="pt-4">
-            <span className="font-mono text-xs uppercase tracking-[2px] text-primary">
-              Who We Are
-            </span>
-            <h2 className="mt-2.5 font-display text-4xl">
-              Tell About Our Process &amp; What We Do
-            </h2>
+            <SectionHeading
+              eyebrow="Who We Are"
+              title="Tell About Our Process & What We Do"
+            />
             <p className="mt-4 text-muted-foreground">
-              FixItNow started as a small dispatch board for local
-              technicians and grew into a full booking platform. Every job
-              still follows the same reliable path — from the moment you
-              book to the moment the work is signed off.
+              FixItNow started as a small dispatch board for local technicians
+              and grew into a full booking platform. Every job still follows the
+              same reliable path — from the moment you book to the moment the
+              work is signed off.
             </p>
 
             <ul className="mt-6 space-y-3">
@@ -147,7 +109,7 @@ export default function AboutPage() {
           fill
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-brand-blue/85" />
+        <div className="absolute inset-0 bg-brand-blue/50" />
         <div className="relative mx-auto max-w-2xl">
           <PlayCircle className="mx-auto h-14 w-14 text-primary" />
           <h2 className="mt-6 font-display text-3xl sm:text-4xl">
@@ -174,7 +136,9 @@ export default function AboutPage() {
           <div
             key={step.title}
             className={`flex flex-col items-center gap-3 px-6 py-12 text-center ${
-              i === 1 ? "bg-primary text-primary-foreground" : "bg-ink text-white"
+              i === 1
+                ? "bg-primary text-primary-foreground"
+                : "bg-ink text-white"
             }`}
           >
             <step.icon className="h-8 w-8" />
@@ -188,12 +152,10 @@ export default function AboutPage() {
       <section className="px-6 py-24">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-2xl text-center">
-            <span className="font-mono text-xs uppercase tracking-[2px] text-primary">
-              Why Choose Us
-            </span>
-            <h2 className="mt-2.5 font-display text-4xl">
-              Your Friendly Handyman
-            </h2>
+            <SectionHeading
+              eyebrow="Why Choose Us"
+              title="Your Friendly Handyman"
+            />
           </div>
 
           <div className="relative mx-auto mt-10 h-72 max-w-3xl overflow-hidden rounded-lg sm:h-96">
@@ -222,16 +184,14 @@ export default function AboutPage() {
       <section className="bg-ink px-6 py-20 text-white">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 lg:grid-cols-2">
           <div>
-            <span className="font-mono text-xs uppercase tracking-[2px] text-primary">
-              Why We Are Different
-            </span>
-            <h2 className="mt-2.5 font-display text-4xl">
-              Trust, Diligence, Succeed
-            </h2>
+            <SectionHeading
+              eyebrow="Why We Are Different"
+              title="Trust, Diligence, Succeed"
+            />
             <p className="mt-4 text-white/65">
-              We built FixItNow on a simple idea — every job deserves a
-              paper trail, so customers always know who's coming, when, and
-              for how much.
+              We built FixItNow on a simple idea — every job deserves a paper
+              trail, so customers always know who&apos;s coming, when, and for
+              how much.
             </p>
             <Button asChild className="mt-6">
               <Link href="/register">Join As A Technician</Link>

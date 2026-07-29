@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CalendarCheck, ClipboardList, CreditCard, Star, Wrench } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
+import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { StatusBadge } from "@/components/dashboard/status-badge";
@@ -13,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { formatDateTime } from "@/lib/format";
 import { customerBookings } from "./data";
 
 export default function CustomerOverviewPage() {
@@ -30,12 +32,10 @@ export default function CustomerOverviewPage() {
     <>
       <SiteHeader rootHref="/dashboard/customer" rootLabel="Dashboard" />
       <div className="flex flex-1 flex-col gap-6 p-4 lg:p-6">
-        <div>
-          <h1 className="text-2xl font-semibold">Welcome back</h1>
-          <p className="text-sm text-muted-foreground">
-            Here&apos;s what&apos;s happening with your bookings.
-          </p>
-        </div>
+        <DashboardPageHeader
+          title="Welcome back"
+          description="Here's what's happening with your bookings."
+        />
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <StatCard
@@ -83,10 +83,7 @@ export default function CustomerOverviewPage() {
                   </TableCell>
                   <TableCell>{booking.technician}</TableCell>
                   <TableCell>
-                    {new Date(booking.scheduleTime).toLocaleString(undefined, {
-                      dateStyle: "medium",
-                      timeStyle: "short",
-                    })}
+                    {formatDateTime(booking.scheduleTime)}
                   </TableCell>
                   <TableCell>
                     <StatusBadge status={booking.status} />

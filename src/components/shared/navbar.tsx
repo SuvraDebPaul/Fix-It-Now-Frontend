@@ -15,7 +15,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { UserAvatar } from "@/components/shared/user-avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import {
@@ -170,11 +170,11 @@ export function Navbar() {
             ) : user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex items-center gap-2 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                  <Avatar className="h-8 w-8">
-                    <AvatarFallback className="bg-primary/20 text-primary">
-                      {user.name.charAt(0).toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
+                  <UserAvatar
+                    name={user.name}
+                    className="h-8 w-8"
+                    fallbackClassName="bg-primary/20 text-primary"
+                  />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem asChild>

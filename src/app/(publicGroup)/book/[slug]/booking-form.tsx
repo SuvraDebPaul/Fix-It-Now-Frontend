@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Field, FieldLabel } from "@/components/ui/field";
+import { formatDateTime } from "@/lib/format";
 
 interface BookingFormProps {
   technicianName: string;
@@ -31,10 +32,7 @@ export function BookingForm({ technicianName, price }: BookingFormProps) {
         <h2 className="font-display text-2xl">Request Sent</h2>
         <p className="max-w-sm text-sm text-muted-foreground">
           {technicianName} will review your request for{" "}
-          {new Date(scheduleTime).toLocaleString(undefined, {
-            dateStyle: "medium",
-            timeStyle: "short",
-          })}{" "}
+          {formatDateTime(scheduleTime)}{" "}
           and confirm or decline shortly. You&apos;ll be notified either way.
         </p>
         <div className="mt-2 flex gap-3">

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ChevronsUpDown, LogOut, UserCircle } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { UserAvatar } from "@/components/shared/user-avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -53,11 +53,11 @@ export function NavUser({ profileHref }: { profileHref: string }) {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarFallback className="rounded-lg bg-primary/20 text-primary">
-                  {user.name.charAt(0).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
+              <UserAvatar
+                name={user.name}
+                className="h-8 w-8 rounded-lg"
+                fallbackClassName="rounded-lg bg-primary/20 text-primary"
+              />
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
                 <span className="truncate text-xs text-muted-foreground">
@@ -75,11 +75,11 @@ export function NavUser({ profileHref }: { profileHref: string }) {
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarFallback className="rounded-lg bg-primary/20 text-primary">
-                    {user.name.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
+                <UserAvatar
+                  name={user.name}
+                  className="h-8 w-8 rounded-lg"
+                  fallbackClassName="rounded-lg bg-primary/20 text-primary"
+                />
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.name}</span>
                   <span className="truncate text-xs text-muted-foreground">

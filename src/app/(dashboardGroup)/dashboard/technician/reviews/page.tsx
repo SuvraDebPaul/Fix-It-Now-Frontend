@@ -1,23 +1,11 @@
 import { Star } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
+import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
+import { StarRating } from "@/components/shared/star-rating";
 import { Card, CardContent } from "@/components/ui/card";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { technicianReviews } from "../data";
-
-function StarRow({ rating }: { rating: number }) {
-  return (
-    <div className="flex gap-0.5 text-primary">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star
-          key={i}
-          className="h-4 w-4"
-          fill={i < rating ? "currentColor" : "none"}
-        />
-      ))}
-    </div>
-  );
-}
 
 export default function TechnicianReviewsPage() {
   const averageRating =
@@ -36,12 +24,10 @@ export default function TechnicianReviewsPage() {
         pageLabel="Reviews"
       />
       <div className="flex flex-1 flex-col gap-6 p-4 lg:p-6">
-        <div>
-          <h1 className="text-2xl font-semibold">Reviews</h1>
-          <p className="text-sm text-muted-foreground">
-            Feedback customers have left after completed jobs.
-          </p>
-        </div>
+        <DashboardPageHeader
+          title="Reviews"
+          description="Feedback customers have left after completed jobs."
+        />
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <StatCard
@@ -71,7 +57,7 @@ export default function TechnicianReviewsPage() {
                       · {review.customer}
                     </span>
                   </p>
-                  <StarRow rating={review.rating} />
+                  <StarRating rating={review.rating} />
                 </div>
                 <p className="text-sm text-muted-foreground">
                   {review.comment}

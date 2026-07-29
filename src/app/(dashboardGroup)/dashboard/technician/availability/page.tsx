@@ -1,3 +1,4 @@
+import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -24,12 +25,10 @@ export default function TechnicianAvailabilityPage() {
         pageLabel="Availability"
       />
       <div className="flex flex-1 flex-col gap-4 p-4 lg:p-6">
-        <div>
-          <h1 className="text-2xl font-semibold">Availability</h1>
-          <p className="text-sm text-muted-foreground">
-            Set the hours customers can book you, day by day.
-          </p>
-        </div>
+        <DashboardPageHeader
+          title="Availability"
+          description="Set the hours customers can book you, day by day."
+        />
 
         <Card className="max-w-3xl">
           <CardContent className="space-y-3">

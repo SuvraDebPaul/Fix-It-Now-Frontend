@@ -1,5 +1,6 @@
 import { Users } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
+import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
 import { StatusBadge } from "@/components/dashboard/status-badge";
 import { Badge } from "@/components/ui/badge";
@@ -12,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { formatDate } from "@/lib/format";
 import { adminUsers } from "../data";
 
 export default function AdminUsersPage() {
@@ -23,12 +25,10 @@ export default function AdminUsersPage() {
         pageLabel="Users"
       />
       <div className="flex flex-1 flex-col gap-4 p-4 lg:p-6">
-        <div>
-          <h1 className="text-2xl font-semibold">Users</h1>
-          <p className="text-sm text-muted-foreground">
-            All customers and technicians registered on FixItNow.
-          </p>
-        </div>
+        <DashboardPageHeader
+          title="Users"
+          description="All customers and technicians registered on FixItNow."
+        />
 
         <div className="rounded-lg border">
           <Table>
@@ -55,9 +55,7 @@ export default function AdminUsersPage() {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    {new Date(user.createdAt).toLocaleDateString(undefined, {
-                      dateStyle: "medium",
-                    })}
+                    {formatDate(user.createdAt)}
                   </TableCell>
                   <TableCell>
                     <StatusBadge status={user.status} />

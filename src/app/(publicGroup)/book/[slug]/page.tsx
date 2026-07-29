@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MapPin, Star } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserAvatar } from "@/components/shared/user-avatar";
 import { PageHero } from "@/components/shared/page-hero";
 import { services } from "../../services/data";
 import { technicianIdFromName } from "../../technicians/data";
@@ -63,15 +63,11 @@ export default async function BookServicePage({
             <h2 className="mt-1 text-lg font-semibold">{service.title}</h2>
 
             <div className="mt-4 flex items-center gap-2 border-t border-border pt-4">
-              <Avatar className="h-9 w-9">
-                <AvatarImage
-                  src={service.technician.avatar}
-                  alt={service.technician.name}
-                />
-                <AvatarFallback>
-                  {service.technician.name.charAt(0)}
-                </AvatarFallback>
-              </Avatar>
+              <UserAvatar
+                name={service.technician.name}
+                image={service.technician.avatar}
+                className="h-9 w-9"
+              />
               <div>
                 <Link
                   href={`/technicians/${technicianIdFromName(service.technician.name)}`}

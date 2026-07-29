@@ -413,7 +413,7 @@ export const services: ServiceListing[] = [
   },
 ];
 
-const CATEGORY_ORDER = [
+export const SERVICE_CATEGORIES = [
   "General Repairs",
   "Electrical",
   "Plumbing",
@@ -423,7 +423,7 @@ const CATEGORY_ORDER = [
   "Re-Construction",
 ];
 
-export const serviceCategories = CATEGORY_ORDER.map((label) => ({
+export const serviceCategories = SERVICE_CATEGORIES.map((label) => ({
   label,
   count: services.filter((s) => s.category === label).length,
 }));

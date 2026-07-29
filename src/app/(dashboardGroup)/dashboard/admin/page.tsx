@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CalendarCheck, ClipboardList, Tags, Users, Wrench } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
+import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { StatusBadge } from "@/components/dashboard/status-badge";
@@ -28,12 +29,10 @@ export default function AdminOverviewPage() {
     <>
       <SiteHeader rootHref="/dashboard/admin" rootLabel="Dashboard" />
       <div className="flex flex-1 flex-col gap-6 p-4 lg:p-6">
-        <div>
-          <h1 className="text-2xl font-semibold">Platform Overview</h1>
-          <p className="text-sm text-muted-foreground">
-            A snapshot of everything happening on FixItNow.
-          </p>
-        </div>
+        <DashboardPageHeader
+          title="Platform Overview"
+          description="A snapshot of everything happening on FixItNow."
+        />
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard

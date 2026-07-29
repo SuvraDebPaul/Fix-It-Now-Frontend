@@ -23,16 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-
-const CATEGORIES = [
-  "General Repairs",
-  "Electrical",
-  "Plumbing",
-  "Carpentry",
-  "HVAC",
-  "Painting",
-  "Re-Construction",
-];
+import { SERVICE_CATEGORIES } from "@/app/(publicGroup)/services/data";
 
 export function AddServiceDialog() {
   const [open, setOpen] = useState(false);
@@ -90,7 +81,7 @@ export function AddServiceDialog() {
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
               <SelectContent>
-                {CATEGORIES.map((cat) => (
+                {SERVICE_CATEGORIES.map((cat) => (
                   <SelectItem key={cat} value={cat}>
                     {cat}
                   </SelectItem>

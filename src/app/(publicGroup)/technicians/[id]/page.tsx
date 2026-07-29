@@ -4,8 +4,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MapPin, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { ActiveBadge } from "@/components/shared/active-badge";
 import { PageHero } from "@/components/shared/page-hero";
+import { formatDate } from "@/lib/format";
 import { technicians } from "../data";
 import { services } from "../../services/data";
 
@@ -84,16 +85,12 @@ export default async function TechnicianProfilePage({
               {technician.location}
             </div>
 
-            <Badge
-              variant="outline"
-              className={`mt-4 border-transparent ${
-                technician.isAvailable
-                  ? "bg-green-100 text-green-700"
-                  : "bg-gray-200 text-gray-700"
-              }`}
-            >
-              {technician.isAvailable ? "Available for bookings" : "Fully booked"}
-            </Badge>
+            <ActiveBadge
+              isActive={technician.isAvailable}
+              activeLabel="Available for bookings"
+              inactiveLabel="Fully booked"
+              className="mt-4"
+            />
 
             <div className="mt-5 grid grid-cols-2 gap-3 border-t border-border pt-5 text-left text-sm">
               <div>
@@ -172,9 +169,7 @@ export default async function TechnicianProfilePage({
                     {review.comment}
                   </p>
                   <p className="mt-2 font-mono text-xs text-muted-foreground">
-                    {new Date(review.date).toLocaleDateString(undefined, {
-                      dateStyle: "medium",
-                    })}
+                    {formatDate(review.date)}
                   </p>
                 </div>
               ))}
