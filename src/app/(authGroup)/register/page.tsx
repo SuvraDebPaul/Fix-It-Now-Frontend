@@ -1,5 +1,5 @@
 import React from "react";
-import { RegisterForm } from "../_components/registerForm";
+import { RegisterForm } from "../../../features/auth/components/registerForm";
 import Image from "next/image";
 
 const RegisterPage = () => {

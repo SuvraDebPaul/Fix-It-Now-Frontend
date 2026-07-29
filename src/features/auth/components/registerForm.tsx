@@ -18,27 +18,50 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import Link from "next/link";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { RegisterFormValues, registerSchema } from "../_validations/register";
+import { RegisterFormValues, registerSchema } from "../schemas/register.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useRegister } from "../hooks/useRegister";
+import { toast } from "sonner";
 
 export function RegisterForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     control,
+    setError,
     formState: { errors },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { role: "customer" },
+    defaultValues: { role: "CUSTOMER" },
   });
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const onSubmit: SubmitHandler<RegisterFormValues> = (data) =>
-    console.log(data);
+  const { mutate, isPending } = useRegister();
+
+  const onSubmit: SubmitHandler<RegisterFormValues> = ({
+    confirmPassword,
+    ...payload
+  }) => {
+    mutate(payload, {
+      onSuccess: () => {
+        toast.success("Account created — please log in");
+        router.push("/login?registered=1");
+      },
+      onError: (error) => {
+        const message =
+          error.response?.data?.message ??
+          "Something went wrong. Please try again.";
+        toast.error(message);
+        setError("root", { message });
+      },
+    });
+  };
 
   return (
     <div>
@@ -68,11 +91,11 @@ export function RegisterForm() {
                     className="w-fit flex gap-8"
                   >
                     <div className="flex items-center gap-3">
-                      <RadioGroupItem value="customer" id="customer" />
+                      <RadioGroupItem value="CUSTOMER" id="customer" />
                       <Label htmlFor="customer">Customer</Label>
                     </div>
                     <div className="flex items-center gap-3">
-                      <RadioGroupItem value="technician" id="technician" />
+                      <RadioGroupItem value="TECHNICIAN" id="technician" />
                       <Label htmlFor="technician">Technician</Label>
                     </div>
                   </RadioGroup>
@@ -91,13 +114,13 @@ export function RegisterForm() {
                   id="name"
                   type="text"
                   placeholder="John Doe"
-                  {...register("fullName", {
+                  {...register("name", {
                     required: "Full name is required",
                   })}
                 />
-                {errors.fullName && (
+                {errors.name && (
                   <FieldDescription className="text-destructive">
-                    {errors.fullName.message}
+                    {errors.name.message}
                   </FieldDescription>
                 )}
               </Field>
@@ -197,9 +220,17 @@ export function RegisterForm() {
                 )}
               </Field>
 
+              {errors.root && (
+                <FieldDescription className="text-destructive text-center">
+                  {errors.root.message}
+                </FieldDescription>
+              )}
+
               {/* Submit */}
               <Field>
-                <Button type="submit">Create Account</Button>
+                <Button type="submit" disabled={isPending}>
+                  {isPending ? "Creating account..." : "Create Account"}
+                </Button>
               </Field>
 
               <FieldDescription className="text-center">
