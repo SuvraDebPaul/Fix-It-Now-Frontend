@@ -1,0 +1,265 @@
+import Image from "next/image";
+import Link from "next/link";
+import {
+  CalendarCheck,
+  ClipboardCheck,
+  Wrench as WrenchIcon,
+  CreditCard,
+  PlayCircle,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { PageHero } from "@/components/shared/page-hero";
+
+const processChecklist = [
+  "Initial Consultation",
+  "Comprehensive Assessment",
+  "Transparent Pricing",
+  "Efficient Execution",
+];
+
+const processSteps = [
+  {
+    icon: CalendarCheck,
+    title: "Online Booking",
+    description: "Pick a service and a slot in a couple of clicks.",
+  },
+  {
+    icon: ClipboardCheck,
+    title: "Problem Analysis",
+    description: "A technician reviews the job before arriving on-site.",
+  },
+  {
+    icon: WrenchIcon,
+    title: "Repairs Process",
+    description: "Licensed pros do the work, tracked start to finish.",
+  },
+  {
+    icon: CreditCard,
+    title: "Fix & Pay",
+    description: "Pay securely only once the job is complete.",
+  },
+];
+
+const whyChooseUs = [
+  "One Year Warranty",
+  "100% Satisfaction",
+  "On-Time Services",
+  "High-Quality Spares",
+  "Honest Pricing",
+  "Online Booking",
+];
+
+const timeline = [
+  { year: "2019", label: "Founded" },
+  { year: "2021", label: "500+ Jobs" },
+  { year: "2023", label: "50 Cities" },
+  { year: "2026", label: "3,000+ Pros" },
+];
+
+export default function AboutPage() {
+  return (
+    <>
+      <PageHero
+        title="About Us"
+        image="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1600&q=80&auto=format&fit=crop"
+      />
+
+      {/* PROCESS / WHAT WE DO */}
+      <section className="px-6 py-24">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-14 lg:grid-cols-2">
+          <div className="relative">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="relative col-span-2 h-40 overflow-hidden rounded-lg">
+                <Image
+                  src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=700&q=80&auto=format&fit=crop"
+                  alt="Technician assessing a job"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="relative h-36 overflow-hidden rounded-lg">
+                <Image
+                  src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400&q=80&auto=format&fit=crop"
+                  alt="Technician installing a fixture"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="relative h-36 overflow-hidden rounded-lg">
+                <Image
+                  src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400&q=80&auto=format&fit=crop"
+                  alt="Technician at work"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+            <div className="absolute -bottom-6 -right-4 flex gap-4 rounded-lg bg-ink px-6 py-4 text-white shadow-lg sm:right-6">
+              <div>
+                <div className="font-display text-2xl text-primary">560+</div>
+                <div className="text-xs text-white/60">Projects Done</div>
+              </div>
+              <div className="w-px bg-white/15" />
+              <div>
+                <div className="font-display text-2xl text-primary">180+</div>
+                <div className="text-xs text-white/60">Technicians</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-4">
+            <span className="font-mono text-xs uppercase tracking-[2px] text-primary">
+              Who We Are
+            </span>
+            <h2 className="mt-2.5 font-display text-4xl">
+              Tell About Our Process &amp; What We Do
+            </h2>
+            <p className="mt-4 text-muted-foreground">
+              FixItNow started as a small dispatch board for local
+              technicians and grew into a full booking platform. Every job
+              still follows the same reliable path — from the moment you
+              book to the moment the work is signed off.
+            </p>
+
+            <ul className="mt-6 space-y-3">
+              {processChecklist.map((item) => (
+                <li key={item} className="flex items-center gap-3 text-sm">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/15 text-primary">
+                    ✓
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <Button asChild className="mt-8">
+              <Link href="/services">Browse Services</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* VIDEO CTA */}
+      <section className="relative overflow-hidden px-6 py-28 text-center text-white">
+        <Image
+          src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1600&q=80&auto=format&fit=crop"
+          alt="FixItNow team at work"
+          fill
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-brand-blue/85" />
+        <div className="relative mx-auto max-w-2xl">
+          <PlayCircle className="mx-auto h-14 w-14 text-primary" />
+          <h2 className="mt-6 font-display text-3xl sm:text-4xl">
+            It&apos;s Finally Easy To Get Things Fixed The Right Way
+          </h2>
+          <div className="mt-8 flex justify-center gap-3">
+            <Button asChild>
+              <Link href="/services">Explore More</Link>
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              className="border-white/50 bg-transparent text-white hover:bg-white/10 hover:text-white"
+            >
+              <Link href="/technicians">Meet The Pros</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* PROCESS ICONS */}
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        {processSteps.map((step, i) => (
+          <div
+            key={step.title}
+            className={`flex flex-col items-center gap-3 px-6 py-12 text-center ${
+              i === 1 ? "bg-primary text-primary-foreground" : "bg-ink text-white"
+            }`}
+          >
+            <step.icon className="h-8 w-8" />
+            <h3 className="font-display text-lg uppercase">{step.title}</h3>
+            <p className="text-sm opacity-75">{step.description}</p>
+          </div>
+        ))}
+      </section>
+
+      {/* WHY CHOOSE US */}
+      <section className="px-6 py-24">
+        <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="font-mono text-xs uppercase tracking-[2px] text-primary">
+              Why Choose Us
+            </span>
+            <h2 className="mt-2.5 font-display text-4xl">
+              Your Friendly Handyman
+            </h2>
+          </div>
+
+          <div className="relative mx-auto mt-10 h-72 max-w-3xl overflow-hidden rounded-lg sm:h-96">
+            <Image
+              src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=900&q=80&auto=format&fit=crop"
+              alt="Technician installing equipment"
+              fill
+              className="object-cover"
+            />
+          </div>
+
+          <div className="mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-6 sm:grid-cols-3">
+            {whyChooseUs.map((item) => (
+              <div key={item} className="flex items-center gap-2 text-sm">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/15 text-primary">
+                  ✓
+                </span>
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* WHY WE'RE DIFFERENT */}
+      <section className="bg-ink px-6 py-20 text-white">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 lg:grid-cols-2">
+          <div>
+            <span className="font-mono text-xs uppercase tracking-[2px] text-primary">
+              Why We Are Different
+            </span>
+            <h2 className="mt-2.5 font-display text-4xl">
+              Trust, Diligence, Succeed
+            </h2>
+            <p className="mt-4 text-white/65">
+              We built FixItNow on a simple idea — every job deserves a
+              paper trail, so customers always know who's coming, when, and
+              for how much.
+            </p>
+            <Button asChild className="mt-6">
+              <Link href="/register">Join As A Technician</Link>
+            </Button>
+          </div>
+          <div className="relative h-72 overflow-hidden rounded-lg sm:h-96">
+            <Image
+              src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=700&q=80&auto=format&fit=crop"
+              alt="FixItNow technician"
+              fill
+              className="object-cover"
+            />
+          </div>
+        </div>
+
+        <div className="mx-auto mt-16 grid max-w-7xl grid-cols-2 gap-6 border-t border-white/10 pt-10 sm:grid-cols-4">
+          {timeline.map((point) => (
+            <div key={point.year} className="text-center">
+              <div className="font-display text-3xl text-primary">
+                {point.year}
+              </div>
+              <div className="mt-1 text-xs uppercase text-white/60">
+                {point.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </>
+  );
+}

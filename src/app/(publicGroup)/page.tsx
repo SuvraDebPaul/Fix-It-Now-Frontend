@@ -11,6 +11,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { blogPosts } from "./blog/data";
 
 const processChecklist = [
   "Initial Consultation",
@@ -91,20 +92,7 @@ const fixThingsGrid = [
 
 const clientLogos = ["STEREO", "TIDAL", "INNOVATE", "TRAP MUSIC", "BIGTECH"];
 
-const blogPosts = [
-  {
-    title: "Prompt Service You Can Depend On To Patch Up Broken.",
-    date: "March 03, 2026",
-    image:
-      "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=500&q=80&auto=format&fit=crop",
-  },
-  {
-    title: "The Quality You Expect, The Service You Deserve.",
-    date: "March 13, 2026",
-    image:
-      "https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=500&q=80&auto=format&fit=crop",
-  },
-];
+const homeBlogPosts = blogPosts.slice(0, 2);
 
 const faqs = [
   {
@@ -563,21 +551,22 @@ export default function Home() {
           <span className="font-mono text-xs uppercase tracking-[2px] text-primary">
             Blogs & Articles
           </span>
-          <h2 className="mt-2.5 mb-10 font-display text-4xl">
-            Read Our Latest Blogs
-          </h2>
+          <div className="mt-2.5 mb-10 flex flex-wrap items-end justify-center gap-4">
+            <h2 className="font-display text-4xl">Read Our Latest Blogs</h2>
+          </div>
           <div className="grid grid-cols-1 gap-6 text-left sm:grid-cols-2">
-            {blogPosts.map((post) => (
-              <div
-                key={post.title}
-                className="overflow-hidden rounded-lg border border-border"
+            {homeBlogPosts.map((post) => (
+              <Link
+                key={post.slug}
+                href={`/blog/${post.slug}`}
+                className="group overflow-hidden rounded-lg border border-border"
               >
                 <div className="relative h-56">
                   <Image
                     src={post.image}
                     alt={post.title}
                     fill
-                    className="object-cover"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
                 <div className="p-5">
@@ -589,9 +578,12 @@ export default function Home() {
                   </h3>
                   <Button size="sm">Read More</Button>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
+          <Button asChild variant="ghost" size="sm" className="mt-8">
+            <Link href="/blog">View all posts →</Link>
+          </Button>
         </div>
       </section>
 
