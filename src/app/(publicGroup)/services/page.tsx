@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PageHero } from "@/components/shared/page-hero";
-import { services } from "./data";
+import { services, serviceCategories } from "./data";
+import { ServicesExplorer } from "./services-explorer";
 
 const testimonials = [
   {
@@ -38,8 +38,8 @@ export default function ServicesPage() {
         image="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=1600&q=80&auto=format&fit=crop"
       />
 
-      {/* INTRO + GRID */}
-      <section className="px-6 py-24">
+      {/* INTRO */}
+      <section className="px-6 pt-24">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-wrap items-end justify-between gap-6 border-b border-border pb-8">
             <div>
@@ -49,6 +49,11 @@ export default function ServicesPage() {
               <h2 className="mt-2.5 max-w-lg font-display text-4xl">
                 We&apos;re A Different Kind Of Handyman Service
               </h2>
+              <p className="mt-2 max-w-lg text-sm text-muted-foreground">
+                Every listing below is offered directly by a verified
+                technician — pick the one that fits, and book them
+                individually.
+              </p>
             </div>
             <div className="flex gap-3">
               <Button asChild>
@@ -59,36 +64,13 @@ export default function ServicesPage() {
               </Button>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {services.map((service) => (
-              <Link
-                key={service.slug}
-                href={`/services/${service.slug}`}
-                className="group"
-              >
-                <div className="relative h-52 overflow-hidden rounded-lg">
-                  <Image
-                    src={service.image}
-                    alt={service.label}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <div className="mt-4 flex items-start justify-between gap-3 border-b border-border pb-4">
-                  <div>
-                    <h3 className="text-lg normal-case tracking-normal group-hover:text-primary">
-                      {service.label}
-                    </h3>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {service.description}
-                    </p>
-                  </div>
-                  <ArrowRight className="mt-1 h-5 w-5 shrink-0 text-primary" />
-                </div>
-              </Link>
-            ))}
-          </div>
+      {/* MARKETPLACE: FILTERS + GRID + PAGINATION */}
+      <section className="px-6 py-16">
+        <div className="mx-auto max-w-7xl">
+          <ServicesExplorer services={services} categories={serviceCategories} />
         </div>
       </section>
 
@@ -112,7 +94,7 @@ export default function ServicesPage() {
                 </p>
                 <div className="mt-5 flex items-center gap-3">
                   <Avatar>
-                    <AvatarImage src={testimonial.avatar} />
+                    <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
                     <AvatarFallback>
                       {testimonial.name.charAt(0)}
                     </AvatarFallback>

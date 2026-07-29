@@ -130,7 +130,7 @@ export default function BlogPage() {
                 </p>
                 <div className="mt-5 flex items-center gap-3">
                   <Avatar>
-                    <AvatarImage src={testimonial.avatar} />
+                    <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
                     <AvatarFallback>
                       {testimonial.name.charAt(0)}
                     </AvatarFallback>

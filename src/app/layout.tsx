@@ -16,7 +16,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Fix It Now",
+  title: {
+    template: "%s | Fix It Now",
+    default: "Fix It Now",
+  },
   description: "Every job gets a ticket. Every ticket gets a pro.",
 };
 

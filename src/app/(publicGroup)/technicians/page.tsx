@@ -1,58 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageHero } from "@/components/shared/page-hero";
-
-const team = [
-  {
-    name: "Harry White",
-    role: "Plumber",
-    image:
-      "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80&auto=format&fit=crop",
-  },
-  {
-    name: "Andron Black",
-    role: "Electrician",
-    image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80&auto=format&fit=crop",
-  },
-  {
-    name: "Matthew Mark",
-    role: "Carpenter",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80&auto=format&fit=crop",
-  },
-  {
-    name: "Michelle Carol",
-    role: "Painter",
-    image:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80&auto=format&fit=crop",
-  },
-  {
-    name: "Timothy Jason",
-    role: "Plumber",
-    image:
-      "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&q=80&auto=format&fit=crop",
-  },
-  {
-    name: "Jonathan Larry",
-    role: "HVAC Technician",
-    image:
-      "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80&auto=format&fit=crop",
-  },
-  {
-    name: "Brandon Gregory",
-    role: "Carpenter",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80&auto=format&fit=crop",
-  },
-  {
-    name: "Raymond Jose",
-    role: "Painter",
-    image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80&auto=format&fit=crop",
-  },
-];
+import { technicians } from "./data";
 
 export default function TechniciansPage() {
   return (
@@ -81,21 +32,25 @@ export default function TechniciansPage() {
           </div>
 
           <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4">
-            {team.map((member) => (
-              <div key={member.name}>
+            {technicians.map((member) => (
+              <Link key={member.id} href={`/technicians/${member.id}`} className="group">
                 <div className="relative h-48 overflow-hidden rounded-lg">
                   <Image
                     src={member.image}
                     alt={member.name}
                     fill
-                    className="object-cover"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
-                <h3 className="mt-3 text-base font-semibold normal-case tracking-normal">
+                <h3 className="mt-3 text-base font-semibold normal-case tracking-normal group-hover:text-primary">
                   {member.name}
                 </h3>
                 <p className="text-sm text-muted-foreground">{member.role}</p>
-              </div>
+                <span className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
+                  <Star className="h-3 w-3 fill-primary text-primary" />
+                  {member.rating} ({member.reviewCount})
+                </span>
+              </Link>
             ))}
           </div>
         </div>

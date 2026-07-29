@@ -12,6 +12,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { blogPosts } from "./blog/data";
+import { technicians } from "./technicians/data";
 
 const processChecklist = [
   "Initial Consultation",
@@ -117,32 +118,7 @@ const faqs = [
   },
 ];
 
-const team = [
-  {
-    name: "Harry White",
-    role: "Plumber",
-    image:
-      "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80&auto=format&fit=crop",
-  },
-  {
-    name: "Andron Black",
-    role: "Electrician",
-    image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80&auto=format&fit=crop",
-  },
-  {
-    name: "Matthew Mark",
-    role: "Carpenter",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80&auto=format&fit=crop",
-  },
-  {
-    name: "Michelle Carol",
-    role: "Painter",
-    image:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80&auto=format&fit=crop",
-  },
-];
+const homeTeam = technicians.slice(0, 4);
 
 const testimonials = [
   {
@@ -271,7 +247,7 @@ export default function Home() {
                 </span>
                 <div>
                   <div className="text-xs text-muted-foreground">
-                    Call Ust Text
+                    Call or Text
                   </div>
                   <div className="font-mono text-sm font-semibold">
                     +1 (555) 010-0230
@@ -525,23 +501,30 @@ export default function Home() {
             Our Professional Technicians
           </h2>
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
-            {team.map((member) => (
-              <div key={member.name}>
+            {homeTeam.map((member) => (
+              <Link
+                key={member.id}
+                href={`/technicians/${member.id}`}
+                className="group"
+              >
                 <div className="relative h-48 overflow-hidden rounded-lg">
                   <Image
                     src={member.image}
                     alt={member.name}
                     fill
-                    className="object-cover"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
-                <h3 className="mt-3 text-base font-semibold normal-case tracking-normal">
+                <h3 className="mt-3 text-base font-semibold normal-case tracking-normal group-hover:text-primary">
                   {member.name}
                 </h3>
                 <p className="text-sm text-muted-foreground">{member.role}</p>
-              </div>
+              </Link>
             ))}
           </div>
+          <Button asChild variant="ghost" size="sm" className="mt-8">
+            <Link href="/technicians">View all technicians →</Link>
+          </Button>
         </div>
       </section>
 
@@ -605,7 +588,7 @@ export default function Home() {
                 </p>
                 <div className="mt-5 flex items-center gap-3">
                   <Avatar>
-                    <AvatarImage src={testimonial.avatar} />
+                    <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
                     <AvatarFallback>
                       {testimonial.name.charAt(0)}
                     </AvatarFallback>

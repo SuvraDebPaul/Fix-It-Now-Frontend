@@ -1,9 +1,18 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, Mail, Phone, Quote, Search } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  MapPin,
+  Quote,
+  Search,
+  Star,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Accordion,
   AccordionContent,
@@ -12,6 +21,7 @@ import {
 } from "@/components/ui/accordion";
 import { PageHero } from "@/components/shared/page-hero";
 import { services, serviceCategories } from "../data";
+import { technicianIdFromName } from "../../technicians/data";
 
 const faqs = [
   {
@@ -35,6 +45,29 @@ export function generateStaticParams() {
   return services.map((service) => ({ slug: service.slug }));
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const service = services.find((s) => s.slug === slug);
+
+  if (!service) {
+    return { title: "Service Not Found" };
+  }
+
+  return {
+    title: service.title,
+    description: service.description,
+    openGraph: {
+      title: service.title,
+      description: service.description,
+      images: [service.image],
+    },
+  };
+}
+
 export default async function ServiceDetailsPage({
   params,
 }: {
@@ -53,7 +86,7 @@ export default async function ServiceDetailsPage({
 
   return (
     <>
-      <PageHero title={service.label} image={service.image} />
+      <PageHero title={service.title} image={service.image} />
 
       <section className="px-6 py-24">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-14 lg:grid-cols-[1fr_320px]">
@@ -62,27 +95,67 @@ export default async function ServiceDetailsPage({
             <div className="relative h-80 overflow-hidden rounded-lg sm:h-96">
               <Image
                 src={service.image}
-                alt={service.label}
+                alt={service.title}
                 fill
                 className="object-cover"
               />
             </div>
 
-            <div className="mt-4 flex flex-wrap gap-4 font-mono text-xs text-muted-foreground">
-              <span>{service.category}</span>
-              <span>Admin by FixItNow</span>
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
+              <span className="font-mono text-xs text-muted-foreground">
+                {service.category}
+              </span>
+              <span className="font-mono text-xl font-semibold text-primary">
+                ${service.price}
+                <span className="text-sm font-normal text-muted-foreground">
+                  {" "}
+                  starting
+                </span>
+              </span>
             </div>
 
-            <h2 className="mt-4 font-display text-3xl">
-              We Fix Things Around Your House So You Don&apos;t Have To
-            </h2>
+            <h2 className="mt-4 font-display text-3xl">{service.title}</h2>
             <p className="mt-4 text-muted-foreground">{service.description}</p>
             <p className="mt-4 text-muted-foreground">
-              Every booking is matched with a licensed, identity-verified
-              technician near you. You&apos;ll see the price up front, track
-              the job status live, and pay securely only once the work is
-              signed off.
+              Booking matches you directly with this technician. You&apos;ll
+              see the price up front, track the job status live, and pay
+              securely only once the work is signed off.
             </p>
+
+            {/* TECHNICIAN CARD */}
+            <div className="mt-8 flex flex-wrap items-center gap-4 rounded-lg border border-border p-5">
+              <Avatar className="h-14 w-14">
+                <AvatarImage
+                  src={service.technician.avatar}
+                  alt={service.technician.name}
+                />
+                <AvatarFallback>
+                  {service.technician.name.charAt(0)}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <Link
+                  href={`/technicians/${technicianIdFromName(service.technician.name)}`}
+                  className="font-semibold hover:text-primary"
+                >
+                  {service.technician.name}
+                </Link>
+                <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <Star className="h-3.5 w-3.5 fill-primary text-primary" />
+                    {service.technician.rating} (
+                    {service.technician.reviewCount} reviews)
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <MapPin className="h-3.5 w-3.5" />
+                    {service.technician.location}
+                  </span>
+                </div>
+              </div>
+              <Button asChild size="lg">
+                <Link href={`/book/${service.slug}`}>Book This Service</Link>
+              </Button>
+            </div>
 
             <blockquote className="mt-8 flex gap-4 rounded-lg bg-card p-6">
               <Quote className="h-8 w-8 shrink-0 text-primary" />
@@ -91,25 +164,6 @@ export default async function ServiceDetailsPage({
                 called about — they check what&apos;s around it too.&rdquo;
               </p>
             </blockquote>
-
-            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="relative h-48 overflow-hidden rounded-lg">
-                <Image
-                  src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=500&q=80&auto=format&fit=crop"
-                  alt="Technician at work"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="relative h-48 overflow-hidden rounded-lg">
-                <Image
-                  src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=500&q=80&auto=format&fit=crop"
-                  alt="Technician assessing a job"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            </div>
 
             <Accordion type="single" collapsible className="mt-10">
               {faqs.map((faq, i) => (
@@ -166,51 +220,20 @@ export default async function ServiceDetailsPage({
             <div className="overflow-hidden rounded-lg bg-primary text-primary-foreground">
               <div className="p-5">
                 <h3 className="font-display text-xl">
-                  Get 10% Off Your First Call-out
+                  Ready To Get Started?
                 </h3>
+                <p className="mt-2 text-sm opacity-90">
+                  Book {service.technician.name} for this job in under a
+                  minute.
+                </p>
               </div>
-              <div className="relative h-40">
-                <Image
-                  src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&q=80&auto=format&fit=crop"
-                  alt="Technician"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-5">
-                <Button asChild className="w-full bg-ink text-white hover:bg-ink/90">
-                  <Link href="/contact">Book Your Free Quote</Link>
+              <div className="p-5 pt-0">
+                <Button
+                  asChild
+                  className="w-full bg-ink text-white hover:bg-ink/90"
+                >
+                  <Link href={`/book/${service.slug}`}>Book Now</Link>
                 </Button>
-              </div>
-            </div>
-
-            <div className="overflow-hidden rounded-lg bg-brand-blue text-white">
-              <div className="p-5">
-                <h3 className="font-display text-lg">Working Hours</h3>
-              </div>
-              <div className="space-y-2 p-5 pt-0 text-sm">
-                <div className="flex justify-between">
-                  <span>Monday – Friday</span>
-                  <span>8AM – 7PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Saturday</span>
-                  <span>9AM – 5PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Sunday</span>
-                  <span>Closed</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-lg border border-border p-5">
-              <h3 className="mb-3 font-display text-lg">Get In Touch</h3>
-              <div className="flex items-center gap-2 py-1 text-sm text-muted-foreground">
-                <Mail className="h-4 w-4" /> support@fixitnow.com
-              </div>
-              <div className="flex items-center gap-2 py-1 text-sm text-muted-foreground">
-                <Phone className="h-4 w-4" /> +1 (555) 010-0230
               </div>
             </div>
           </aside>

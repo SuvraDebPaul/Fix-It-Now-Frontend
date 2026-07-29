@@ -51,6 +51,12 @@ const dashboardPathByRole: Record<string, string> = {
   TECHNICIAN: "/dashboard/technician",
 };
 
+const profilePathByRole: Record<string, string> = {
+  ADMIN: "/dashboard/admin/profile",
+  CUSTOMER: "/dashboard/customer/profile",
+  TECHNICIAN: "/dashboard/technician/profile",
+};
+
 export function Navbar() {
   const pathname = usePathname();
   const isHome = pathname === "/";
@@ -176,6 +182,11 @@ export function Navbar() {
                       Dashboard
                     </Link>
                   </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href={profilePathByRole[user.role] ?? "/"}>
+                      Profile
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => logout()}>
                     Log out
                   </DropdownMenuItem>
@@ -239,6 +250,14 @@ export function Navbar() {
                           className="border-b border-white/10 py-3 text-sm font-medium text-white/75 hover:text-white"
                         >
                           Dashboard
+                        </Link>
+                      </SheetClose>
+                      <SheetClose asChild>
+                        <Link
+                          href={profilePathByRole[user.role] ?? "/"}
+                          className="border-b border-white/10 py-3 text-sm font-medium text-white/75 hover:text-white"
+                        >
+                          Profile
                         </Link>
                       </SheetClose>
                       <SheetClose asChild>
