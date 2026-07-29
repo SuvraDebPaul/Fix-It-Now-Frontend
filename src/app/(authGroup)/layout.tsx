@@ -1,7 +1,9 @@
+import { Navbar } from "@/components/shared/navbar";
+
 const Authlayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <header className="h-15">Navigation Menu</header>
+      <Navbar />
       <main>{children}</main>
     </>
   );

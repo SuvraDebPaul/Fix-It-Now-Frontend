@@ -4,7 +4,6 @@ import { plexSans, plexMono, bigShoulders } from "@/lib/fonts";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Providers from "@/providers/providers";
-import { Toaster } from "@/components/ui/sonner";
 
 const roboto = Roboto({ subsets: ["latin"], variable: "--font-sans" });
 const geistSans = Geist({
@@ -43,7 +42,6 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <Providers>{children}</Providers>
-        <Toaster />
       </body>
     </html>
   );

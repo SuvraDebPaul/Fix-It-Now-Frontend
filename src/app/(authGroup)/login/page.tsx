@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const LoginPage = () => {
   return (
-    <div className="relative flex items-center justify-center min-h-[calc(100vh-var(--header-h))] overflow-hidden">
+    <div className="relative flex items-center justify-center min-h-[calc(100svh-var(--header-h))] overflow-hidden">
       {/* Background image — fills the parent (relative + sized) */}
       <Image
         src="/auth-bg.jpg"

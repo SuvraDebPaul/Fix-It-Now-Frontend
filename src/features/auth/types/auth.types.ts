@@ -15,7 +15,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  role: "CUSTOMER" | "TECHNICIAN";
+  role: "CUSTOMER" | "TECHNICIAN" | "ADMIN";
   status: "ACTIVE" | "BLOCKED";
   createdAt: string;
   updatedAt: string;
