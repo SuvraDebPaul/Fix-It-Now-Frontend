@@ -13,6 +13,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { UserAvatar } from "@/components/shared/user-avatar";
@@ -28,7 +30,16 @@ import {
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { cn } from "@/lib/utils";
-import { Mail, Menu, Phone, Wrench } from "lucide-react";
+import {
+  ChevronDown,
+  LayoutDashboard,
+  LogOut,
+  Mail,
+  Menu,
+  Phone,
+  UserCircle,
+  Wrench,
+} from "lucide-react";
 
 const socialLinks = [
   { href: "#", initial: "f", label: "Facebook" },
@@ -169,25 +180,52 @@ export function Navbar() {
               </>
             ) : user ? (
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-2 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                <DropdownMenuTrigger className="flex items-center gap-1.5 rounded-full p-1 pr-2 outline-none ring-1 ring-white/15 transition-colors hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-primary data-[state=open]:bg-white/10">
                   <UserAvatar
                     name={user.name}
-                    className="h-8 w-8"
-                    fallbackClassName="bg-primary/20 text-primary"
+                    className="h-8 w-8 ring-2 ring-primary/50"
+                    fallbackClassName="bg-primary/20 font-semibold text-primary"
                   />
+                  <ChevronDown className="h-3.5 w-3.5 text-white/60" />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem asChild>
+                <DropdownMenuContent align="end" className="w-64 rounded-xl p-1.5">
+                  <DropdownMenuLabel className="p-0 font-normal">
+                    <div className="flex items-center gap-3 px-2 py-2.5">
+                      <UserAvatar
+                        name={user.name}
+                        className="h-10 w-10 ring-2 ring-primary/30"
+                        fallbackClassName="bg-primary/20 font-semibold text-primary"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-semibold text-foreground">
+                          {user.name}
+                        </p>
+                        <p className="truncate text-xs text-muted-foreground">
+                          {user.email}
+                        </p>
+                      </div>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild className="gap-2.5 py-2">
                     <Link href={dashboardPathByRole[user.role] ?? "/"}>
+                      <LayoutDashboard className="text-muted-foreground" />
                       Dashboard
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
+                  <DropdownMenuItem asChild className="gap-2.5 py-2">
                     <Link href={profilePathByRole[user.role] ?? "/"}>
+                      <UserCircle className="text-muted-foreground" />
                       Profile
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => logout()}>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    variant="destructive"
+                    className="gap-2.5 py-2"
+                    onClick={() => logout()}
+                  >
+                    <LogOut />
                     Log out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
