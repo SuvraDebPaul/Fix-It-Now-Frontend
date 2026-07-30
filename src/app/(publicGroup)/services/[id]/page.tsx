@@ -1,15 +1,7 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  ArrowLeft,
-  ArrowRight,
-  MapPin,
-  Quote,
-  Search,
-  Star,
-} from "lucide-react";
+import { MapPin, Quote, Search, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { UserAvatar } from "@/components/shared/user-avatar";
@@ -20,8 +12,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { PageHero } from "@/components/shared/page-hero";
-import { services, serviceCategories } from "../data";
-import { technicianIdFromName } from "../../technicians/data";
+import {
+  getAllCategories,
+  getServiceById,
+} from "@/features/services/api/services.api";
+import { RawCategory } from "@/features/services/types/services.types";
 
 const faqs = [
   {
@@ -41,48 +36,18 @@ const faqs = [
   },
 ];
 
-export function generateStaticParams() {
-  return services.map((service) => ({ slug: service.slug }));
-}
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const service = services.find((s) => s.slug === slug);
-
-  if (!service) {
-    return { title: "Service Not Found" };
-  }
-
-  return {
-    title: service.title,
-    description: service.description,
-    openGraph: {
-      title: service.title,
-      description: service.description,
-      images: [service.image],
-    },
-  };
-}
-
 export default async function ServiceDetailsPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ id: string }>;
 }) {
-  const { slug } = await params;
-  const index = services.findIndex((service) => service.slug === slug);
-  const service = services[index];
+  const { id } = await params;
+  const service = await getServiceById(id);
+  const allCategories = await getAllCategories();
 
   if (!service) {
     notFound();
   }
-
-  const previous = services[(index - 1 + services.length) % services.length];
-  const next = services[(index + 1) % services.length];
 
   return (
     <>
@@ -117,9 +82,9 @@ export default async function ServiceDetailsPage({
             <h2 className="mt-4 font-display text-3xl">{service.title}</h2>
             <p className="mt-4 text-muted-foreground">{service.description}</p>
             <p className="mt-4 text-muted-foreground">
-              Booking matches you directly with this technician. You&apos;ll
-              see the price up front, track the job status live, and pay
-              securely only once the work is signed off.
+              Booking matches you directly with this technician. You&apos;ll see
+              the price up front, track the job status live, and pay securely
+              only once the work is signed off.
             </p>
 
             {/* TECHNICIAN CARD */}
@@ -131,7 +96,7 @@ export default async function ServiceDetailsPage({
               />
               <div className="flex-1">
                 <Link
-                  href={`/technicians/${technicianIdFromName(service.technician.name)}`}
+                  href={`/technicians/${service.technician.id}`}
                   className="font-semibold hover:text-primary"
                 >
                   {service.technician.name}
@@ -149,7 +114,7 @@ export default async function ServiceDetailsPage({
                 </div>
               </div>
               <Button asChild size="lg">
-                <Link href={`/book/${service.slug}`}>Book This Service</Link>
+                <Link href={`/book/${service.id}`}>Book This Service</Link>
               </Button>
             </div>
 
@@ -169,23 +134,6 @@ export default async function ServiceDetailsPage({
                 </AccordionItem>
               ))}
             </Accordion>
-
-            <div className="mt-10 flex items-center justify-between border-t border-border pt-6">
-              <Link
-                href={`/services/${previous.slug}`}
-                className="flex items-center gap-2 text-sm font-medium hover:text-primary"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Previous Service
-              </Link>
-              <Link
-                href={`/services/${next.slug}`}
-                className="flex items-center gap-2 text-sm font-medium hover:text-primary"
-              >
-                Next Service
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
           </div>
 
           {/* SIDEBAR */}
@@ -202,25 +150,21 @@ export default async function ServiceDetailsPage({
 
             <div className="rounded-lg border border-border p-5">
               <h3 className="mb-3 font-display text-lg">Service Categories</h3>
-              {serviceCategories.map((cat) => (
+              {allCategories.map((cat: RawCategory) => (
                 <div
-                  key={cat.label}
+                  key={cat.name}
                   className="flex items-center justify-between border-b border-border py-2.5 text-sm last:border-0"
                 >
-                  <span>{cat.label}</span>
-                  <span className="text-muted-foreground">{cat.count}</span>
+                  <span>{cat.name}</span>
                 </div>
               ))}
             </div>
 
             <div className="overflow-hidden rounded-lg bg-primary text-primary-foreground">
               <div className="p-5">
-                <h3 className="font-display text-xl">
-                  Ready To Get Started?
-                </h3>
+                <h3 className="font-display text-xl">Ready To Get Started?</h3>
                 <p className="mt-2 text-sm opacity-90">
-                  Book {service.technician.name} for this job in under a
-                  minute.
+                  Book {service.technician.name} for this job in under a minute.
                 </p>
               </div>
               <div className="p-5 pt-0">
@@ -228,7 +172,7 @@ export default async function ServiceDetailsPage({
                   asChild
                   className="w-full bg-ink text-white hover:bg-ink/90"
                 >
-                  <Link href={`/book/${service.slug}`}>Book Now</Link>
+                  <Link href={`/book/${service.id}`}>Book Now</Link>
                 </Button>
               </div>
             </div>

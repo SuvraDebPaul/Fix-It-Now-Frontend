@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface UserAvatarProps {
   name: string;
-  image?: string;
+  image?: string | null;
   fallback?: string;
   className?: string;
   fallbackClassName?: string;
