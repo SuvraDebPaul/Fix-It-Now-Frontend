@@ -7,12 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ActiveBadge } from "@/components/shared/active-badge";
 import { PageHero } from "@/components/shared/page-hero";
 import { formatDate } from "@/lib/format";
-import { technicians } from "../data";
-import { services } from "../../services/data";
-
-export function generateStaticParams() {
-  return technicians.map((tech) => ({ id: tech.id }));
-}
+import { getTechnicianProfile } from "@/features/technicians/api/technicians.api";
 
 export async function generateMetadata({
   params,
@@ -20,17 +15,17 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const technician = technicians.find((t) => t.id === id);
+  const technician = await getTechnicianProfile(id).catch(() => null);
 
   if (!technician) {
     return { title: "Technician Not Found" };
   }
 
   return {
-    title: `${technician.name} — ${technician.role}`,
+    title: `${technician.name} — ${technician.specialty}`,
     description: technician.bio,
     openGraph: {
-      title: `${technician.name} — ${technician.role}`,
+      title: `${technician.name} — ${technician.specialty}`,
       description: technician.bio,
       images: [technician.image],
     },
@@ -43,15 +38,11 @@ export default async function TechnicianProfilePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const technician = technicians.find((t) => t.id === id);
+  const technician = await getTechnicianProfile(id).catch(() => null);
 
   if (!technician) {
     notFound();
   }
-
-  const technicianServices = services.filter(
-    (s) => s.technician.name === technician.name,
-  );
 
   return (
     <>
@@ -70,7 +61,9 @@ export default async function TechnicianProfilePage({
               />
             </div>
             <h1 className="mt-4 text-xl font-semibold">{technician.name}</h1>
-            <p className="text-sm text-muted-foreground">{technician.role}</p>
+            <p className="text-sm text-muted-foreground">
+              {technician.specialty}
+            </p>
 
             <div className="mt-3 flex items-center justify-center gap-1 text-sm">
               <Star className="h-4 w-4 fill-primary text-primary" />
@@ -110,13 +103,13 @@ export default async function TechnicianProfilePage({
             <p className="mt-3 text-muted-foreground">{technician.bio}</p>
 
             <h2 className="mt-10 font-display text-2xl">
-              Services Offered ({technicianServices.length})
+              Services Offered ({technician.services.length})
             </h2>
             <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {technicianServices.map((service) => (
+              {technician.services.map((service) => (
                 <Link
-                  key={service.slug}
-                  href={`/services/${service.slug}`}
+                  key={service.id}
+                  href={`/services/${service.id}`}
                   className="group flex items-center gap-3 rounded-lg border border-border p-4"
                 >
                   <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md">
@@ -124,6 +117,7 @@ export default async function TechnicianProfilePage({
                       src={service.image}
                       alt={service.title}
                       fill
+                      sizes="128px"
                       className="object-cover"
                     />
                   </div>
@@ -140,7 +134,7 @@ export default async function TechnicianProfilePage({
                   </span>
                 </Link>
               ))}
-              {technicianServices.length === 0 && (
+              {technician.services.length === 0 && (
                 <p className="text-sm text-muted-foreground">
                   No active listings from this technician right now.
                 </p>
@@ -173,11 +167,14 @@ export default async function TechnicianProfilePage({
                   </p>
                 </div>
               ))}
+              {technician.reviews.length === 0 && (
+                <p className="text-sm text-muted-foreground">No reviews yet.</p>
+              )}
             </div>
 
-            {technicianServices.length > 0 && (
+            {technician.services.length > 0 && (
               <Button asChild size="lg" className="mt-8">
-                <Link href={`/book/${technicianServices[0].slug}`}>
+                <Link href={`/booking/${technician.services[0].id}`}>
                   Book {technician.name}
                 </Link>
               </Button>
