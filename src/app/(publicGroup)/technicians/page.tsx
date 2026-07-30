@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { PageHero } from "@/components/shared/page-hero";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { getAllTechnician } from "@/features/technicians/api/technicians.api";
