@@ -114,7 +114,7 @@ export default async function ServiceDetailsPage({
                 </div>
               </div>
               <Button asChild size="lg">
-                <Link href={`/book/${service.id}`}>Book This Service</Link>
+                <Link href={`/booking/${service.id}`}>Book This Service</Link>
               </Button>
             </div>
 

@@ -4,21 +4,17 @@ import { notFound } from "next/navigation";
 import { MapPin, Star } from "lucide-react";
 import { UserAvatar } from "@/components/shared/user-avatar";
 import { PageHero } from "@/components/shared/page-hero";
-import { services } from "../../services/data";
 import { technicianIdFromName } from "../../technicians/data";
-import { BookingForm } from "./booking-form";
-
-export function generateStaticParams() {
-  return services.map((service) => ({ slug: service.slug }));
-}
+import { BookingForm } from "../../../../features/booking/components/booking-form";
+import { getServiceById } from "@/features/services/api/services.api";
 
 export default async function BookServicePage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ id: string }>;
 }) {
-  const { slug } = await params;
-  const service = services.find((s) => s.slug === slug);
+  const { id } = await params;
+  const service = await getServiceById(id);
 
   if (!service) {
     notFound();
@@ -37,11 +33,12 @@ export default async function BookServicePage({
           <div>
             <h1 className="font-display text-3xl">Confirm Your Booking</h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              {service.technician.name} will review your request and confirm
-              or decline it before any payment is taken.
+              {service.technician.name} will review your request and confirm or
+              decline it before any payment is taken.
             </p>
 
             <BookingForm
+              serviceId={service.id}
               technicianName={service.technician.name}
               price={service.price}
             />
