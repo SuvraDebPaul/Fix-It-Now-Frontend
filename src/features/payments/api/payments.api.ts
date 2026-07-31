@@ -10,3 +10,8 @@ export const createPaymentSession = async (
 
   return data.data;
 };
+
+export const confirmPayment = async (sessionId: string) => {
+  const { data } = await api.post("/payments/confirm", { sessionId });
+  return data.data;
+};
