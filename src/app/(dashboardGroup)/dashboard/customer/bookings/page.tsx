@@ -1,4 +1,7 @@
+"use client";
+
 import { ClipboardList } from "lucide-react";
+import { toast } from "sonner";
 import { EmptyState } from "@/components/dashboard/empty-state";
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
@@ -13,30 +16,48 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatDateTime } from "@/lib/format";
-import { customerBookings } from "../data";
-import { CancelBookingDialog } from "./cancel-booking-dialog";
+import { useCreatePayment } from "@/features/payments/hooks/useCreatePayment";
+import { CustomerBookingRow } from "@/features/booking/types/bookings.types";
+import { CancelBookingDialog } from "@/features/booking/components/cancel-booking-dialog";
+import { useMyBookings } from "@/features/booking/hooks/useMyBookings";
 
-function BookingActions({
-  bookingId,
-  service,
-  status,
-}: {
-  bookingId: string;
-  service: string;
-  status: string;
-}) {
-  if (status === "ACCEPTED") {
+function PayNowButton({ bookingId }: { bookingId: string }) {
+  const { mutate, isPending } = useCreatePayment();
+
+  function handlePay() {
+    mutate(bookingId, {
+      onSuccess: (payment) => {
+        window.location.href = payment.paymentUrl;
+      },
+      onError: (error) => {
+        const message =
+          error.response?.data?.message ??
+          "Couldn't start payment. Please try again.";
+        toast.error(message);
+      },
+    });
+  }
+
+  return (
+    <Button size="sm" onClick={handlePay} disabled={isPending}>
+      {isPending ? "Redirecting..." : "Pay Now"}
+    </Button>
+  );
+}
+
+function BookingActions({ booking }: { booking: CustomerBookingRow }) {
+  if (booking.status === "ACCEPTED") {
     return (
       <div className="flex justify-end gap-2">
-        <CancelBookingDialog bookingId={bookingId} service={service} />
-        <Button size="sm">Pay Now</Button>
+        <CancelBookingDialog bookingId={booking.id} service={booking.service} />
+        <PayNowButton bookingId={booking.id} />
       </div>
     );
   }
-  if (status === "REQUESTED") {
+  if (booking.status === "REQUESTED") {
     return (
       <div className="flex justify-end">
-        <CancelBookingDialog bookingId={bookingId} service={service} />
+        <CancelBookingDialog bookingId={booking.id} service={booking.service} />
       </div>
     );
   }
@@ -44,6 +65,8 @@ function BookingActions({
 }
 
 export default function CustomerBookingsPage() {
+  const { data: bookings, isLoading, isError } = useMyBookings();
+
   return (
     <>
       <SiteHeader
@@ -72,7 +95,27 @@ export default function CustomerBookingsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {customerBookings.map((booking) => (
+              {isLoading && (
+                <TableRow>
+                  <TableCell
+                    colSpan={8}
+                    className="text-center text-sm text-muted-foreground"
+                  >
+                    Loading bookings...
+                  </TableCell>
+                </TableRow>
+              )}
+              {isError && (
+                <TableRow>
+                  <TableCell
+                    colSpan={8}
+                    className="text-center text-sm text-destructive"
+                  >
+                    Couldn&apos;t load bookings. Please refresh.
+                  </TableCell>
+                </TableRow>
+              )}
+              {bookings?.map((booking) => (
                 <TableRow key={booking.id}>
                   <TableCell className="font-mono text-xs text-muted-foreground">
                     {booking.id}
@@ -80,10 +123,8 @@ export default function CustomerBookingsPage() {
                   <TableCell className="font-medium">
                     {booking.service}
                   </TableCell>
-                  <TableCell>{booking.technician}</TableCell>
-                  <TableCell>
-                    {formatDateTime(booking.scheduleTime)}
-                  </TableCell>
+                  <TableCell>{booking.technicain}</TableCell>
+                  <TableCell>{formatDateTime(booking.scheduleTime)}</TableCell>
                   <TableCell className="max-w-48 truncate text-muted-foreground">
                     {booking.address}
                   </TableCell>
@@ -94,15 +135,11 @@ export default function CustomerBookingsPage() {
                     ${booking.totalAmount}
                   </TableCell>
                   <TableCell className="text-right">
-                    <BookingActions
-                      bookingId={booking.id}
-                      service={booking.service}
-                      status={booking.status}
-                    />
+                    <BookingActions booking={booking} />
                   </TableCell>
                 </TableRow>
               ))}
-              {customerBookings.length === 0 && (
+              {!isLoading && bookings?.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={8}>
                     <EmptyState

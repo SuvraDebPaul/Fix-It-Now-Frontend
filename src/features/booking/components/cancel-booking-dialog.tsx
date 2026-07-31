@@ -4,7 +4,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -16,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
+import { useCancelBookings } from "../hooks/useCancelBooking";
 
 interface CancelBookingDialogProps {
   bookingId: string;
@@ -27,17 +27,30 @@ export function CancelBookingDialog({
   service,
 }: CancelBookingDialogProps) {
   const [cancelReason, setCancelReason] = useState("");
+  const [open, setOpen] = useState(false);
+  const { mutate, isPending } = useCancelBookings();
 
   function handleConfirm() {
-    // Matches PATCH /api/bookings/:id/cancel: { cancelReason? }
-    const payload = { bookingId, cancelReason: cancelReason || undefined };
-    console.log("cancel booking payload (not yet wired to backend)", payload);
-    toast.success(`Booking for ${service} cancelled`);
-    setCancelReason("");
+    mutate(
+      { id: bookingId, cancelReason: cancelReason || "" },
+      {
+        onSuccess: () => {
+          toast.success(`Booking for ${service} cancled`);
+          setCancelReason("");
+          setOpen(false);
+        },
+        onError: (error) => {
+          const message =
+            error.response?.data?.message ??
+            "Couldn't cancel this booking. Please try again";
+          toast.error(message);
+        },
+      },
+    );
   }
 
   return (
-    <AlertDialog>
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button variant="outline" size="sm">
           Cancel
@@ -53,9 +66,7 @@ export function CancelBookingDialog({
         </AlertDialogHeader>
 
         <Field>
-          <FieldLabel htmlFor="cancelReason">
-            Reason (optional)
-          </FieldLabel>
+          <FieldLabel htmlFor="cancelReason">Reason (optional)</FieldLabel>
           <Textarea
             id="cancelReason"
             rows={3}
@@ -67,9 +78,9 @@ export function CancelBookingDialog({
 
         <AlertDialogFooter>
           <AlertDialogCancel>Keep Booking</AlertDialogCancel>
-          <AlertDialogAction onClick={handleConfirm}>
-            Confirm Cancellation
-          </AlertDialogAction>
+          <Button onClick={handleConfirm} disabled={isPending}>
+            {isPending ? "Cancelling..." : "Confirm Cancellation"}
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
