@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
+import { useCreateReview } from "@/features/booking/hooks/useCreateReview";
 
 interface LeaveReviewDialogProps {
   bookingId: string;
@@ -31,15 +32,26 @@ export function LeaveReviewDialog({
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [comment, setComment] = useState("");
+  const { mutate, isPending } = useCreateReview();
 
   function handleSubmit() {
-    // Matches POST /api/reviews: { bookingId, rating, comment }
-    const payload = { bookingId, rating, comment };
-    console.log("review payload (not yet wired to backend)", payload);
-    toast.success(`Review submitted for ${technician}`);
-    setOpen(false);
-    setRating(0);
-    setComment("");
+    mutate(
+      { bookingId, rating, comment: comment || undefined },
+      {
+        onSuccess: () => {
+          toast.success(`Review submitted for ${technician}`);
+          setOpen(false);
+          setRating(0);
+          setComment("");
+        },
+        onError: (error) => {
+          const message =
+            error.response?.data?.message ??
+            "Couldn't submit your review. Please try again.";
+          toast.error(message);
+        },
+      },
+    );
   }
 
   return (
@@ -59,10 +71,7 @@ export function LeaveReviewDialog({
         <div className="space-y-4">
           <Field>
             <FieldLabel>Rating</FieldLabel>
-            <div
-              className="flex gap-1"
-              onMouseLeave={() => setHoverRating(0)}
-            >
+            <div className="flex gap-1" onMouseLeave={() => setHoverRating(0)}>
               {Array.from({ length: 5 }).map((_, i) => {
                 const value = i + 1;
                 return (
@@ -103,8 +112,8 @@ export function LeaveReviewDialog({
           <Button variant="outline" onClick={() => setOpen(false)}>
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={rating === 0}>
-            Submit Review
+          <Button onClick={handleSubmit} disabled={rating === 0 || isPending}>
+            {isPending ? "Submitting..." : "Submit Review"}
           </Button>
         </DialogFooter>
       </DialogContent>

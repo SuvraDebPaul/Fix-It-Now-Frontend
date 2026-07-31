@@ -1,15 +1,22 @@
+"use client";
+
 import { Star } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
 import { StarRating } from "@/components/shared/star-rating";
 import { Card, CardContent } from "@/components/ui/card";
-import { customerBookings, customerReviews } from "../data";
+import { useMyBookings } from "@/features/booking/hooks/useMyBookings";
 import { LeaveReviewDialog } from "./leave-review-dialog";
 
 export default function CustomerReviewsPage() {
-  const pendingReview = customerBookings.filter(
-    (b) => b.status === "COMPLETED" && !b.hasReview,
+  const { data: bookings, isLoading } = useMyBookings();
+
+  const pendingReview = (bookings ?? []).filter(
+    (b) => b.status === "COMPLETED" && !b.review,
+  );
+  const reviewedBookings = (bookings ?? []).filter(
+    (b) => b.status === "COMPLETED" && b.review,
   );
 
   return (
@@ -25,6 +32,10 @@ export default function CustomerReviewsPage() {
           description="Feedback you've left for completed jobs."
         />
 
+        {isLoading && (
+          <p className="text-sm text-muted-foreground">Loading...</p>
+        )}
+
         {pendingReview.length > 0 && (
           <div>
             <h2 className="mb-3 text-sm font-semibold text-muted-foreground">
@@ -37,13 +48,13 @@ export default function CustomerReviewsPage() {
                     <div>
                       <p className="font-medium">{booking.service}</p>
                       <p className="text-sm text-muted-foreground">
-                        {booking.technician}
+                        {booking.technicain}
                       </p>
                     </div>
                     <LeaveReviewDialog
                       bookingId={booking.id}
                       service={booking.service}
-                      technician={booking.technician}
+                      technician={booking.technicain}
                     />
                   </CardContent>
                 </Card>
@@ -56,7 +67,7 @@ export default function CustomerReviewsPage() {
           <h2 className="mb-3 text-sm font-semibold text-muted-foreground">
             Your reviews
           </h2>
-          {customerReviews.length === 0 && (
+          {!isLoading && reviewedBookings.length === 0 && (
             <EmptyState
               icon={Star}
               title="No reviews yet"
@@ -64,20 +75,20 @@ export default function CustomerReviewsPage() {
             />
           )}
           <div className="grid grid-cols-1 gap-3">
-            {customerReviews.map((review) => (
-              <Card key={review.id}>
+            {reviewedBookings.map((booking) => (
+              <Card key={booking.id}>
                 <CardContent className="space-y-2">
                   <div className="flex items-center justify-between">
                     <p className="font-medium">
-                      {review.service}{" "}
+                      {booking.service}{" "}
                       <span className="font-normal text-muted-foreground">
-                        · {review.technician}
+                        · {booking.technicain}
                       </span>
                     </p>
-                    <StarRating rating={review.rating} />
+                    <StarRating rating={booking.review!.rating} />
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    {review.comment}
+                    {booking.review!.comment}
                   </p>
                 </CardContent>
               </Card>

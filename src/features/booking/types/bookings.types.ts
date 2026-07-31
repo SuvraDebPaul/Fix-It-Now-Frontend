@@ -35,6 +35,7 @@ export interface RawBookingWithRelations {
   cancelReason: string | null;
   service: { title: string };
   technicianProfile: { user: { name: string } };
+  review: { id: string; rating: number; comment: string | null } | null;
 }
 
 export interface CustomerBookingRow {
@@ -45,4 +46,11 @@ export interface CustomerBookingRow {
   address: string;
   totalAmount: number;
   status: string;
+  review: { rating: number; comment: string } | null;
+}
+
+export interface CreateReviewPayload {
+  bookingId: string;
+  rating: number;
+  comment?: string;
 }
