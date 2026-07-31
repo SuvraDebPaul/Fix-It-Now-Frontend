@@ -1,3 +1,5 @@
+"use client";
+
 import { Wrench } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
@@ -11,10 +13,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { technicianServices } from "../data";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { useMyServices } from "@/features/technicians/hooks/useMyServices";
 import { AddServiceDialog } from "./add-service-dialog";
 
 export default function TechnicianServicesPage() {
+  const { data: user } = useCurrentUser();
+  const { data: services, isLoading, isError } = useMyServices(user?.id);
+
   return (
     <>
       <SiteHeader
@@ -41,11 +47,29 @@ export default function TechnicianServicesPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {technicianServices.map((service) => (
-                <TableRow key={service.id}>
-                  <TableCell className="font-medium">
-                    {service.title}
+              {isLoading && (
+                <TableRow>
+                  <TableCell
+                    colSpan={5}
+                    className="text-center text-sm text-muted-foreground"
+                  >
+                    Loading services...
                   </TableCell>
+                </TableRow>
+              )}
+              {isError && (
+                <TableRow>
+                  <TableCell
+                    colSpan={5}
+                    className="text-center text-sm text-destructive"
+                  >
+                    Couldn&apos;t load your services. Please refresh.
+                  </TableCell>
+                </TableRow>
+              )}
+              {services?.map((service) => (
+                <TableRow key={service.id}>
+                  <TableCell className="font-medium">{service.title}</TableCell>
                   <TableCell>{service.category}</TableCell>
                   <TableCell className="max-w-64 truncate text-muted-foreground">
                     {service.description}
@@ -53,12 +77,10 @@ export default function TechnicianServicesPage() {
                   <TableCell>
                     <ActiveBadge isActive={service.isActive} />
                   </TableCell>
-                  <TableCell className="text-right">
-                    ${service.price}
-                  </TableCell>
+                  <TableCell className="text-right">${service.price}</TableCell>
                 </TableRow>
               ))}
-              {technicianServices.length === 0 && (
+              {!isLoading && services?.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={5}>
                     <EmptyState

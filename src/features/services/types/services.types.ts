@@ -55,5 +55,6 @@ export interface ServiceListing {
   description: string;
   price: number;
   image: string;
+  isActive: boolean;
   technician: TechnicianSummary;
 }

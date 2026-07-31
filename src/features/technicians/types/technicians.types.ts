@@ -118,3 +118,10 @@ export interface TechnicianBookingRow {
   totalAmount: number;
   status: BookingStatus;
 }
+
+export interface CreateServicePayload {
+  categoryId: string;
+  title: string;
+  description: string;
+  price: number;
+}

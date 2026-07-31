@@ -1,6 +1,7 @@
 import { api } from "@/lib/axios";
 import {
   BookingStatus,
+  CreateServicePayload,
   RawTechnicianBooking,
   RawTechnicianListItem,
   TechnicianBookingRow,
@@ -87,5 +88,12 @@ export const updateTechnicianBookingStatus = async (
   status: Exclude<BookingStatus, "REQUESTED" | "PAID" | "CANCELLED">,
 ) => {
   const { data } = await api.patch(`/technician/bookings/${id}`, { status });
+  return data.data;
+};
+
+export const createTechnicianService = async (
+  payload: CreateServicePayload,
+) => {
+  const { data } = await api.post("/technicians/services", payload);
   return data.data;
 };

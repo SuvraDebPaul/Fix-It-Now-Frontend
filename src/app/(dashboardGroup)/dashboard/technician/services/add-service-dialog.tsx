@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -23,27 +24,44 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { SERVICE_CATEGORIES } from "@/app/(publicGroup)/services/data";
+import { getAllCategories } from "@/features/services/api/services.api";
+import { useCreateService } from "@/features/technicians/hooks/useCreateService";
 
 export function AddServiceDialog() {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
 
-  const isValid = title.trim() && category && description.trim() && price;
+  const { data: categories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: getAllCategories,
+  });
+  const { mutate, isPending } = useCreateService();
+
+  const isValid = title.trim() && categoryId && description.trim() && price;
 
   function handleSubmit() {
-    // Matches POST /api/services: { title, category, description, price }
-    const payload = { title, category, description, price: Number(price) };
-    console.log("add service payload (not yet wired to backend)", payload);
-    toast.success(`${title} added to your services`);
-    setOpen(false);
-    setTitle("");
-    setCategory("");
-    setDescription("");
-    setPrice("");
+    mutate(
+      { categoryId, title, description, price: Number(price) },
+      {
+        onSuccess: () => {
+          toast.success(`${title} added to your services`);
+          setOpen(false);
+          setTitle("");
+          setCategoryId("");
+          setDescription("");
+          setPrice("");
+        },
+        onError: (error) => {
+          const message =
+            error.response?.data?.message ??
+            "Couldn't add this service. Please try again.";
+          toast.error(message);
+        },
+      },
+    );
   }
 
   return (
@@ -76,14 +94,14 @@ export function AddServiceDialog() {
 
           <Field>
             <FieldLabel htmlFor="category">Category</FieldLabel>
-            <Select value={category} onValueChange={setCategory}>
+            <Select value={categoryId} onValueChange={setCategoryId}>
               <SelectTrigger id="category" className="w-full">
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
               <SelectContent>
-                {SERVICE_CATEGORIES.map((cat) => (
-                  <SelectItem key={cat} value={cat}>
-                    {cat}
+                {categories?.map((cat) => (
+                  <SelectItem key={cat.id} value={cat.id}>
+                    {cat.name}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -118,8 +136,8 @@ export function AddServiceDialog() {
           <Button variant="outline" onClick={() => setOpen(false)}>
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={!isValid}>
-            Save Service
+          <Button onClick={handleSubmit} disabled={!isValid || isPending}>
+            {isPending ? "Saving..." : "Save Service"}
           </Button>
         </DialogFooter>
       </DialogContent>
