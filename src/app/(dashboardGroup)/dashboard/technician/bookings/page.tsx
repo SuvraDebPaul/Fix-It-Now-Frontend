@@ -1,3 +1,6 @@
+"use client";
+
+import { toast } from "sonner";
 import { ClipboardList } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
@@ -13,34 +16,80 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatDateTime } from "@/lib/format";
-import { technicianBookings } from "../data";
+import { useTechnicianBookings } from "@/features/technicians/hooks/useTechnicianBookings";
+import { useUpdateBookingStatus } from "@/features/technicians/hooks/useUpdateBookingStatus";
+import type { TechnicianBookingRow } from "@/features/technicians/types/technicians.types";
 
-function BookingActions({ status }: { status: string }) {
-  if (status === "REQUESTED") {
+function BookingActions({ booking }: { booking: TechnicianBookingRow }) {
+  const { mutate, isPending } = useUpdateBookingStatus();
+
+  function updateStatus(
+    status: "ACCEPTED" | "DECLINED" | "IN_PROGRESS" | "COMPLETED",
+  ) {
+    mutate(
+      { id: booking.id, status },
+      {
+        onSuccess: () => {
+          toast.success(`Booking ${status.toLowerCase()}`);
+        },
+        onError: (error) => {
+          const message =
+            error.response?.data?.message ??
+            "Something went wrong. Please try again.";
+          toast.error(message);
+        },
+      },
+    );
+  }
+
+  if (booking.status === "REQUESTED") {
     return (
       <div className="flex justify-end gap-2">
-        <Button size="sm" variant="outline">
+        <Button
+          size="sm"
+          variant="outline"
+          disabled={isPending}
+          onClick={() => updateStatus("DECLINED")}
+        >
           Decline
         </Button>
-        <Button size="sm">Accept</Button>
+        <Button
+          size="sm"
+          disabled={isPending}
+          onClick={() => updateStatus("ACCEPTED")}
+        >
+          Accept
+        </Button>
       </div>
     );
   }
-  if (status === "PAID") {
+  if (booking.status === "PAID") {
     return (
       <div className="flex justify-end">
-        <Button size="sm">Start Job</Button>
+        <Button
+          size="sm"
+          disabled={isPending}
+          onClick={() => updateStatus("IN_PROGRESS")}
+        >
+          Start Job
+        </Button>
       </div>
     );
   }
-  if (status === "IN_PROGRESS") {
+  if (booking.status === "IN_PROGRESS") {
     return (
       <div className="flex justify-end">
-        <Button size="sm">Mark Completed</Button>
+        <Button
+          size="sm"
+          disabled={isPending}
+          onClick={() => updateStatus("COMPLETED")}
+        >
+          Mark Completed
+        </Button>
       </div>
     );
   }
-  if (status === "ACCEPTED") {
+  if (booking.status === "ACCEPTED") {
     return (
       <span className="text-xs text-muted-foreground">
         Awaiting customer payment
@@ -51,6 +100,8 @@ function BookingActions({ status }: { status: string }) {
 }
 
 export default function TechnicianBookingsPage() {
+  const { data: bookings, isLoading, isError } = useTechnicianBookings();
+
   return (
     <>
       <SiteHeader
@@ -79,7 +130,27 @@ export default function TechnicianBookingsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {technicianBookings.map((booking) => (
+              {isLoading && (
+                <TableRow>
+                  <TableCell
+                    colSpan={8}
+                    className="text-center text-sm text-muted-foreground"
+                  >
+                    Loading bookings...
+                  </TableCell>
+                </TableRow>
+              )}
+              {isError && (
+                <TableRow>
+                  <TableCell
+                    colSpan={8}
+                    className="text-center text-sm text-destructive"
+                  >
+                    Couldn&apos;t load bookings. Please refresh.
+                  </TableCell>
+                </TableRow>
+              )}
+              {bookings?.map((booking) => (
                 <TableRow key={booking.id}>
                   <TableCell className="font-mono text-xs text-muted-foreground">
                     {booking.id}
@@ -88,9 +159,7 @@ export default function TechnicianBookingsPage() {
                     {booking.service}
                   </TableCell>
                   <TableCell>{booking.customer}</TableCell>
-                  <TableCell>
-                    {formatDateTime(booking.scheduleTime)}
-                  </TableCell>
+                  <TableCell>{formatDateTime(booking.scheduleTime)}</TableCell>
                   <TableCell className="max-w-48 truncate text-muted-foreground">
                     {booking.address}
                   </TableCell>
@@ -101,11 +170,11 @@ export default function TechnicianBookingsPage() {
                     ${booking.totalAmount}
                   </TableCell>
                   <TableCell className="text-right">
-                    <BookingActions status={booking.status} />
+                    <BookingActions booking={booking} />
                   </TableCell>
                 </TableRow>
               ))}
-              {technicianBookings.length === 0 && (
+              {!isLoading && bookings?.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={8}>
                     <EmptyState

@@ -1,6 +1,9 @@
 import { api } from "@/lib/axios";
 import {
+  BookingStatus,
+  RawTechnicianBooking,
   RawTechnicianListItem,
+  TechnicianBookingRow,
   TechnicianCard,
   TechnicianProfile,
 } from "../types/technicians.types";
@@ -60,8 +63,29 @@ export const getTechnicianProfile = async (
   };
 };
 
-export const getTechnicianBookings = async () => {
+function mapTechnicianBooking(raw: RawTechnicianBooking): TechnicianBookingRow {
+  return {
+    id: raw.id,
+    service: raw.service.title,
+    customer: raw.customerProfile.user.name,
+    scheduleTime: raw.scheduleTime,
+    address: raw.address,
+    totalAmount: Number(raw.totalAmount),
+    status: raw.status,
+  };
+}
+
+export const getTechnicianBookings = async (): Promise<
+  TechnicianBookingRow[]
+> => {
   const { data } = await api.get("/technician/bookings");
-  console.log(data);
+  return data.data.map(mapTechnicianBooking);
+};
+
+export const updateTechnicianBookingStatus = async (
+  id: string,
+  status: Exclude<BookingStatus, "REQUESTED" | "PAID" | "CANCELLED">,
+) => {
+  const { data } = await api.patch(`/technician/bookings/${id}`, { status });
   return data.data;
 };

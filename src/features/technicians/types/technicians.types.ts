@@ -12,7 +12,6 @@ export interface RawTechnicianService {
   price: string;
 }
 
-// GET /technicians (list) -- includes services, no reviews
 export interface RawTechnicianListItem {
   id: string;
   profilePhoto: string | null;
@@ -38,7 +37,6 @@ export interface RawTechnicianReview {
   };
 }
 
-// GET /technicians/:id (detail) -- includes reviews, NOT services
 export interface RawTechnicianDetail {
   id: string;
   profilePhoto: string | null;
@@ -52,8 +50,6 @@ export interface RawTechnicianDetail {
   user: RawTechnicianUser;
   reviews: RawTechnicianReview[];
 }
-
-// ---- Flattened, UI-facing shapes ----
 
 export interface TechnicianCard {
   id: string;
@@ -85,4 +81,40 @@ export interface TechnicianProfile {
   reviewCount: number;
   reviews: TechnicianReviewRow[];
   services: ServiceListing[];
+}
+
+export type BookingStatus =
+  | "REQUESTED"
+  | "ACCEPTED"
+  | "DECLINED"
+  | "PAID"
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | "CANCELLED";
+
+export interface RawTechnicianBooking {
+  id: string;
+  scheduleTime: string;
+  address: string;
+  totalAmount: string;
+  status: BookingStatus;
+  cancelReason: string | null;
+  customerProfile: {
+    user: {
+      name: string;
+    };
+  };
+  service: {
+    title: string;
+  };
+}
+
+export interface TechnicianBookingRow {
+  id: string;
+  service: string;
+  customer: string;
+  scheduleTime: string;
+  address: string;
+  totalAmount: number;
+  status: BookingStatus;
 }
