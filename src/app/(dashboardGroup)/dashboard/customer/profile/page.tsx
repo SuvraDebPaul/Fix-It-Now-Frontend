@@ -1,3 +1,9 @@
+"use client";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { toast } from "sonner";
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
 import { UserAvatar } from "@/components/shared/user-avatar";
@@ -6,8 +12,114 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { getInitials } from "@/lib/utils";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { useUpdateCustomerProfile } from "@/features/auth/hooks/useUpdateCustomerProfile";
+import type { User } from "@/features/auth/types/auth.types";
+
+const profileSchema = z.object({
+  phone: z.string().min(1, "Phone is required"),
+  address: z.string().min(1, "Address is required"),
+  city: z.string().min(1, "City is required"),
+  area: z.string().min(1, "Area is required"),
+});
+
+type ProfileFormValues = z.infer<typeof profileSchema>;
+
+function ProfileForm({ user }: { user: User }) {
+  const { mutate, isPending } = useUpdateCustomerProfile();
+  const profile = user.customerProfile!;
+
+  const form = useForm<ProfileFormValues>({
+    resolver: zodResolver(profileSchema),
+    defaultValues: {
+      phone: profile.phone ?? "",
+      address: profile.address ?? "",
+      city: profile.city ?? "",
+      area: profile.area ?? "",
+    },
+  });
+
+  function onSubmit(values: ProfileFormValues) {
+    mutate(values, {
+      onSuccess: () => {
+        toast.success("Profile updated");
+      },
+      onError: (error) => {
+        const message =
+          error.response?.data?.message ??
+          "Couldn't update profile. Please try again.";
+        toast.error(message);
+      },
+    });
+  }
+
+  return (
+    <Card className="max-w-2xl">
+      <CardHeader className="flex-row items-center gap-4">
+        <UserAvatar
+          name={user.name}
+          image={profile.profilePhoto ?? undefined}
+          fallback={getInitials(user.name)}
+          className="h-16 w-16"
+          fallbackClassName="bg-primary/20 text-lg text-primary"
+        />
+        <div>
+          <CardTitle>{user.name}</CardTitle>
+          <p className="text-sm text-muted-foreground">{user.email}</p>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <Field>
+            <FieldLabel htmlFor="phone">Phone</FieldLabel>
+            <Input id="phone" {...form.register("phone")} />
+            {form.formState.errors.phone && (
+              <p className="text-xs text-destructive">
+                {form.formState.errors.phone.message}
+              </p>
+            )}
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="address">Address</FieldLabel>
+            <Input id="address" {...form.register("address")} />
+            {form.formState.errors.address && (
+              <p className="text-xs text-destructive">
+                {form.formState.errors.address.message}
+              </p>
+            )}
+          </Field>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <Field>
+              <FieldLabel htmlFor="city">City</FieldLabel>
+              <Input id="city" {...form.register("city")} />
+              {form.formState.errors.city && (
+                <p className="text-xs text-destructive">
+                  {form.formState.errors.city.message}
+                </p>
+              )}
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="area">Area</FieldLabel>
+              <Input id="area" {...form.register("area")} />
+              {form.formState.errors.area && (
+                <p className="text-xs text-destructive">
+                  {form.formState.errors.area.message}
+                </p>
+              )}
+            </Field>
+          </div>
+          <Button type="submit" disabled={isPending}>
+            {isPending ? "Saving..." : "Save Changes"}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
+  );
+}
 
 export default function CustomerProfilePage() {
+  const { data: user, isLoading } = useCurrentUser();
+
   return (
     <>
       <SiteHeader
@@ -21,49 +133,12 @@ export default function CustomerProfilePage() {
           description="Your account and contact details."
         />
 
-        <Card className="max-w-2xl">
-          <CardHeader className="flex-row items-center gap-4">
-            <UserAvatar
-              name="Jane Doe"
-              fallback={getInitials("Jane Doe")}
-              className="h-16 w-16"
-              fallbackClassName="bg-primary/20 text-lg text-primary"
-            />
-            <div>
-              <CardTitle>Jane Doe</CardTitle>
-              <p className="text-sm text-muted-foreground">
-                jane.doe@example.com
-              </p>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Field>
-                <FieldLabel htmlFor="name">Full Name</FieldLabel>
-                <Input id="name" defaultValue="Jane Doe" />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="phone">Phone</FieldLabel>
-                <Input id="phone" defaultValue="+1 (555) 019-2233" />
-              </Field>
-            </div>
-            <Field>
-              <FieldLabel htmlFor="address">Address</FieldLabel>
-              <Input id="address" defaultValue="212 Maple St" />
-            </Field>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Field>
-                <FieldLabel htmlFor="city">City</FieldLabel>
-                <Input id="city" defaultValue="Springfield" />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="area">Area</FieldLabel>
-                <Input id="area" defaultValue="Downtown" />
-              </Field>
-            </div>
-            <Button>Save Changes</Button>
-          </CardContent>
-        </Card>
+        {isLoading && (
+          <p className="text-sm text-muted-foreground">Loading...</p>
+        )}
+        {!isLoading && user?.customerProfile && (
+          <ProfileForm key={user.id} user={user} />
+        )}
       </div>
     </>
   );

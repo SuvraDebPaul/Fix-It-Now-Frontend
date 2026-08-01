@@ -4,6 +4,7 @@ import type {
   LoginPayload,
   LoginResponse,
   RegisterPayload,
+  UpdateCustomerProfilePayload,
   User,
 } from "../types/auth.types";
 
@@ -34,5 +35,12 @@ export const logoutUser = async (): Promise<void> => {
 
 export const getCurrentUser = async (): Promise<User> => {
   const { data } = await api.get<{ data: User }>("/auth/me");
+  return data.data;
+};
+
+export const updateCustomerProfile = async (
+  payload: UpdateCustomerProfilePayload,
+) => {
+  const { data } = await api.put("/auth/profile", payload);
   return data.data;
 };

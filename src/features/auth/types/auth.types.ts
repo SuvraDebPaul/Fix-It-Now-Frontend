@@ -32,6 +32,15 @@ export interface User {
     totalReviews: number;
     availability: RawAvailabilitySlot[];
   } | null;
+  customerProfile?: {
+    id: string;
+    profilePhoto: string | null;
+    phone: string | null;
+    address: string | null;
+    city: string | null;
+    area: string | null;
+    totalBookings: number;
+  } | null;
 }
 
 export type AuthResponse = User;
@@ -60,4 +69,12 @@ export interface RawAvailabilitySlot {
   startTime: string;
   endTime: string;
   isActive: boolean;
+}
+
+export interface UpdateCustomerProfilePayload {
+  profilePhoto?: string;
+  phone?: string;
+  address?: string;
+  city?: string;
+  area?: string;
 }
