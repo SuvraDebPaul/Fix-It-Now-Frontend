@@ -38,7 +38,7 @@ export default async function TechniciansPage() {
                 href={`/technicians/${member.id}`}
                 className="group"
               >
-                <div className="relative h-48 overflow-hidden rounded-lg">
+                <div className="relative h-80 overflow-hidden rounded-lg">
                   <Image
                     src={member.image}
                     alt={member.name}

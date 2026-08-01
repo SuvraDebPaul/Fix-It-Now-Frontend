@@ -40,12 +40,13 @@ import {
   UserCircle,
   Wrench,
 } from "lucide-react";
+import { FaFacebookF, FaTwitter, FaYoutube, FaInstagram } from "react-icons/fa";
 
 const socialLinks = [
-  { href: "#", initial: "f", label: "Facebook" },
-  { href: "#", initial: "x", label: "Twitter" },
-  { href: "#", initial: "yt", label: "YouTube" },
-  { href: "#", initial: "ig", label: "Instagram" },
+  { href: "#", initial: <FaFacebookF />, label: "Facebook" },
+  { href: "#", initial: <FaTwitter />, label: "Twitter" },
+  { href: "#", initial: <FaYoutube />, label: "YouTube" },
+  { href: "#", initial: <FaInstagram />, label: "Instagram" },
 ];
 
 const navLinks = [
@@ -73,18 +74,19 @@ export function Navbar() {
   const isHome = pathname === "/";
   const { data: user, isLoading } = useCurrentUser();
   const { mutate: logout } = useLogout();
-  const [scrolled, setScrolled] = useState(!isHome);
+  const [homeScrolled, setHomeScrolled] = useState(false);
 
   useEffect(() => {
     if (!isHome) {
-      setScrolled(true);
       return;
     }
-    const onScroll = () => setScrolled(window.scrollY > 80);
+    const onScroll = () => setHomeScrolled(window.scrollY > 80);
     onScroll();
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, [isHome]);
+
+  const scrolled = !isHome || homeScrolled;
 
   return (
     <>
@@ -96,7 +98,7 @@ export function Navbar() {
                 key={social.label}
                 href={social.href}
                 aria-label={social.label}
-                className="flex h-5 w-5 items-center justify-center rounded-full bg-ink/10 text-[10px] font-bold uppercase hover:bg-ink/20"
+                className="flex h-5 w-5 items-center justify-center rounded-full bg-white/70 text-[10px] font-bold uppercase hover:bg-white"
               >
                 {social.initial}
               </Link>
@@ -151,18 +153,6 @@ export function Navbar() {
                   </NavigationMenuItem>
                 );
               })}
-              {user?.role === "ADMIN" && (
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild active={pathname === "/admin"}>
-                    <Link
-                      href="/admin"
-                      className="text-sm font-medium text-white/75 transition-colors hover:text-white"
-                    >
-                      Admin
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-              )}
             </NavigationMenuList>
           </NavigationMenu>
 
@@ -171,7 +161,7 @@ export function Navbar() {
               <span className="flex h-8 w-8 items-center justify-center rounded-full border border-primary text-primary">
                 <Phone className="h-3.5 w-3.5" />
               </span>
-              +1 (555) 010-0230
+              +880 1717 010230
             </span>
             {isLoading ? (
               <>
@@ -188,7 +178,10 @@ export function Navbar() {
                   />
                   <ChevronDown className="h-3.5 w-3.5 text-white/60" />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-64 rounded-xl p-1.5">
+                <DropdownMenuContent
+                  align="end"
+                  className="w-64 rounded-xl p-1.5"
+                >
                   <DropdownMenuLabel className="p-0 font-normal">
                     <div className="flex items-center gap-3 px-2 py-2.5">
                       <UserAvatar

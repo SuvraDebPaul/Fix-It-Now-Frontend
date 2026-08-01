@@ -32,8 +32,7 @@ export const technicians: Technician[] = [
     id: "harry-white",
     name: "Harry White",
     role: "Plumber",
-    image:
-      "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a",
     bio: "Licensed plumber with a decade of experience across residential repairs, installs, and emergency shutoffs.",
     experience: 10,
     location: "Springfield",
@@ -60,8 +59,7 @@ export const technicians: Technician[] = [
     id: "andron-black",
     name: "Andron Black",
     role: "Electrician",
-    image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
     bio: "Licensed electrician specializing in panel upgrades, rewiring, and lighting installs for homes and small businesses.",
     experience: 8,
     location: "Springfield",
@@ -88,8 +86,7 @@ export const technicians: Technician[] = [
     id: "matthew-mark",
     name: "Matthew Mark",
     role: "Carpenter",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e",
     bio: "Custom carpentry and furniture builds, from shelving to full deck construction.",
     experience: 7,
     location: "Springfield",
@@ -116,8 +113,7 @@ export const technicians: Technician[] = [
     id: "michelle-carol",
     name: "Michelle Carol",
     role: "Painter",
-    image:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956",
     bio: "Interior and cabinet painting specialist with an eye for clean lines and even finish coats.",
     experience: 6,
     location: "Springfield",
@@ -144,8 +140,7 @@ export const technicians: Technician[] = [
     id: "timothy-jason",
     name: "Timothy Jason",
     role: "Plumber",
-    image:
-      "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&q=80&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d",
     bio: "Drain cleaning and fixture repair specialist, quick response for everyday plumbing issues.",
     experience: 5,
     location: "Springfield",
@@ -172,8 +167,7 @@ export const technicians: Technician[] = [
     id: "jonathan-larry",
     name: "Jonathan Larry",
     role: "HVAC Technician",
-    image:
-      "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a",
     bio: "HVAC servicing, thermostat installs, and duct cleaning for year-round comfort.",
     experience: 6,
     location: "Springfield",
@@ -200,8 +194,7 @@ export const technicians: Technician[] = [
     id: "brandon-gregory",
     name: "Brandon Gregory",
     role: "Carpenter",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e",
     bio: "Furniture assembly and cabinet installation, focused on fast turnarounds for smaller jobs.",
     experience: 3,
     location: "Springfield",
@@ -228,8 +221,7 @@ export const technicians: Technician[] = [
     id: "raymond-jose",
     name: "Raymond Jose",
     role: "Painter",
-    image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
     bio: "Exterior painting specialist — full prep, priming, and weatherproof finish coats.",
     experience: 3,
     location: "Springfield",
@@ -256,8 +248,7 @@ export const technicians: Technician[] = [
     id: "sara-kim",
     name: "Sara Kim",
     role: "Electrician",
-    image:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956",
     bio: "Residential electrician focused on outlet repairs, switches, and small fixture installs.",
     experience: 4,
     location: "Springfield",
@@ -284,8 +275,7 @@ export const technicians: Technician[] = [
     id: "derek-nolan",
     name: "Derek Nolan",
     role: "General Contractor",
-    image:
-      "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a",
     bio: "General contractor covering everyday repairs, appliance installs, and small reconstruction jobs.",
     experience: 9,
     location: "Springfield",

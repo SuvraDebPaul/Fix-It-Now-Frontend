@@ -2,24 +2,9 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PageHero } from "@/components/shared/page-hero";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { TestimonialCard } from "@/components/shared/testimonial-card";
 import { ServicesExplorer } from "./services-explorer";
 import { getAllServices } from "@/features/services/api/services.api";
-
-const testimonials = [
-  {
-    name: "Rebecca Laura",
-    quote: "Booked, fixed, done — the whole thing took one afternoon.",
-    avatar:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80&auto=format&fit=crop",
-  },
-  {
-    name: "Nicholas Justin",
-    quote: "Transparent pricing and the technician actually showed up on time.",
-    avatar:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80&auto=format&fit=crop",
-  },
-];
+import Testimonial from "@/components/shared/testimonial";
 
 export default async function ServicesPage() {
   const allServices = await getAllServices();
@@ -67,26 +52,7 @@ export default async function ServicesPage() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="bg-primary px-6 py-20 text-primary-foreground">
-        <div className="mx-auto max-w-7xl">
-          <SectionHeading
-            eyebrow="Testimonials"
-            title="What Our Clients Say About Us"
-            eyebrowClassName="text-primary-foreground"
-            titleClassName="mb-8"
-          />
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-            {testimonials.map((testimonial) => (
-              <TestimonialCard
-                key={testimonial.name}
-                name={testimonial.name}
-                quote={testimonial.quote}
-                avatar={testimonial.avatar}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
+      <Testimonial />
     </>
   );
 }

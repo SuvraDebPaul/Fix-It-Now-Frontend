@@ -19,7 +19,7 @@ export function TestimonialCard({
   return (
     <div
       className={cn(
-        "rounded-lg p-6 shadow-sm",
+        "rounded-lg p-6 shadow-sm max-w-xs",
         dark ? "bg-ink text-white" : "bg-white text-foreground",
       )}
     >

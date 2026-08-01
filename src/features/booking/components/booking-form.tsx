@@ -73,10 +73,10 @@ export function BookingForm({
           shortly. You&apos;ll be notified either way.
         </p>
         <div className="mt-2 flex gap-3">
-          <Button asChild>
+          <Button asChild className="px-6 py-5">
             <Link href="/dashboard/customer/bookings">View My Bookings</Link>
           </Button>
-          <Button asChild variant="outline">
+          <Button asChild variant="outline" className="px-6 py-5">
             <Link href="/services">Browse More Services</Link>
           </Button>
         </div>
@@ -140,7 +140,7 @@ export function BookingForm({
         <Button
           type="submit"
           size="lg"
-          className="w-full"
+          className="w-full px-6 py-5"
           disabled={!user || isPending}
         >
           {isPending ? "Sending request..." : `Confirm Booking — $${price}`}

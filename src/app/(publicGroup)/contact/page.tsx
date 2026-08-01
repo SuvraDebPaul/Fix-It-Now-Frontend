@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { PageHero } from "@/components/shared/page-hero";
 
-const regions = ["North America", "United Kingdom", "Australia", "UAE"];
+const regions = ["Dhaka", "Chittagong", "Khulna", "Rajshahi"];
 
 export default function ContactPage() {
   return (
@@ -27,8 +27,8 @@ export default function ContactPage() {
                 We&apos;re Here To Provide 24×7 Support
               </h2>
               <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-                Questions about a booking, a technician, or how FixItNow
-                works? Send us a message and we&apos;ll get back to you.
+                Questions about a booking, a technician, or how FixItNow works?
+                Send us a message and we&apos;ll get back to you.
               </p>
             </div>
           </div>
@@ -51,12 +51,12 @@ export default function ContactPage() {
                   Prefer email? Reach the team directly.
                 </p>
               </div>
-              <div className="relative h-40">
+              <div className="relative h-60">
                 <Image
                   src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=500&q=80&auto=format&fit=crop"
                   alt="Support team member"
                   fill
-                  className="object-cover"
+                  className="object-cover object-top"
                 />
               </div>
               <div className="flex items-center gap-2 p-8 text-sm">
@@ -73,8 +73,8 @@ export default function ContactPage() {
         <div className="mx-auto max-w-7xl">
           <h2 className="font-display text-3xl">Where We Operate</h2>
           <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-            FixItNow connects customers with licensed technicians across
-            these regions, with more launching soon.
+            FixItNow connects customers with licensed technicians across these
+            regions, with more launching soon.
           </p>
           <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
             {regions.map((region) => (

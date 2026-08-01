@@ -113,7 +113,7 @@ export default async function ServiceDetailsPage({
                   </span>
                 </div>
               </div>
-              <Button asChild size="lg">
+              <Button asChild size="lg" className="px-6 py-5">
                 <Link href={`/booking/${service.id}`}>Book This Service</Link>
               </Button>
             </div>
@@ -170,7 +170,7 @@ export default async function ServiceDetailsPage({
               <div className="p-5 pt-0">
                 <Button
                   asChild
-                  className="w-full bg-ink text-white hover:bg-ink/90"
+                  className="w-full bg-ink text-white hover:bg-ink/90 px-6 py-5"
                 >
                   <Link href={`/booking/${service.id}`}>Book Now</Link>
                 </Button>

@@ -173,7 +173,7 @@ export default async function TechnicianProfilePage({
             </div>
 
             {technician.services.length > 0 && (
-              <Button asChild size="lg" className="mt-8">
+              <Button asChild size="lg" className="mt-8 px-6 py-5">
                 <Link href={`/booking/${technician.services[0].id}`}>
                   Book {technician.name}
                 </Link>

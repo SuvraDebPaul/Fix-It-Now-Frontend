@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { PageHero } from "@/components/shared/page-hero";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { WorkCollage } from "@/components/shared/work-collage";
+import { Separator } from "@/components/ui/separator";
 
 const processChecklist = [
   "Initial Consultation",
@@ -94,7 +95,7 @@ export default function AboutPage() {
               ))}
             </ul>
 
-            <Button asChild className="mt-8">
+            <Button asChild className="mt-8 px-6 py-5">
               <Link href="/services">Browse Services</Link>
             </Button>
           </div>
@@ -116,13 +117,13 @@ export default function AboutPage() {
             It&apos;s Finally Easy To Get Things Fixed The Right Way
           </h2>
           <div className="mt-8 flex justify-center gap-3">
-            <Button asChild>
+            <Button className=" px-6 py-5" asChild>
               <Link href="/services">Explore More</Link>
             </Button>
             <Button
               asChild
               variant="outline"
-              className="border-white/50 bg-transparent text-white hover:bg-white/10 hover:text-white"
+              className="border-white/50 bg-transparent text-white hover:bg-white/10 hover:text-white px-6 py-5"
             >
               <Link href="/technicians">Meet The Pros</Link>
             </Button>
@@ -179,41 +180,41 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
+      <Separator className="max-w-7xl mx-auto" />
       {/* WHY WE'RE DIFFERENT */}
-      <section className="bg-ink px-6 py-20 text-white">
+      <section className="px-6 py-20">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 lg:grid-cols-2">
           <div>
             <SectionHeading
               eyebrow="Why We Are Different"
               title="Trust, Diligence, Succeed"
             />
-            <p className="mt-4 text-white/65">
+            <p className="mt-4 text-black/60">
               We built FixItNow on a simple idea — every job deserves a paper
               trail, so customers always know who&apos;s coming, when, and for
               how much.
             </p>
-            <Button asChild className="mt-6">
+            <Button asChild className="mt-6 px-6 py-5">
               <Link href="/register">Join As A Technician</Link>
             </Button>
           </div>
-          <div className="relative h-72 overflow-hidden rounded-lg sm:h-96">
+          <div className="relative h-80 overflow-hidden rounded-lg sm:h-96">
             <Image
-              src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=700&q=80&auto=format&fit=crop"
+              src="https://images.unsplash.com/photo-1560250097-0b93528c311a"
               alt="FixItNow technician"
               fill
-              className="object-cover"
+              className="object-contain"
             />
           </div>
         </div>
 
-        <div className="mx-auto mt-16 grid max-w-7xl grid-cols-2 gap-6 border-t border-white/10 pt-10 sm:grid-cols-4">
+        <div className="mx-auto mt-16 grid max-w-7xl grid-cols-2 gap-6 border-t border-black/10 pt-10 sm:grid-cols-4">
           {timeline.map((point) => (
             <div key={point.year} className="text-center">
               <div className="font-display text-3xl text-primary">
                 {point.year}
               </div>
-              <div className="mt-1 text-xs uppercase text-white/60">
+              <div className="mt-1 text-sm uppercase text-black/60">
                 {point.label}
               </div>
             </div>
