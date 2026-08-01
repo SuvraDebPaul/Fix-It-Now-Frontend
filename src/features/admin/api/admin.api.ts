@@ -2,10 +2,13 @@ import { api } from "@/lib/axios";
 import {
   AdminBookingRow,
   AdminUserRow,
+  CreateCategoryPayload,
   RawAdminBooking,
   RawAdminUser,
   UserStatus,
 } from "../types/admin.types";
+import { RawCategory } from "@/features/services/types/services.types";
+import { getAllCategories } from "@/features/services/api/services.api";
 
 function mapAdminUser(raw: RawAdminUser): AdminUserRow {
   return {
@@ -45,4 +48,13 @@ export const getAllBookings = async (): Promise<AdminBookingRow[]> => {
     "/admin/bookings",
   );
   return data.data.map(mapAdminBooking);
+};
+
+export const getCategories = async (): Promise<RawCategory[]> => {
+  return getAllCategories();
+};
+
+export const createCategory = async (payload: CreateCategoryPayload) => {
+  const { data } = await api.post("/admin/categories", payload);
+  return data.data;
 };

@@ -1,3 +1,9 @@
+"use client";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { toast } from "sonner";
 import { LayoutGrid } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
@@ -15,9 +21,44 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { adminCategories } from "../data";
+import { useAdminCategories } from "@/features/admin/hooks/useAdminCategories";
+import { useCreateCategory } from "@/features/admin/hooks/useCreateCategory";
+
+const categorySchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  slug: z
+    .string()
+    .min(1, "Slug is required")
+    .regex(/^[a-z0-9-]+$/, "Lowercase letters, numbers, and hyphens only"),
+  description: z.string().optional(),
+});
+
+type CategoryFormValues = z.infer<typeof categorySchema>;
 
 export default function AdminCategoriesPage() {
+  const { data: categories, isLoading } = useAdminCategories();
+  const { mutate, isPending } = useCreateCategory();
+
+  const form = useForm<CategoryFormValues>({
+    resolver: zodResolver(categorySchema),
+    defaultValues: { name: "", slug: "", description: "" },
+  });
+
+  function onSubmit(values: CategoryFormValues) {
+    mutate(values, {
+      onSuccess: () => {
+        toast.success("Category created");
+        form.reset();
+      },
+      onError: (error) => {
+        const message =
+          error.response?.data?.message ??
+          "Couldn't create category. Please try again.";
+        toast.error(message);
+      },
+    });
+  }
+
   return (
     <>
       <SiteHeader
@@ -36,28 +77,48 @@ export default function AdminCategoriesPage() {
             <CardTitle className="text-base">Add Category</CardTitle>
           </CardHeader>
           <CardContent>
-            <form className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="grid grid-cols-1 gap-4 sm:grid-cols-2"
+            >
               <Field>
                 <FieldLabel htmlFor="cat-name">Name</FieldLabel>
-                <Input id="cat-name" placeholder="e.g. Roofing" />
+                <Input
+                  id="cat-name"
+                  placeholder="e.g. Roofing"
+                  {...form.register("name")}
+                />
+                {form.formState.errors.name && (
+                  <p className="text-xs text-destructive">
+                    {form.formState.errors.name.message}
+                  </p>
+                )}
               </Field>
               <Field>
                 <FieldLabel htmlFor="cat-slug">Slug</FieldLabel>
-                <Input id="cat-slug" placeholder="e.g. roofing" />
+                <Input
+                  id="cat-slug"
+                  placeholder="e.g. roofing"
+                  {...form.register("slug")}
+                />
+                {form.formState.errors.slug && (
+                  <p className="text-xs text-destructive">
+                    {form.formState.errors.slug.message}
+                  </p>
+                )}
               </Field>
               <div className="sm:col-span-2">
                 <Field>
-                  <FieldLabel htmlFor="cat-description">
-                    Description
-                  </FieldLabel>
+                  <FieldLabel htmlFor="cat-description">Description</FieldLabel>
                   <Input
                     id="cat-description"
                     placeholder="Short description shown to customers"
+                    {...form.register("description")}
                   />
                 </Field>
               </div>
-              <Button type="submit" className="w-fit">
-                Create Category
+              <Button type="submit" className="w-fit" disabled={isPending}>
+                {isPending ? "Creating..." : "Create Category"}
               </Button>
             </form>
           </CardContent>
@@ -74,11 +135,19 @@ export default function AdminCategoriesPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {adminCategories.map((category) => (
-                <TableRow key={category.id}>
-                  <TableCell className="font-medium">
-                    {category.name}
+              {isLoading && (
+                <TableRow>
+                  <TableCell
+                    colSpan={4}
+                    className="text-center text-sm text-muted-foreground"
+                  >
+                    Loading categories...
                   </TableCell>
+                </TableRow>
+              )}
+              {categories?.map((category) => (
+                <TableRow key={category.id}>
+                  <TableCell className="font-medium">{category.name}</TableCell>
                   <TableCell className="font-mono text-xs text-muted-foreground">
                     {category.slug}
                   </TableCell>
@@ -90,7 +159,7 @@ export default function AdminCategoriesPage() {
                   </TableCell>
                 </TableRow>
               ))}
-              {adminCategories.length === 0 && (
+              {!isLoading && categories?.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={4}>
                     <EmptyState

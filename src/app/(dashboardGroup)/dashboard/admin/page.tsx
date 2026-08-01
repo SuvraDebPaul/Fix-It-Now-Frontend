@@ -1,5 +1,13 @@
+"use client";
+
 import Link from "next/link";
-import { CalendarCheck, ClipboardList, Tags, Users, Wrench } from "lucide-react";
+import {
+  CalendarCheck,
+  ClipboardList,
+  Tags,
+  Users,
+  Wrench,
+} from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
@@ -14,16 +22,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { adminBookings, adminCategories, adminUsers } from "./data";
+import { useAdminUsers } from "@/features/admin/hooks/useAdminUsers";
+import { useAdminBookings } from "@/features/admin/hooks/useAdminBookings";
+import { useAdminCategories } from "@/features/admin/hooks/useAdminCategories";
 
 export default function AdminOverviewPage() {
-  const totalCustomers = adminUsers.filter(
-    (u) => u.role === "CUSTOMER",
-  ).length;
-  const totalTechnicians = adminUsers.filter(
+  const { data: users, isLoading: usersLoading } = useAdminUsers();
+  const { data: bookings, isLoading: bookingsLoading } = useAdminBookings();
+  const { data: categories } = useAdminCategories();
+
+  const allUsers = users ?? [];
+  const allBookings = bookings ?? [];
+  const allCategories = categories ?? [];
+
+  const totalCustomers = allUsers.filter((u) => u.role === "CUSTOMER").length;
+  const totalTechnicians = allUsers.filter(
     (u) => u.role === "TECHNICIAN",
   ).length;
-  const activeCategories = adminCategories.filter((c) => c.isActive).length;
+  const activeCategories = allCategories.filter((c) => c.isActive).length;
+
+  const recentBookings = allBookings.slice(0, 5);
 
   return (
     <>
@@ -39,22 +57,16 @@ export default function AdminOverviewPage() {
             label="Customers"
             value={String(totalCustomers)}
             icon={Users}
-            trend={{ percent: 12, direction: "up" }}
-            hint="vs last month"
           />
           <StatCard
             label="Technicians"
             value={String(totalTechnicians)}
             icon={Wrench}
-            trend={{ percent: 8, direction: "up" }}
-            hint="vs last month"
           />
           <StatCard
             label="Total Bookings"
-            value={String(adminBookings.length)}
+            value={String(allBookings.length)}
             icon={CalendarCheck}
-            trend={{ percent: 4, direction: "down" }}
-            hint="vs last month"
           />
           <StatCard
             label="Active Categories"
@@ -81,7 +93,17 @@ export default function AdminOverviewPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {adminBookings.map((booking) => (
+              {(usersLoading || bookingsLoading) && (
+                <TableRow>
+                  <TableCell
+                    colSpan={5}
+                    className="text-center text-sm text-muted-foreground"
+                  >
+                    Loading...
+                  </TableCell>
+                </TableRow>
+              )}
+              {recentBookings.map((booking) => (
                 <TableRow key={booking.id}>
                   <TableCell className="font-medium">
                     {booking.service}
@@ -96,7 +118,7 @@ export default function AdminOverviewPage() {
                   </TableCell>
                 </TableRow>
               ))}
-              {adminBookings.length === 0 && (
+              {!bookingsLoading && recentBookings.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={5}>
                     <EmptyState

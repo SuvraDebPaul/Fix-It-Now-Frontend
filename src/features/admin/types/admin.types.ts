@@ -47,3 +47,9 @@ export interface AdminBookingRow {
   status: RawAdminBooking["status"];
   totalAmount: number;
 }
+
+export interface CreateCategoryPayload {
+  name: string;
+  slug: string;
+  description?: string;
+}
