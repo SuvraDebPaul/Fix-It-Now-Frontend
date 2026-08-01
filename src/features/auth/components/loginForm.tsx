@@ -15,9 +15,12 @@ import { LoginFormValues, loginSchema } from "../schemas/login.schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLogin } from "../hooks/useLogin";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
+import { getCurrentUser } from "../api/auth.api";
 
 export function LoginForm() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -31,9 +34,17 @@ export function LoginForm() {
 
   const onSubmit: SubmitHandler<LoginFormValues> = (payload) => {
     mutate(payload, {
-      onSuccess: () => {
+      onSuccess: async () => {
         toast.success("Logged in successfully.");
-        router.push("/");
+        const user = await getCurrentUser();
+        queryClient.setQueryData(["currentUser"], user);
+        if (user.role === "TECHNICIAN") {
+          router.push("/dashboard/technician");
+        } else if (user.role === "ADMIN") {
+          router.push("/dashboard/admin");
+        } else {
+          router.push("/");
+        }
       },
       onError: (error) => {
         const message =
