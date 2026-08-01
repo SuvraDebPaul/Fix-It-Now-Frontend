@@ -36,7 +36,7 @@ export default function CustomerPaymentsPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Payment</TableHead>
+                <TableHead>SL No.</TableHead>
                 <TableHead>Service</TableHead>
                 <TableHead>Provider</TableHead>
                 <TableHead>Paid At</TableHead>
@@ -65,10 +65,10 @@ export default function CustomerPaymentsPage() {
                   </TableCell>
                 </TableRow>
               )}
-              {payments?.map((payment) => (
+              {payments?.map((payment, i) => (
                 <TableRow key={payment.id}>
                   <TableCell className="font-mono text-xs text-muted-foreground">
-                    {payment.id}
+                    {i + 1}
                   </TableCell>
                   <TableCell className="font-medium">
                     {payment.service}

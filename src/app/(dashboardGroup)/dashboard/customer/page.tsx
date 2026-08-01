@@ -86,26 +86,30 @@ export default function CustomerOverviewPage() {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="text-center">SL No.</TableHead>
                 <TableHead>Service</TableHead>
                 <TableHead>Technician</TableHead>
                 <TableHead>Schedule</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
+                <TableHead className="text-center">Amount</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {isLoading && (
                 <TableRow>
                   <TableCell
-                    colSpan={5}
+                    colSpan={6}
                     className="text-center text-sm text-muted-foreground"
                   >
                     Loading bookings...
                   </TableCell>
                 </TableRow>
               )}
-              {recentBookings.map((booking) => (
+              {recentBookings.map((booking, i) => (
                 <TableRow key={booking.id}>
+                  <TableCell className="font-mono text-xs text-muted-foreground text-center">
+                    {i + 1}
+                  </TableCell>
                   <TableCell className="font-medium">
                     {booking.service}
                   </TableCell>
@@ -114,7 +118,7 @@ export default function CustomerOverviewPage() {
                   <TableCell>
                     <StatusBadge status={booking.status} />
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-center">
                     ${booking.totalAmount}
                   </TableCell>
                 </TableRow>
@@ -145,7 +149,7 @@ export default function CustomerOverviewPage() {
                 </p>
               </div>
             </div>
-            <Button asChild>
+            <Button asChild className="px-6 py-5">
               <Link href="/services">Browse Services</Link>
             </Button>
           </div>

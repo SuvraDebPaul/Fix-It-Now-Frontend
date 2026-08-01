@@ -84,7 +84,7 @@ export default function CustomerBookingsPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Ticket</TableHead>
+                <TableHead>SL No.</TableHead>
                 <TableHead>Service</TableHead>
                 <TableHead>Technician</TableHead>
                 <TableHead>Schedule</TableHead>
@@ -115,10 +115,10 @@ export default function CustomerBookingsPage() {
                   </TableCell>
                 </TableRow>
               )}
-              {bookings?.map((booking) => (
+              {bookings?.map((booking, i) => (
                 <TableRow key={booking.id}>
                   <TableCell className="font-mono text-xs text-muted-foreground">
-                    {booking.id}
+                    {i + 1}
                   </TableCell>
                   <TableCell className="font-medium">
                     {booking.service}
