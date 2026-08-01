@@ -41,7 +41,9 @@ export default function ContactPage() {
               </div>
               <Input type="email" placeholder="Your Email" />
               <Textarea placeholder="Message Here" rows={5} />
-              <Button type="submit">Let&apos;s Talk</Button>
+              <Button className="px-6 py-5" type="submit">
+                Let&apos;s Talk
+              </Button>
             </form>
 
             <div className="overflow-hidden rounded-lg bg-brand-blue text-white">
@@ -88,8 +90,15 @@ export default function ContactPage() {
             ))}
           </div>
 
-          <div className="mt-8 flex h-64 items-center justify-center rounded-lg border border-dashed border-border bg-card text-sm text-muted-foreground">
-            Interactive map coming soon
+          <div className="mt-8 h-124 overflow-hidden rounded-lg border border-border">
+            <iframe
+              src="https://www.google.com/maps?q=Dhaka,Bangladesh&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
           </div>
         </div>
       </section>

@@ -31,7 +31,7 @@ const footerColumns = [
 export function Footer() {
   return (
     <footer className="mt-24 bg-ink py-12 text-white/60">
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-7xl">
         <div className="mb-10 flex flex-col items-center gap-3 text-center">
           <Link
             href="/"
@@ -47,8 +47,8 @@ export function Footer() {
         </div>
         <div className="grid grid-cols-2 gap-8 border-b border-t border-white/10 py-8 sm:grid-cols-4">
           {footerColumns.map((col) => (
-            <div key={col.title}>
-              <h4 className="mb-3.5 text-[15px] uppercase text-white">
+            <div key={col.title} className="mx-auto">
+              <h4 className="mb-3.5 text-[15px] uppercase text-primary">
                 {col.title}
               </h4>
               {col.links.map((link) => (
@@ -62,17 +62,17 @@ export function Footer() {
               ))}
             </div>
           ))}
-          <div>
-            <h4 className="mb-3.5 text-[15px] uppercase text-white">
+          <div className="mx-auto">
+            <h4 className="mb-3.5 text-[15px] uppercase text-primary">
               Contact
             </h4>
             <p className="py-1 text-sm">support@fixitnow.com</p>
-            <p className="py-1 text-sm">+1 (555) 010-0230</p>
+            <p className="py-1 text-sm">+880 717 010230</p>
           </div>
         </div>
         <div className="flex justify-between pt-5 font-mono text-[13px]">
-          <span>© 2026 FixItNow — Demo UI</span>
-          <span>SVC-DEMO-0001</span>
+          <span>© 2026 FixItNow</span>
+          <span>Your Turested Service Partner</span>
         </div>
       </div>
     </footer>
