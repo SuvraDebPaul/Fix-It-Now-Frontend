@@ -1,3 +1,5 @@
+"use client";
+
 import { ClipboardList } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
@@ -12,9 +14,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatDateTime } from "@/lib/format";
-import { adminBookings } from "../data";
+import { useAdminBookings } from "@/features/admin/hooks/useAdminBookings";
 
 export default function AdminBookingsPage() {
+  const { data: bookings, isLoading } = useAdminBookings();
+
   return (
     <>
       <SiteHeader
@@ -42,7 +46,17 @@ export default function AdminBookingsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {adminBookings.map((booking) => (
+              {isLoading && (
+                <TableRow>
+                  <TableCell
+                    colSpan={7}
+                    className="text-center text-sm text-muted-foreground"
+                  >
+                    Loading bookings...
+                  </TableCell>
+                </TableRow>
+              )}
+              {bookings?.map((booking) => (
                 <TableRow key={booking.id}>
                   <TableCell className="font-mono text-xs text-muted-foreground">
                     {booking.id}
@@ -52,9 +66,7 @@ export default function AdminBookingsPage() {
                   </TableCell>
                   <TableCell>{booking.customer}</TableCell>
                   <TableCell>{booking.technician}</TableCell>
-                  <TableCell>
-                    {formatDateTime(booking.scheduleTime)}
-                  </TableCell>
+                  <TableCell>{formatDateTime(booking.scheduleTime)}</TableCell>
                   <TableCell>
                     <StatusBadge status={booking.status} />
                   </TableCell>
@@ -63,7 +75,7 @@ export default function AdminBookingsPage() {
                   </TableCell>
                 </TableRow>
               ))}
-              {adminBookings.length === 0 && (
+              {!isLoading && bookings?.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={7}>
                     <EmptyState

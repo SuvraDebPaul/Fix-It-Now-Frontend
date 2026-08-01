@@ -20,3 +20,30 @@ export interface AdminUserRow {
   status: UserStatus;
   createdAt: string;
 }
+
+export interface RawAdminBooking {
+  id: string;
+  scheduleTime: string;
+  status:
+    | "REQUESTED"
+    | "ACCEPTED"
+    | "DECLINED"
+    | "PAID"
+    | "IN_PROGRESS"
+    | "COMPLETED"
+    | "CANCELLED";
+  totalAmount: string;
+  service: { title: string };
+  customerProfile: { user: { name: string } };
+  technicianProfile: { user: { name: string } };
+}
+
+export interface AdminBookingRow {
+  id: string;
+  service: string;
+  customer: string;
+  technician: string;
+  scheduleTime: string;
+  status: RawAdminBooking["status"];
+  totalAmount: number;
+}
