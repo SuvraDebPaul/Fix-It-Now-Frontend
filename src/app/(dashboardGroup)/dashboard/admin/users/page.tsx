@@ -1,4 +1,7 @@
+"use client";
+
 import { Users } from "lucide-react";
+import { toast } from "sonner";
 import { EmptyState } from "@/components/dashboard/empty-state";
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
@@ -14,9 +17,33 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatDate } from "@/lib/format";
-import { adminUsers } from "../data";
+import { useAdminUsers } from "@/features/admin/hooks/useAdminUsers";
+import { useUpdateUserStatus } from "@/features/admin/hooks/useUpdateUserStatus";
 
 export default function AdminUsersPage() {
+  const { data: users, isLoading } = useAdminUsers();
+  const { mutate, isPending, variables } = useUpdateUserStatus();
+
+  function toggleStatus(id: string, currentStatus: "ACTIVE" | "BLOCKED") {
+    const nextStatus = currentStatus === "ACTIVE" ? "BLOCKED" : "ACTIVE";
+    mutate(
+      { id, status: nextStatus },
+      {
+        onSuccess: () => {
+          toast.success(
+            nextStatus === "BLOCKED" ? "User blocked" : "User unblocked",
+          );
+        },
+        onError: (error) => {
+          const message =
+            error.response?.data?.message ??
+            "Couldn't update user status. Please try again.";
+          toast.error(message);
+        },
+      },
+    );
+  }
+
   return (
     <>
       <SiteHeader
@@ -43,7 +70,17 @@ export default function AdminUsersPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {adminUsers.map((user) => (
+              {isLoading && (
+                <TableRow>
+                  <TableCell
+                    colSpan={6}
+                    className="text-center text-sm text-muted-foreground"
+                  >
+                    Loading users...
+                  </TableCell>
+                </TableRow>
+              )}
+              {users?.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell className="font-medium">{user.name}</TableCell>
                   <TableCell className="text-muted-foreground">
@@ -54,25 +91,27 @@ export default function AdminUsersPage() {
                       {user.role.toLowerCase()}
                     </Badge>
                   </TableCell>
-                  <TableCell>
-                    {formatDate(user.createdAt)}
-                  </TableCell>
+                  <TableCell>{formatDate(user.createdAt)}</TableCell>
                   <TableCell>
                     <StatusBadge status={user.status} />
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button
-                      size="sm"
-                      variant={
-                        user.status === "ACTIVE" ? "outline" : "default"
-                      }
-                    >
-                      {user.status === "ACTIVE" ? "Block" : "Unblock"}
-                    </Button>
+                    {user.role !== "ADMIN" && (
+                      <Button
+                        size="sm"
+                        variant={
+                          user.status === "ACTIVE" ? "outline" : "default"
+                        }
+                        disabled={isPending && variables?.id === user.id}
+                        onClick={() => toggleStatus(user.id, user.status)}
+                      >
+                        {user.status === "ACTIVE" ? "Block" : "Unblock"}
+                      </Button>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
-              {adminUsers.length === 0 && (
+              {!isLoading && users?.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={6}>
                     <EmptyState
