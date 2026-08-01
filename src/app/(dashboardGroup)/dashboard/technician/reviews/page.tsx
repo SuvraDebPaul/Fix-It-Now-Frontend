@@ -1,3 +1,5 @@
+"use client";
+
 import { Star } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
@@ -5,15 +7,21 @@ import { SiteHeader } from "@/components/dashboard/site-header";
 import { StarRating } from "@/components/shared/star-rating";
 import { Card, CardContent } from "@/components/ui/card";
 import { StatCard } from "@/components/dashboard/stat-card";
-import { technicianReviews } from "../data";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { useTechnicianProfileById } from "@/features/technicians/hooks/useTechnicianProfileById";
 
 export default function TechnicianReviewsPage() {
+  const { data: user } = useCurrentUser();
+  const { data: profile, isLoading } = useTechnicianProfileById(
+    user?.technicianProfile?.id,
+  );
+
+  const reviews = profile?.reviews ?? [];
   const averageRating =
-    technicianReviews.length === 0
+    reviews.length === 0
       ? "—"
       : (
-          technicianReviews.reduce((sum, r) => sum + r.rating, 0) /
-          technicianReviews.length
+          reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
         ).toFixed(1);
 
   return (
@@ -34,11 +42,15 @@ export default function TechnicianReviewsPage() {
             label="Average Rating"
             value={`${averageRating} / 5`}
             icon={Star}
-            hint={`Across ${technicianReviews.length} reviews`}
+            hint={`Across ${reviews.length} reviews`}
           />
         </div>
 
-        {technicianReviews.length === 0 && (
+        {isLoading && (
+          <p className="text-sm text-muted-foreground">Loading...</p>
+        )}
+
+        {!isLoading && reviews.length === 0 && (
           <EmptyState
             icon={Star}
             title="No reviews yet"
@@ -47,16 +59,11 @@ export default function TechnicianReviewsPage() {
         )}
 
         <div className="grid grid-cols-1 gap-3">
-          {technicianReviews.map((review) => (
-            <Card key={review.id}>
+          {reviews.map((review, i) => (
+            <Card key={i}>
               <CardContent className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <p className="font-medium">
-                    {review.service}{" "}
-                    <span className="font-normal text-muted-foreground">
-                      · {review.customer}
-                    </span>
-                  </p>
+                  <p className="font-medium">{review.customer}</p>
                   <StarRating rating={review.rating} />
                 </div>
                 <p className="text-sm text-muted-foreground">

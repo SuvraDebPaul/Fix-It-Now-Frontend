@@ -172,7 +172,7 @@ export default async function ServiceDetailsPage({
                   asChild
                   className="w-full bg-ink text-white hover:bg-ink/90"
                 >
-                  <Link href={`/book/${service.id}`}>Book Now</Link>
+                  <Link href={`/booking/${service.id}`}>Book Now</Link>
                 </Button>
               </div>
             </div>

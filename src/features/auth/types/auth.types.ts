@@ -19,6 +19,19 @@ export interface User {
   status: "ACTIVE" | "BLOCKED";
   createdAt: string;
   updatedAt: string;
+  technicianProfile?: {
+    id: string;
+    profilePhoto: string | null;
+    bio: string;
+    experience: number;
+    location: string;
+    phone: string;
+    hourlyRate: number;
+    isAvailable: boolean;
+    averageRating: number;
+    totalReviews: number;
+    availability: RawAvailabilitySlot[];
+  } | null;
 }
 
 export type AuthResponse = User;
@@ -32,4 +45,19 @@ export type LoginPayload = LoginFormValues;
 export interface LoginResponse {
   accessToken: string;
   refreshToken: string;
+}
+
+export interface RawAvailabilitySlot {
+  id: string;
+  day:
+    | "SATURDAY"
+    | "SUNDAY"
+    | "MONDAY"
+    | "TUESDAY"
+    | "WEDNESDAY"
+    | "THURSDAY"
+    | "FRIDAY";
+  startTime: string;
+  endTime: string;
+  isActive: boolean;
 }

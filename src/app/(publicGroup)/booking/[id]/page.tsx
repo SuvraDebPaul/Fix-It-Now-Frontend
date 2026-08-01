@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { MapPin, Star } from "lucide-react";
 import { UserAvatar } from "@/components/shared/user-avatar";
 import { PageHero } from "@/components/shared/page-hero";
-import { technicianIdFromName } from "../../technicians/data";
 import { BookingForm } from "../../../../features/booking/components/booking-form";
 import { getServiceById } from "@/features/services/api/services.api";
 
@@ -67,7 +66,7 @@ export default async function BookServicePage({
               />
               <div>
                 <Link
-                  href={`/technicians/${technicianIdFromName(service.technician.name)}`}
+                  href={`/technicians/${service.technician.id}`}
                   className="text-sm font-medium hover:text-primary"
                 >
                   {service.technician.name}

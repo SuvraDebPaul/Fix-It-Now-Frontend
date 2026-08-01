@@ -1,5 +1,6 @@
 import { api } from "@/lib/axios";
 import {
+  AvailabilitySlotInput,
   BookingStatus,
   CreateServicePayload,
   RawTechnicianBooking,
@@ -7,6 +8,7 @@ import {
   TechnicianBookingRow,
   TechnicianCard,
   TechnicianProfile,
+  UpdateTechnicianProfilePayload,
 } from "../types/technicians.types";
 import { getAllServices } from "@/features/services/api/services.api";
 
@@ -95,5 +97,17 @@ export const createTechnicianService = async (
   payload: CreateServicePayload,
 ) => {
   const { data } = await api.post("/technicians/services", payload);
+  return data.data;
+};
+
+export const updateAvailability = async (slots: AvailabilitySlotInput[]) => {
+  const { data } = await api.put("/technician/availability", { slots });
+  return data.data;
+};
+
+export const updateTechnicianProfile = async (
+  payload: UpdateTechnicianProfilePayload,
+) => {
+  const { data } = await api.put("/technician/profile", payload);
   return data.data;
 };

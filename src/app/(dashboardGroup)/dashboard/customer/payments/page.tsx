@@ -1,3 +1,5 @@
+"use client";
+
 import { CreditCard } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
@@ -12,9 +14,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatDateTime } from "@/lib/format";
-import { customerPayments } from "../data";
+import { useMyPayments } from "@/features/payments/hooks/useMyPayments";
 
 export default function CustomerPaymentsPage() {
+  const { data: payments, isLoading, isError } = useMyPayments();
+
   return (
     <>
       <SiteHeader
@@ -41,7 +45,27 @@ export default function CustomerPaymentsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {customerPayments.map((payment) => (
+              {isLoading && (
+                <TableRow>
+                  <TableCell
+                    colSpan={6}
+                    className="text-center text-sm text-muted-foreground"
+                  >
+                    Loading payments...
+                  </TableCell>
+                </TableRow>
+              )}
+              {isError && (
+                <TableRow>
+                  <TableCell
+                    colSpan={6}
+                    className="text-center text-sm text-destructive"
+                  >
+                    Couldn&apos;t load payments. Please refresh.
+                  </TableCell>
+                </TableRow>
+              )}
+              {payments?.map((payment) => (
                 <TableRow key={payment.id}>
                   <TableCell className="font-mono text-xs text-muted-foreground">
                     {payment.id}
@@ -63,7 +87,7 @@ export default function CustomerPaymentsPage() {
                   </TableCell>
                 </TableRow>
               ))}
-              {customerPayments.length === 0 && (
+              {!isLoading && payments?.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={6}>
                     <EmptyState

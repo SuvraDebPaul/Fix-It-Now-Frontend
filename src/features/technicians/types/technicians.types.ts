@@ -125,3 +125,20 @@ export interface CreateServicePayload {
   description: string;
   price: number;
 }
+
+export interface AvailabilitySlotInput {
+  day: string;
+  startTime: string;
+  endTime: string;
+  isActive: boolean;
+}
+
+export interface UpdateTechnicianProfilePayload {
+  profilePhoto?: string;
+  bio?: string;
+  experience?: number;
+  location?: string;
+  phone?: string;
+  hourlyRate?: number;
+  isAvailable?: boolean;
+}
