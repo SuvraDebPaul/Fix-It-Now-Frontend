@@ -18,6 +18,8 @@ function mapAdminUser(raw: RawAdminUser): AdminUserRow {
     role: raw.role,
     status: raw.status,
     createdAt: raw.createdAt,
+    customerProfile: raw.customerProfile,
+    technicianProfile: raw.technicianProfile,
   };
 }
 
@@ -30,6 +32,10 @@ function mapAdminBooking(raw: RawAdminBooking): AdminBookingRow {
     scheduleTime: raw.scheduleTime,
     status: raw.status,
     totalAmount: Number(raw.totalAmount),
+    cancelReason: raw.cancelReason,
+    paymentStatus: raw.payment?.status ?? null,
+    reviewRating: raw.review?.rating ?? null,
+    reviewComment: raw.review?.comment ?? null,
   };
 }
 

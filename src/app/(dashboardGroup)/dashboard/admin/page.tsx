@@ -7,6 +7,7 @@ import {
   Tags,
   Users,
   Wrench,
+  CreditCard,
 } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
@@ -40,6 +41,9 @@ export default function AdminOverviewPage() {
     (u) => u.role === "TECHNICIAN",
   ).length;
   const activeCategories = allCategories.filter((c) => c.isActive).length;
+  const totalRevenue = allBookings
+    .filter((b) => b.paymentStatus === "COMPLETED")
+    .reduce((sum, b) => sum + b.totalAmount, 0);
 
   const recentBookings = allBookings.slice(0, 5);
 
@@ -52,7 +56,7 @@ export default function AdminOverviewPage() {
           description="A snapshot of everything happening on FixItNow."
         />
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
           <StatCard
             label="Customers"
             value={String(totalCustomers)}
@@ -72,6 +76,12 @@ export default function AdminOverviewPage() {
             label="Active Categories"
             value={String(activeCategories)}
             icon={Tags}
+          />
+          <StatCard
+            label="Platform Revenue"
+            value={`$${totalRevenue}`}
+            icon={CreditCard}
+            hint="From completed payments"
           />
         </div>
 

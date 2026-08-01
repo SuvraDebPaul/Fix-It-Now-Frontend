@@ -1,6 +1,6 @@
 "use client";
 
-import { ClipboardList } from "lucide-react";
+import { ClipboardList, Star } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
@@ -36,12 +36,14 @@ export default function AdminBookingsPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Ticket</TableHead>
+                <TableHead>SL No.</TableHead>
                 <TableHead>Service</TableHead>
                 <TableHead>Customer</TableHead>
                 <TableHead>Technician</TableHead>
                 <TableHead>Schedule</TableHead>
                 <TableHead>Status</TableHead>
+                <TableHead>Payment</TableHead>
+                <TableHead>Review</TableHead>
                 <TableHead className="text-right">Amount</TableHead>
               </TableRow>
             </TableHeader>
@@ -49,17 +51,17 @@ export default function AdminBookingsPage() {
               {isLoading && (
                 <TableRow>
                   <TableCell
-                    colSpan={7}
+                    colSpan={9}
                     className="text-center text-sm text-muted-foreground"
                   >
                     Loading bookings...
                   </TableCell>
                 </TableRow>
               )}
-              {bookings?.map((booking) => (
+              {bookings?.map((booking, i) => (
                 <TableRow key={booking.id}>
                   <TableCell className="font-mono text-xs text-muted-foreground">
-                    {booking.id}
+                    {i + 1}
                   </TableCell>
                   <TableCell className="font-medium">
                     {booking.service}
@@ -70,6 +72,23 @@ export default function AdminBookingsPage() {
                   <TableCell>
                     <StatusBadge status={booking.status} />
                   </TableCell>
+                  <TableCell>
+                    {booking.paymentStatus ? (
+                      <StatusBadge status={booking.paymentStatus} />
+                    ) : (
+                      <span className="text-xs text-muted-foreground">—</span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {booking.reviewRating ? (
+                      <span className="flex items-center gap-1 text-sm">
+                        <Star className="h-3.5 w-3.5 fill-primary text-primary" />
+                        {booking.reviewRating}
+                      </span>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">—</span>
+                    )}
+                  </TableCell>
                   <TableCell className="text-right">
                     ${booking.totalAmount}
                   </TableCell>
@@ -77,7 +96,7 @@ export default function AdminBookingsPage() {
               ))}
               {!isLoading && bookings?.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={7}>
+                  <TableCell colSpan={9}>
                     <EmptyState
                       icon={ClipboardList}
                       title="No bookings yet"
