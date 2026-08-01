@@ -1,5 +1,13 @@
+"use client";
+
 import Link from "next/link";
-import { CalendarCheck, ClipboardList, CreditCard, Star, Wrench } from "lucide-react";
+import {
+  CalendarCheck,
+  ClipboardList,
+  CreditCard,
+  Star,
+  Wrench,
+} from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
@@ -15,18 +23,28 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatDateTime } from "@/lib/format";
-import { customerBookings } from "./data";
+import { useMyBookings } from "@/features/booking/hooks/useMyBookings";
 
 export default function CustomerOverviewPage() {
-  const activeBookings = customerBookings.filter((b) =>
+  const { data: bookings, isLoading } = useMyBookings();
+  const allBookings = bookings ?? [];
+
+  const activeBookings = allBookings.filter((b) =>
     ["REQUESTED", "ACCEPTED", "PAID", "IN_PROGRESS"].includes(b.status),
   ).length;
-  const completedBookings = customerBookings.filter(
+  const completedBookings = allBookings.filter(
     (b) => b.status === "COMPLETED",
   ).length;
-  const totalSpent = customerBookings
+  const totalSpent = allBookings
     .filter((b) => ["PAID", "IN_PROGRESS", "COMPLETED"].includes(b.status))
     .reduce((sum, b) => sum + b.totalAmount, 0);
+
+  const recentBookings = [...allBookings]
+    .sort(
+      (a, b) =>
+        new Date(b.scheduleTime).getTime() - new Date(a.scheduleTime).getTime(),
+    )
+    .slice(0, 4);
 
   return (
     <>
@@ -76,15 +94,23 @@ export default function CustomerOverviewPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {customerBookings.slice(0, 4).map((booking) => (
+              {isLoading && (
+                <TableRow>
+                  <TableCell
+                    colSpan={5}
+                    className="text-center text-sm text-muted-foreground"
+                  >
+                    Loading bookings...
+                  </TableCell>
+                </TableRow>
+              )}
+              {recentBookings.map((booking) => (
                 <TableRow key={booking.id}>
                   <TableCell className="font-medium">
                     {booking.service}
                   </TableCell>
-                  <TableCell>{booking.technician}</TableCell>
-                  <TableCell>
-                    {formatDateTime(booking.scheduleTime)}
-                  </TableCell>
+                  <TableCell>{booking.technicain}</TableCell>
+                  <TableCell>{formatDateTime(booking.scheduleTime)}</TableCell>
                   <TableCell>
                     <StatusBadge status={booking.status} />
                   </TableCell>
@@ -93,7 +119,7 @@ export default function CustomerOverviewPage() {
                   </TableCell>
                 </TableRow>
               ))}
-              {customerBookings.length === 0 && (
+              {!isLoading && recentBookings.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={5}>
                     <EmptyState

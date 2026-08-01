@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { CalendarCheck, ClipboardList, CreditCard, Star } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/empty-state";
@@ -15,25 +17,33 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatDateTime } from "@/lib/format";
-import { technicianBookings, technicianReviews } from "./data";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { useTechnicianBookings } from "@/features/technicians/hooks/useTechnicianBookings";
 
 export default function TechnicianOverviewPage() {
-  const activeBookings = technicianBookings.filter((b) =>
+  const { data: user } = useCurrentUser();
+  const { data: bookings, isLoading } = useTechnicianBookings();
+  const allBookings = bookings ?? [];
+
+  const activeBookings = allBookings.filter((b) =>
     ["ACCEPTED", "PAID", "IN_PROGRESS"].includes(b.status),
   ).length;
-  const pendingRequests = technicianBookings.filter(
+  const pendingRequests = allBookings.filter(
     (b) => b.status === "REQUESTED",
   ).length;
-  const earnings = technicianBookings
+  const earnings = allBookings
     .filter((b) => b.status === "COMPLETED")
     .reduce((sum, b) => sum + b.totalAmount, 0);
-  const averageRating =
-    technicianReviews.length === 0
-      ? "—"
-      : (
-          technicianReviews.reduce((sum, r) => sum + r.rating, 0) /
-          technicianReviews.length
-        ).toFixed(1);
+
+  const averageRating = user?.technicianProfile?.averageRating ?? 0;
+  const totalReviews = user?.technicianProfile?.totalReviews ?? 0;
+
+  const recentBookings = [...allBookings]
+    .sort(
+      (a, b) =>
+        new Date(b.scheduleTime).getTime() - new Date(a.scheduleTime).getTime(),
+    )
+    .slice(0, 4);
 
   return (
     <>
@@ -69,9 +79,9 @@ export default function TechnicianOverviewPage() {
           />
           <StatCard
             label="Average Rating"
-            value={`${averageRating} / 5`}
+            value={`${averageRating.toFixed(1)} / 5`}
             icon={Star}
-            hint={`${technicianReviews.length} reviews`}
+            hint={`${totalReviews} reviews`}
           />
         </div>
 
@@ -93,15 +103,23 @@ export default function TechnicianOverviewPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {technicianBookings.slice(0, 4).map((booking) => (
+              {isLoading && (
+                <TableRow>
+                  <TableCell
+                    colSpan={5}
+                    className="text-center text-sm text-muted-foreground"
+                  >
+                    Loading bookings...
+                  </TableCell>
+                </TableRow>
+              )}
+              {recentBookings.map((booking) => (
                 <TableRow key={booking.id}>
                   <TableCell className="font-medium">
                     {booking.service}
                   </TableCell>
                   <TableCell>{booking.customer}</TableCell>
-                  <TableCell>
-                    {formatDateTime(booking.scheduleTime)}
-                  </TableCell>
+                  <TableCell>{formatDateTime(booking.scheduleTime)}</TableCell>
                   <TableCell>
                     <StatusBadge status={booking.status} />
                   </TableCell>
@@ -110,7 +128,7 @@ export default function TechnicianOverviewPage() {
                   </TableCell>
                 </TableRow>
               ))}
-              {technicianBookings.length === 0 && (
+              {!isLoading && recentBookings.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={5}>
                     <EmptyState
