@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/table";
 import { useAdminCategories } from "@/features/admin/hooks/useAdminCategories";
 import { useCreateCategory } from "@/features/admin/hooks/useCreateCategory";
+import { TableRowsSkeleton } from "@/components/dashboard/loading-skeletons";
 
 const categorySchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -135,16 +136,7 @@ export default function AdminCategoriesPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {isLoading && (
-                <TableRow>
-                  <TableCell
-                    colSpan={4}
-                    className="text-center text-sm text-muted-foreground"
-                  >
-                    Loading categories...
-                  </TableCell>
-                </TableRow>
-              )}
+              {isLoading && <TableRowsSkeleton columns={4} />}
               {categories?.map((category) => (
                 <TableRow key={category.id}>
                   <TableCell className="font-medium">{category.name}</TableCell>

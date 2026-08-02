@@ -8,6 +8,7 @@ import { StarRating } from "@/components/shared/star-rating";
 import { Card, CardContent } from "@/components/ui/card";
 import { useMyBookings } from "@/features/booking/hooks/useMyBookings";
 import { LeaveReviewDialog } from "./leave-review-dialog";
+import { CardListSkeleton } from "@/components/dashboard/loading-skeletons";
 
 export default function CustomerReviewsPage() {
   const { data: bookings, isLoading } = useMyBookings();
@@ -32,9 +33,7 @@ export default function CustomerReviewsPage() {
           description="Feedback you've left for completed jobs."
         />
 
-        {isLoading && (
-          <p className="text-sm text-muted-foreground">Loading...</p>
-        )}
+        {isLoading && <CardListSkeleton />}
 
         {pendingReview.length > 0 && (
           <div>

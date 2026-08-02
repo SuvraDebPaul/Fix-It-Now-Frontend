@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/table";
 import { formatDateTime } from "@/lib/format";
 import { useAdminBookings } from "@/features/admin/hooks/useAdminBookings";
+import { TableRowsSkeleton } from "@/components/dashboard/loading-skeletons";
 
 export default function AdminBookingsPage() {
   const { data: bookings, isLoading } = useAdminBookings();
@@ -48,16 +49,7 @@ export default function AdminBookingsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {isLoading && (
-                <TableRow>
-                  <TableCell
-                    colSpan={9}
-                    className="text-center text-sm text-muted-foreground"
-                  >
-                    Loading bookings...
-                  </TableCell>
-                </TableRow>
-              )}
+              {isLoading && <TableRowsSkeleton columns={9} />}
               {bookings?.map((booking, i) => (
                 <TableRow key={booking.id}>
                   <TableCell className="font-mono text-xs text-muted-foreground">

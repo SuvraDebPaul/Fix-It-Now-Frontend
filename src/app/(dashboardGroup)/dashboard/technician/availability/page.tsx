@@ -12,6 +12,7 @@ import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { useUpdateAvailability } from "@/features/technicians/hooks/useUpdateAvailability";
 import { AvailabilitySlotInput } from "@/features/technicians/types/technicians.types";
 import type { User } from "@/features/auth/types/auth.types";
+import { AvailabilityRowsSkeleton } from "@/components/dashboard/loading-skeletons";
 
 const DAYS: { value: string; label: string }[] = [
   { value: "MONDAY", label: "Monday" },
@@ -141,9 +142,7 @@ export default function TechnicianAvailabilityPage() {
           description="Set the hours customers can book you, day by day."
         />
 
-        {isLoading && (
-          <p className="text-sm text-muted-foreground">Loading...</p>
-        )}
+        {isLoading && <AvailabilityRowsSkeleton />}
         {!isLoading && user && <AvailabilityForm key={user.id} user={user} />}
       </div>
     </>

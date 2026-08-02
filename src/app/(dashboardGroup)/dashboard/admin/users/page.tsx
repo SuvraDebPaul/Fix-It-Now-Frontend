@@ -27,6 +27,7 @@ import { formatDate } from "@/lib/format";
 import { useAdminUsers } from "@/features/admin/hooks/useAdminUsers";
 import { useUpdateUserStatus } from "@/features/admin/hooks/useUpdateUserStatus";
 import type { AdminUserRow } from "@/features/admin/types/admin.types";
+import { TableRowsSkeleton } from "@/components/dashboard/loading-skeletons";
 
 export default function AdminUsersPage() {
   const { data: users, isLoading } = useAdminUsers();
@@ -79,16 +80,7 @@ export default function AdminUsersPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {isLoading && (
-                <TableRow>
-                  <TableCell
-                    colSpan={6}
-                    className="text-center text-sm text-muted-foreground"
-                  >
-                    Loading users...
-                  </TableCell>
-                </TableRow>
-              )}
+              {isLoading && <TableRowsSkeleton columns={6} />}
               {users?.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell className="font-medium">

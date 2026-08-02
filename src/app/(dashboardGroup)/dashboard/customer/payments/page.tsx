@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/table";
 import { formatDateTime } from "@/lib/format";
 import { useMyPayments } from "@/features/payments/hooks/useMyPayments";
+import { TableRowsSkeleton } from "@/components/dashboard/loading-skeletons";
 
 export default function CustomerPaymentsPage() {
   const { data: payments, isLoading, isError } = useMyPayments();
@@ -45,16 +46,7 @@ export default function CustomerPaymentsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {isLoading && (
-                <TableRow>
-                  <TableCell
-                    colSpan={6}
-                    className="text-center text-sm text-muted-foreground"
-                  >
-                    Loading payments...
-                  </TableCell>
-                </TableRow>
-              )}
+              {isLoading && <TableRowsSkeleton columns={6} />}
               {isError && (
                 <TableRow>
                   <TableCell

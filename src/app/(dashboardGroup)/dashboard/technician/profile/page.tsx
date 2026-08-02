@@ -17,6 +17,7 @@ import { getInitials } from "@/lib/utils";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { useUpdateTechnicianProfile } from "@/features/technicians/hooks/useUpdateTechnicianProfile";
 import type { User } from "@/features/auth/types/auth.types";
+import { ProfileCardSkeleton } from "@/components/dashboard/loading-skeletons";
 
 const profileSchema = z.object({
   phone: z.string().min(1, "Phone is required"),
@@ -177,9 +178,7 @@ export default function TechnicianProfilePage() {
           description="How customers see you when browsing technicians."
         />
 
-        {isLoading && (
-          <p className="text-sm text-muted-foreground">Loading...</p>
-        )}
+        {isLoading && <ProfileCardSkeleton />}
         {!isLoading && user?.technicianProfile && (
           <ProfileForm key={user.id} user={user} />
         )}

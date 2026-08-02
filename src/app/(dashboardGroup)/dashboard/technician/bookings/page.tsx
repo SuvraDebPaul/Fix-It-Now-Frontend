@@ -19,6 +19,7 @@ import { formatDateTime } from "@/lib/format";
 import { useTechnicianBookings } from "@/features/technicians/hooks/useTechnicianBookings";
 import { useUpdateBookingStatus } from "@/features/technicians/hooks/useUpdateBookingStatus";
 import type { TechnicianBookingRow } from "@/features/technicians/types/technicians.types";
+import { TableRowsSkeleton } from "@/components/dashboard/loading-skeletons";
 
 function BookingActions({ booking }: { booking: TechnicianBookingRow }) {
   const { mutate, isPending } = useUpdateBookingStatus();
@@ -130,16 +131,7 @@ export default function TechnicianBookingsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {isLoading && (
-                <TableRow>
-                  <TableCell
-                    colSpan={8}
-                    className="text-center text-sm text-muted-foreground"
-                  >
-                    Loading bookings...
-                  </TableCell>
-                </TableRow>
-              )}
+              {isLoading && <TableRowsSkeleton columns={8} />}
               {isError && (
                 <TableRow>
                   <TableCell

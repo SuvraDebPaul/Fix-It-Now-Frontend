@@ -20,6 +20,7 @@ import { useCreatePayment } from "@/features/payments/hooks/useCreatePayment";
 import { CustomerBookingRow } from "@/features/booking/types/bookings.types";
 import { CancelBookingDialog } from "@/features/booking/components/cancel-booking-dialog";
 import { useMyBookings } from "@/features/booking/hooks/useMyBookings";
+import { TableRowsSkeleton } from "@/components/dashboard/loading-skeletons";
 
 function PayNowButton({ bookingId }: { bookingId: string }) {
   const { mutate, isPending } = useCreatePayment();
@@ -95,16 +96,7 @@ export default function CustomerBookingsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {isLoading && (
-                <TableRow>
-                  <TableCell
-                    colSpan={8}
-                    className="text-center text-sm text-muted-foreground"
-                  >
-                    Loading bookings...
-                  </TableCell>
-                </TableRow>
-              )}
+              {isLoading && <TableRowsSkeleton columns={8} />}
               {isError && (
                 <TableRow>
                   <TableCell

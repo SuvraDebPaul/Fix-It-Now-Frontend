@@ -13,6 +13,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { BookingFormValues, bookingSchema } from "../schemas/booking.schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface BookingFormProps {
   serviceId: string;
@@ -86,7 +87,7 @@ export function BookingForm({
 
   return (
     <>
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <Skeleton className="h-5 w-48" />}
       {!isLoading && (isError || !user) && (
         <div className="mt-4 flex items-start gap-2 rounded-lg border border-primary/30 bg-primary/10 p-4 text-sm">
           <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" />

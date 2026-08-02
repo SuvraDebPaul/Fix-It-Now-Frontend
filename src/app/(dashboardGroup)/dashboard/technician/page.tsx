@@ -19,6 +19,7 @@ import {
 import { formatDateTime } from "@/lib/format";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { useTechnicianBookings } from "@/features/technicians/hooks/useTechnicianBookings";
+import { TableRowsSkeleton } from "@/components/dashboard/loading-skeletons";
 
 export default function TechnicianOverviewPage() {
   const { data: user } = useCurrentUser();
@@ -103,16 +104,7 @@ export default function TechnicianOverviewPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {isLoading && (
-                <TableRow>
-                  <TableCell
-                    colSpan={5}
-                    className="text-center text-sm text-muted-foreground"
-                  >
-                    Loading bookings...
-                  </TableCell>
-                </TableRow>
-              )}
+              {isLoading && <TableRowsSkeleton columns={5} />}
               {recentBookings.map((booking) => (
                 <TableRow key={booking.id}>
                   <TableCell className="font-medium">

@@ -16,6 +16,7 @@ import {
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { useMyServices } from "@/features/technicians/hooks/useMyServices";
 import { AddServiceDialog } from "./add-service-dialog";
+import { TableRowsSkeleton } from "@/components/dashboard/loading-skeletons";
 
 export default function TechnicianServicesPage() {
   const { data: user } = useCurrentUser();
@@ -47,16 +48,7 @@ export default function TechnicianServicesPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {isLoading && (
-                <TableRow>
-                  <TableCell
-                    colSpan={5}
-                    className="text-center text-sm text-muted-foreground"
-                  >
-                    Loading services...
-                  </TableCell>
-                </TableRow>
-              )}
+              {isLoading && <TableRowsSkeleton columns={5} />}
               {isError && (
                 <TableRow>
                   <TableCell

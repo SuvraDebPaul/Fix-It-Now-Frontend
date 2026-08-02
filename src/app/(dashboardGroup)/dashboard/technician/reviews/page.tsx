@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { useTechnicianProfileById } from "@/features/technicians/hooks/useTechnicianProfileById";
+import { CardListSkeleton } from "@/components/dashboard/loading-skeletons";
 
 export default function TechnicianReviewsPage() {
   const { data: user } = useCurrentUser();
@@ -46,9 +47,7 @@ export default function TechnicianReviewsPage() {
           />
         </div>
 
-        {isLoading && (
-          <p className="text-sm text-muted-foreground">Loading...</p>
-        )}
+        {isLoading && <CardListSkeleton />}
 
         {!isLoading && reviews.length === 0 && (
           <EmptyState
