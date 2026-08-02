@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/table";
 import { formatDateTime } from "@/lib/format";
 import { useMyBookings } from "@/features/booking/hooks/useMyBookings";
+import { TableRowsSkeleton } from "@/components/dashboard/loading-skeletons";
 
 export default function CustomerOverviewPage() {
   const { data: bookings, isLoading } = useMyBookings();
@@ -95,16 +96,7 @@ export default function CustomerOverviewPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {isLoading && (
-                <TableRow>
-                  <TableCell
-                    colSpan={6}
-                    className="text-center text-sm text-muted-foreground"
-                  >
-                    Loading bookings...
-                  </TableCell>
-                </TableRow>
-              )}
+              {isLoading && <TableRowsSkeleton columns={6} />}
               {recentBookings.map((booking, i) => (
                 <TableRow key={booking.id}>
                   <TableCell className="font-mono text-xs text-muted-foreground text-center">

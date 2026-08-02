@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { getInitials } from "@/lib/utils";
 import { formatDate } from "@/lib/format";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { ProfileCardSkeleton } from "@/components/dashboard/loading-skeletons";
 
 export default function AdminProfilePage() {
   const { data: user, isLoading } = useCurrentUser();
@@ -27,9 +28,7 @@ export default function AdminProfilePage() {
           description="Your admin account details."
         />
 
-        {isLoading && (
-          <p className="text-sm text-muted-foreground">Loading...</p>
-        )}
+        {isLoading && <ProfileCardSkeleton />}
         {!isLoading && user && (
           <Card className="max-w-2xl">
             <CardHeader className="flex-row items-center gap-4">
