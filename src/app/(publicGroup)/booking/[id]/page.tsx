@@ -50,6 +50,7 @@ export default async function BookServicePage({
                 src={service.image}
                 alt={service.title}
                 fill
+                sizes="(min-width: 1024px) 320px, 100vw"
                 className="object-cover"
               />
             </div>

@@ -57,6 +57,7 @@ export default async function TechnicianProfilePage({
                 src={technician.image}
                 alt={technician.name}
                 fill
+                sizes="128px"
                 className="object-cover"
               />
             </div>

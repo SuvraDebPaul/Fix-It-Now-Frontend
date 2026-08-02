@@ -1,17 +1,12 @@
+import type { BookingStatus } from "@/types/booking-status";
+
+export type { BookingStatus };
+
 export interface CreateBookingPayload {
   serviceId: string;
   scheduleTime: string;
   address: string;
 }
-
-export type BookingStatus =
-  | "REQUESTED"
-  | "ACCEPTED"
-  | "DECLINED"
-  | "PAID"
-  | "IN_PROGRESS"
-  | "COMPLETED"
-  | "CANCELLED";
 
 export interface Booking {
   id: string;
@@ -41,7 +36,7 @@ export interface RawBookingWithRelations {
 export interface CustomerBookingRow {
   id: string;
   service: string;
-  technicain: string;
+  technician: string;
   scheduleTime: string;
   address: string;
   totalAmount: number;

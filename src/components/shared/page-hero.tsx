@@ -9,7 +9,14 @@ interface PageHeroProps {
 export function PageHero({ title, image }: PageHeroProps) {
   return (
     <section className="relative flex h-64 items-end overflow-hidden text-white">
-      <Image src={image} alt={title} fill priority className="object-cover" />
+      <Image
+        src={image}
+        alt={title}
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
+      />
       <div className="absolute inset-0 bg-ink/75" />
       <div className="relative mx-auto w-full max-w-7xl px-6 pb-8">
         <h1 className="font-display text-4xl uppercase">{title}</h1>

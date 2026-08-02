@@ -17,6 +17,7 @@ import { useLogin } from "../hooks/useLogin";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { getCurrentUser } from "../api/auth.api";
+import { getApiErrorMessage } from "@/lib/utils";
 
 export function LoginForm() {
   const router = useRouter();
@@ -47,8 +48,7 @@ export function LoginForm() {
         }
       },
       onError: (error) => {
-        const message =
-          error.response?.data?.message ?? "Invalid email or password.";
+        const message = getApiErrorMessage(error, "Invalid email or password.");
         toast.error(message);
         setError("root", { message });
       },

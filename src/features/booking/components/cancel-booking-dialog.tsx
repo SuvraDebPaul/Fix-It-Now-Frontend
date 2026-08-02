@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
 import { useCancelBookings } from "../hooks/useCancelBooking";
+import { getApiErrorMessage } from "@/lib/utils";
 
 interface CancelBookingDialogProps {
   bookingId: string;
@@ -40,9 +41,10 @@ export function CancelBookingDialog({
           setOpen(false);
         },
         onError: (error) => {
-          const message =
-            error.response?.data?.message ??
-            "Couldn't cancel this booking. Please try again";
+          const message = getApiErrorMessage(
+            error,
+            "Couldn't cancel this booking. Please try again",
+          );
           toast.error(message);
         },
       },

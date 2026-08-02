@@ -206,6 +206,7 @@ export function ServicesExplorer({ services }: ServicesExplorerProps) {
                     src={service.image}
                     alt={service.title}
                     fill
+                    sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw"
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                   <Badge className="absolute top-3 left-3 border-transparent bg-ink text-white">

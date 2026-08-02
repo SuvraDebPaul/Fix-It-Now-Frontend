@@ -26,6 +26,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { getAllCategories } from "@/features/services/api/services.api";
 import { useCreateService } from "@/features/technicians/hooks/useCreateService";
+import { getApiErrorMessage } from "@/lib/utils";
 
 export function AddServiceDialog() {
   const [open, setOpen] = useState(false);
@@ -55,9 +56,10 @@ export function AddServiceDialog() {
           setPrice("");
         },
         onError: (error) => {
-          const message =
-            error.response?.data?.message ??
-            "Couldn't add this service. Please try again.";
+          const message = getApiErrorMessage(
+            error,
+            "Couldn't add this service. Please try again.",
+          );
           toast.error(message);
         },
       },

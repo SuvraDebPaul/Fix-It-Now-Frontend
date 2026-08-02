@@ -11,6 +11,7 @@ const RegisterPage = () => {
         alt="Auth background"
         fill
         priority
+        sizes="100vw"
         className="object-cover -z-10"
       />
 

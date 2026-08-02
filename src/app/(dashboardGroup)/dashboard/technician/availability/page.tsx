@@ -13,6 +13,7 @@ import { useUpdateAvailability } from "@/features/technicians/hooks/useUpdateAva
 import { AvailabilitySlotInput } from "@/features/technicians/types/technicians.types";
 import type { User } from "@/features/auth/types/auth.types";
 import { AvailabilityRowsSkeleton } from "@/components/dashboard/loading-skeletons";
+import { getApiErrorMessage } from "@/lib/utils";
 
 const DAYS: { value: string; label: string }[] = [
   { value: "MONDAY", label: "Monday" },
@@ -70,9 +71,10 @@ function AvailabilityForm({ user }: { user: User }) {
         toast.success("Availability updated");
       },
       onError: (error) => {
-        const message =
-          error.response?.data?.message ??
-          "Couldn't update availability. Please try again.";
+        const message = getApiErrorMessage(
+          error,
+          "Couldn't update availability. Please try again.",
+        );
         toast.error(message);
       },
     });

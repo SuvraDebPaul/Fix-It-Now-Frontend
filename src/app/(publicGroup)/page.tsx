@@ -13,7 +13,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { blogPosts } from "./blog/data";
-import { technicians } from "./technicians/data";
+import { getAllTechnician } from "@/features/technicians/api/technicians.api";
 import { Separator } from "@/components/ui/separator";
 import { LogoMarquee } from "@/components/shared/logo-marquee";
 import Testimonial from "@/components/shared/testimonial";
@@ -120,9 +120,10 @@ const faqs = [
   },
 ];
 
-const homeTeam = technicians.slice(0, 4);
+export default async function Home() {
+  const allTechnicians = await getAllTechnician();
+  const homeTeam = allTechnicians.slice(0, 4);
 
-export default function Home() {
   return (
     <>
       {/* HERO */}
@@ -132,6 +133,7 @@ export default function Home() {
           alt="Technician repairing a fixture"
           fill
           priority
+          sizes="100vw"
           className="object-cover"
         />
         <div className="absolute inset-0 bg-linear-to-r from-ink via-ink/80 to-ink/20" />
@@ -228,6 +230,7 @@ export default function Home() {
                   src={service.image}
                   alt={service.label}
                   fill
+                  sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent" />
@@ -289,6 +292,7 @@ export default function Home() {
               src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=700&q=80&auto=format&fit=crop"
               alt="Friendly handyman"
               fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
               className="object-cover"
             />
           </div>
@@ -329,6 +333,7 @@ export default function Home() {
                   src={item.image}
                   alt={item.label}
                   fill
+                  sizes="(min-width: 640px) 33vw, 50vw"
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-black/40" />
@@ -383,6 +388,7 @@ export default function Home() {
               src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=700&q=80&auto=format&fit=crop"
               alt="Technician servicing an HVAC unit"
               fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
               className="object-cover"
             />
           </div>
@@ -435,19 +441,26 @@ export default function Home() {
           />
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
             {homeTeam.map((member) => (
-              <Link key={member.id} href={`/technicians`} className="group">
+              <Link
+                key={member.id}
+                href={`/technicians/${member.id}`}
+                className="group"
+              >
                 <div className="relative h-100 overflow-hidden rounded-lg">
                   <Image
                     src={member.image}
                     alt={member.name}
                     fill
+                    sizes="(min-width: 640px) 25vw, 50vw"
                     className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
                 <h3 className="mt-3 text-base font-semibold normal-case tracking-normal group-hover:text-primary">
                   {member.name}
                 </h3>
-                <p className="text-sm text-muted-foreground">{member.role}</p>
+                <p className="text-sm text-muted-foreground">
+                  {member.specialty}
+                </p>
               </Link>
             ))}
           </div>
@@ -477,6 +490,7 @@ export default function Home() {
                     src={post.image}
                     alt={post.title}
                     fill
+                    sizes="(min-width: 640px) 50vw, 100vw"
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
@@ -513,6 +527,7 @@ export default function Home() {
               src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
               alt="Handyman ready to help"
               fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
               className="object-cover"
             />
           </div>

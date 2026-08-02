@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/table";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { useMyServices } from "@/features/technicians/hooks/useMyServices";
-import { AddServiceDialog } from "./add-service-dialog";
+import { AddServiceDialog } from "@/features/technicians/components/add-service-dialog";
 import { TableRowsSkeleton } from "@/components/dashboard/loading-skeletons";
 
 export default function TechnicianServicesPage() {

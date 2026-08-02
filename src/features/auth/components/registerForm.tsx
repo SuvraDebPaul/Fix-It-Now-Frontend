@@ -25,6 +25,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useRegister } from "../hooks/useRegister";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/utils";
 
 export function RegisterForm() {
   const router = useRouter();
@@ -54,9 +55,10 @@ export function RegisterForm() {
         router.push("/login?registered=1");
       },
       onError: (error) => {
-        const message =
-          error.response?.data?.message ??
-          "Something went wrong. Please try again.";
+        const message = getApiErrorMessage(
+          error,
+          "Something went wrong. Please try again.",
+        );
         toast.error(message);
         setError("root", { message });
       },

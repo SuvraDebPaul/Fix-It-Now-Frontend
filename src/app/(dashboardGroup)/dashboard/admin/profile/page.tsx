@@ -2,15 +2,14 @@
 
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
-import { UserAvatar } from "@/components/shared/user-avatar";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { getInitials } from "@/lib/utils";
 import { formatDate } from "@/lib/format";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { ProfileCardSkeleton } from "@/components/dashboard/loading-skeletons";
+import { ProfileCardHeader } from "@/components/dashboard/profile-card-header";
 
 export default function AdminProfilePage() {
   const { data: user, isLoading } = useCurrentUser();
@@ -31,18 +30,7 @@ export default function AdminProfilePage() {
         {isLoading && <ProfileCardSkeleton />}
         {!isLoading && user && (
           <Card className="max-w-2xl">
-            <CardHeader className="flex-row items-center gap-4">
-              <UserAvatar
-                name={user.name}
-                fallback={getInitials(user.name)}
-                className="h-16 w-16"
-                fallbackClassName="bg-primary/20 text-lg text-primary"
-              />
-              <div>
-                <CardTitle>{user.name}</CardTitle>
-                <p className="text-sm text-muted-foreground">{user.email}</p>
-              </div>
-            </CardHeader>
+            <ProfileCardHeader name={user.name} email={user.email} />
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field>

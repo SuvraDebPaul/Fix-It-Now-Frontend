@@ -28,6 +28,7 @@ import { useAdminUsers } from "@/features/admin/hooks/useAdminUsers";
 import { useUpdateUserStatus } from "@/features/admin/hooks/useUpdateUserStatus";
 import type { AdminUserRow } from "@/features/admin/types/admin.types";
 import { TableRowsSkeleton } from "@/components/dashboard/loading-skeletons";
+import { getApiErrorMessage } from "@/lib/utils";
 
 export default function AdminUsersPage() {
   const { data: users, isLoading } = useAdminUsers();
@@ -45,9 +46,10 @@ export default function AdminUsersPage() {
           );
         },
         onError: (error) => {
-          const message =
-            error.response?.data?.message ??
-            "Couldn't update user status. Please try again.";
+          const message = getApiErrorMessage(
+            error,
+            "Couldn't update user status. Please try again.",
+          );
           toast.error(message);
         },
       },

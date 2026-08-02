@@ -6,16 +6,16 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { SiteHeader } from "@/components/dashboard/site-header";
-import { UserAvatar } from "@/components/shared/user-avatar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { getInitials } from "@/lib/utils";
+import { getApiErrorMessage } from "@/lib/utils";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { useUpdateCustomerProfile } from "@/features/auth/hooks/useUpdateCustomerProfile";
 import type { User } from "@/features/auth/types/auth.types";
 import { ProfileCardSkeleton } from "@/components/dashboard/loading-skeletons";
+import { ProfileCardHeader } from "@/components/dashboard/profile-card-header";
 
 const profileSchema = z.object({
   phone: z.string().min(1, "Phone is required"),
@@ -46,9 +46,10 @@ function ProfileForm({ user }: { user: User }) {
         toast.success("Profile updated");
       },
       onError: (error) => {
-        const message =
-          error.response?.data?.message ??
-          "Couldn't update profile. Please try again.";
+        const message = getApiErrorMessage(
+          error,
+          "Couldn't update profile. Please try again.",
+        );
         toast.error(message);
       },
     });
@@ -56,19 +57,11 @@ function ProfileForm({ user }: { user: User }) {
 
   return (
     <Card className="max-w-2xl">
-      <CardHeader className="flex-row items-center gap-4">
-        <UserAvatar
-          name={user.name}
-          image={profile.profilePhoto ?? undefined}
-          fallback={getInitials(user.name)}
-          className="h-16 w-16"
-          fallbackClassName="bg-primary/20 text-lg text-primary"
-        />
-        <div>
-          <CardTitle>{user.name}</CardTitle>
-          <p className="text-sm text-muted-foreground">{user.email}</p>
-        </div>
-      </CardHeader>
+      <ProfileCardHeader
+        name={user.name}
+        email={user.email}
+        image={profile.profilePhoto}
+      />
       <CardContent>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <Field>

@@ -1,7 +1,7 @@
 import { ApiErrorResponse } from "@/features/auth/types/auth.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { cancleBooking } from "../api/booking.api";
+import { cancelBooking } from "../api/booking.api";
 
 interface CancelBookingInput {
   id: string;
@@ -14,7 +14,7 @@ export const useCancelBookings = () => {
   return useMutation<unknown, AxiosError<ApiErrorResponse>, CancelBookingInput>(
     {
       mutationFn: ({ id, cancelReason }) => {
-        return cancleBooking(id, cancelReason);
+        return cancelBooking(id, cancelReason);
       },
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["myBookings"] });

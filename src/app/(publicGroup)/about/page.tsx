@@ -108,6 +108,7 @@ export default function AboutPage() {
           src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1600&q=80&auto=format&fit=crop"
           alt="FixItNow team at work"
           fill
+          sizes="100vw"
           className="object-cover"
         />
         <div className="absolute inset-0 bg-brand-blue/50" />
@@ -164,6 +165,7 @@ export default function AboutPage() {
               src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=900&q=80&auto=format&fit=crop"
               alt="Technician installing equipment"
               fill
+              sizes="(min-width: 768px) 768px, 100vw"
               className="object-cover"
             />
           </div>
@@ -203,6 +205,7 @@ export default function AboutPage() {
               src="https://images.unsplash.com/photo-1560250097-0b93528c311a"
               alt="FixItNow technician"
               fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
               className="object-contain"
             />
           </div>

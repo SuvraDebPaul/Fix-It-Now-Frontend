@@ -24,6 +24,7 @@ import {
 import { useAdminCategories } from "@/features/admin/hooks/useAdminCategories";
 import { useCreateCategory } from "@/features/admin/hooks/useCreateCategory";
 import { TableRowsSkeleton } from "@/components/dashboard/loading-skeletons";
+import { getApiErrorMessage } from "@/lib/utils";
 
 const categorySchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -52,9 +53,10 @@ export default function AdminCategoriesPage() {
         form.reset();
       },
       onError: (error) => {
-        const message =
-          error.response?.data?.message ??
-          "Couldn't create category. Please try again.";
+        const message = getApiErrorMessage(
+          error,
+          "Couldn't create category. Please try again.",
+        );
         toast.error(message);
       },
     });

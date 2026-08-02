@@ -7,7 +7,7 @@ import { SiteHeader } from "@/components/dashboard/site-header";
 import { StarRating } from "@/components/shared/star-rating";
 import { Card, CardContent } from "@/components/ui/card";
 import { useMyBookings } from "@/features/booking/hooks/useMyBookings";
-import { LeaveReviewDialog } from "./leave-review-dialog";
+import { LeaveReviewDialog } from "@/features/booking/components/leave-review-dialog";
 import { CardListSkeleton } from "@/components/dashboard/loading-skeletons";
 
 export default function CustomerReviewsPage() {
@@ -47,13 +47,13 @@ export default function CustomerReviewsPage() {
                     <div>
                       <p className="font-medium">{booking.service}</p>
                       <p className="text-sm text-muted-foreground">
-                        {booking.technicain}
+                        {booking.technician}
                       </p>
                     </div>
                     <LeaveReviewDialog
                       bookingId={booking.id}
                       service={booking.service}
-                      technician={booking.technicain}
+                      technician={booking.technician}
                     />
                   </CardContent>
                 </Card>
@@ -81,7 +81,7 @@ export default function CustomerReviewsPage() {
                     <p className="font-medium">
                       {booking.service}{" "}
                       <span className="font-normal text-muted-foreground">
-                        · {booking.technicain}
+                        · {booking.technician}
                       </span>
                     </p>
                     <StarRating rating={booking.review!.rating} />

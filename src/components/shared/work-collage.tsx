@@ -5,11 +5,12 @@ export function WorkCollage() {
     <div className="relative">
       <div className="grid grid-cols-2 gap-4">
         <div className="relative ">
-          <div className="h-100 overflow-hidden ">
+          <div className="relative h-100 overflow-hidden">
             <Image
               src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4"
               alt="Technician assessing a job"
               fill
+              sizes="(min-width: 1024px) 33vw, 50vw"
               className="object-cover rounded-lg"
             />
           </div>
@@ -32,6 +33,7 @@ export function WorkCollage() {
               src="https://images.unsplash.com/photo-1581092160562-40aa08e78837"
               alt="Technician installing a fixture"
               fill
+              sizes="(min-width: 1024px) 33vw, 50vw"
               className="object-cover"
             />
           </div>
@@ -40,6 +42,7 @@ export function WorkCollage() {
               src="https://images.unsplash.com/photo-1581092160607-ee22621dd758"
               alt="Technician at work"
               fill
+              sizes="(min-width: 1024px) 33vw, 50vw"
               className="object-cover"
             />
           </div>

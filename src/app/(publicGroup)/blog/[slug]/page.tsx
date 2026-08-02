@@ -84,6 +84,7 @@ export default async function BlogDetailsPage({
                 src={post.image}
                 alt={post.title}
                 fill
+                sizes="(min-width: 1024px) 66vw, 100vw"
                 className="object-cover"
               />
             </div>
@@ -107,6 +108,7 @@ export default async function BlogDetailsPage({
                   src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&q=80&auto=format&fit=crop"
                   alt="Technician at work"
                   fill
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                   className="object-cover"
                 />
               </div>
@@ -115,6 +117,7 @@ export default async function BlogDetailsPage({
                   src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=500&q=80&auto=format&fit=crop"
                   alt="Technician servicing equipment"
                   fill
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                   className="object-cover"
                 />
               </div>
@@ -190,6 +193,7 @@ export default async function BlogDetailsPage({
                         src={recent.image}
                         alt={recent.title}
                         fill
+                        sizes="56px"
                         className="object-cover"
                       />
                     </div>
@@ -225,7 +229,13 @@ export default async function BlogDetailsPage({
                     key={i}
                     className="relative h-16 overflow-hidden rounded-md"
                   >
-                    <Image src={src} alt="" fill className="object-cover" />
+                    <Image
+                      src={src}
+                      alt=""
+                      fill
+                      sizes="(min-width: 1024px) 100px, 33vw"
+                      className="object-cover"
+                    />
                   </div>
                 ))}
               </div>

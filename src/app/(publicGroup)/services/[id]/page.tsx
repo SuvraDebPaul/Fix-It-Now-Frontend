@@ -62,6 +62,7 @@ export default async function ServiceDetailsPage({
                 src={service.image}
                 alt={service.title}
                 fill
+                sizes="(min-width: 1024px) 66vw, 100vw"
                 className="object-cover"
               />
             </div>

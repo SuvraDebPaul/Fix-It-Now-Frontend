@@ -21,6 +21,7 @@ import { CustomerBookingRow } from "@/features/booking/types/bookings.types";
 import { CancelBookingDialog } from "@/features/booking/components/cancel-booking-dialog";
 import { useMyBookings } from "@/features/booking/hooks/useMyBookings";
 import { TableRowsSkeleton } from "@/components/dashboard/loading-skeletons";
+import { getApiErrorMessage } from "@/lib/utils";
 
 function PayNowButton({ bookingId }: { bookingId: string }) {
   const { mutate, isPending } = useCreatePayment();
@@ -31,9 +32,10 @@ function PayNowButton({ bookingId }: { bookingId: string }) {
         window.location.href = payment.paymentUrl;
       },
       onError: (error) => {
-        const message =
-          error.response?.data?.message ??
-          "Couldn't start payment. Please try again.";
+        const message = getApiErrorMessage(
+          error,
+          "Couldn't start payment. Please try again.",
+        );
         toast.error(message);
       },
     });
@@ -115,7 +117,7 @@ export default function CustomerBookingsPage() {
                   <TableCell className="font-medium">
                     {booking.service}
                   </TableCell>
-                  <TableCell>{booking.technicain}</TableCell>
+                  <TableCell>{booking.technician}</TableCell>
                   <TableCell>{formatDateTime(booking.scheduleTime)}</TableCell>
                   <TableCell className="max-w-48 truncate text-muted-foreground">
                     {booking.address}

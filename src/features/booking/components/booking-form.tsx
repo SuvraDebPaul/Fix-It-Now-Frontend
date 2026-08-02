@@ -14,6 +14,7 @@ import { BookingFormValues, bookingSchema } from "../schemas/booking.schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getApiErrorMessage } from "@/lib/utils";
 
 interface BookingFormProps {
   serviceId: string;
@@ -54,9 +55,10 @@ export function BookingForm({
           toast.success("Booking request sent!");
         },
         onError: (error) => {
-          const message =
-            error.response?.data?.message ??
-            "Something went wrong. Please try again.";
+          const message = getApiErrorMessage(
+            error,
+            "Something went wrong. Please try again.",
+          );
           toast.error(message);
         },
       },

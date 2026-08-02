@@ -1,4 +1,7 @@
 import type { ServiceListing } from "@/features/services/types/services.types";
+import type { BookingStatus } from "@/types/booking-status";
+
+export type { BookingStatus };
 
 export interface RawTechnicianUser {
   id: string;
@@ -82,15 +85,6 @@ export interface TechnicianProfile {
   reviews: TechnicianReviewRow[];
   services: ServiceListing[];
 }
-
-export type BookingStatus =
-  | "REQUESTED"
-  | "ACCEPTED"
-  | "DECLINED"
-  | "PAID"
-  | "IN_PROGRESS"
-  | "COMPLETED"
-  | "CANCELLED";
 
 export interface RawTechnicianBooking {
   id: string;

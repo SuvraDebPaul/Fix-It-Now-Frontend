@@ -16,6 +16,7 @@ import {
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateReview } from "@/features/booking/hooks/useCreateReview";
+import { getApiErrorMessage } from "@/lib/utils";
 
 interface LeaveReviewDialogProps {
   bookingId: string;
@@ -45,9 +46,10 @@ export function LeaveReviewDialog({
           setComment("");
         },
         onError: (error) => {
-          const message =
-            error.response?.data?.message ??
-            "Couldn't submit your review. Please try again.";
+          const message = getApiErrorMessage(
+            error,
+            "Couldn't submit your review. Please try again.",
+          );
           toast.error(message);
         },
       },

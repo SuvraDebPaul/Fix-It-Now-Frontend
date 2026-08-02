@@ -11,7 +11,7 @@ function mapBooking(raw: RawBookingWithRelations): CustomerBookingRow {
   return {
     id: raw.id,
     service: raw.service.title,
-    technicain: raw.technicianProfile.user.name,
+    technician: raw.technicianProfile.user.name,
     scheduleTime: raw.scheduleTime,
     address: raw.address,
     totalAmount: Number(raw.totalAmount),
@@ -36,7 +36,7 @@ export const getMyBookings = async (): Promise<CustomerBookingRow[]> => {
   return data.data.map(mapBooking);
 };
 
-export const cancleBooking = async (id: string, cancelReason?: string) => {
+export const cancelBooking = async (id: string, cancelReason?: string) => {
   const { data } = await api.patch(`/bookings/${id}/cancel`, { cancelReason });
   return data.data;
 };

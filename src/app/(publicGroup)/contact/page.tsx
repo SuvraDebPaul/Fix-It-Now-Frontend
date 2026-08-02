@@ -58,6 +58,7 @@ export default function ContactPage() {
                   src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=500&q=80&auto=format&fit=crop"
                   alt="Support team member"
                   fill
+                  sizes="(min-width: 1024px) 360px, 100vw"
                   className="object-cover object-top"
                 />
               </div>

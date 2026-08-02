@@ -105,7 +105,7 @@ export default function CustomerOverviewPage() {
                   <TableCell className="font-medium">
                     {booking.service}
                   </TableCell>
-                  <TableCell>{booking.technicain}</TableCell>
+                  <TableCell>{booking.technician}</TableCell>
                   <TableCell>{formatDateTime(booking.scheduleTime)}</TableCell>
                   <TableCell>
                     <StatusBadge status={booking.status} />

@@ -20,6 +20,7 @@ import { useTechnicianBookings } from "@/features/technicians/hooks/useTechnicia
 import { useUpdateBookingStatus } from "@/features/technicians/hooks/useUpdateBookingStatus";
 import type { TechnicianBookingRow } from "@/features/technicians/types/technicians.types";
 import { TableRowsSkeleton } from "@/components/dashboard/loading-skeletons";
+import { getApiErrorMessage } from "@/lib/utils";
 
 function BookingActions({ booking }: { booking: TechnicianBookingRow }) {
   const { mutate, isPending } = useUpdateBookingStatus();
@@ -34,9 +35,10 @@ function BookingActions({ booking }: { booking: TechnicianBookingRow }) {
           toast.success(`Booking ${status.toLowerCase()}`);
         },
         onError: (error) => {
-          const message =
-            error.response?.data?.message ??
-            "Something went wrong. Please try again.";
+          const message = getApiErrorMessage(
+            error,
+            "Something went wrong. Please try again.",
+          );
           toast.error(message);
         },
       },
